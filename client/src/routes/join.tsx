@@ -1,7 +1,8 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 
 const Join = () => {
-  const [id, setId] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
@@ -10,16 +11,21 @@ const Join = () => {
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-    /* await axios.post("/api/user/create" , {
-      id, nickname, password, email
-    }); */
+    try{
+      await axios.post("/join" , {
+        username, nickname, password, email
+      }); 
+
+    } catch(e) {
+      console.log(e);
+    }
     setIsLoading(false);
   }
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value;
-    if (e.target.name === "id") {
-      setId(value);
+    if (e.target.name === "username") {
+      setUsername(value);
     } else if(e.target.name === "password") {
       setPassword(value);
     } else if(e.target.name === "nickname") {
@@ -31,8 +37,8 @@ const Join = () => {
 
   return (
     <form onSubmit={onSubmit}>
-      <label htmlFor="id">ID</label>
-      <input onChange={onChange} name="id" type="text" placeholder="ID를 입력하세요" value={id} required/>
+      <label htmlFor="username">ID</label>
+      <input onChange={onChange} name="username" type="text" placeholder="ID를 입력하세요" value={username} required/>
       <label htmlFor="password">PASSWORD</label>
       <input onChange={onChange} name="password" type="password" placeholder="비밀번호를 입력하세요" value={password} required/>
       <label htmlFor="nickname">닉네임</label>

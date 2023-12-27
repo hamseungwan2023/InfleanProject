@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@types/react-router": "^5.1.20",
+    "react-router": "^6.21.1"
+  }
+}
