@@ -12,7 +12,7 @@ const Join = () => {
     e.preventDefault();
     setIsLoading(true);
     try{
-      await axios.post("/join" , {
+      await axios.post("/user/signup" , {
         username, nickname, password, email
       }); 
 

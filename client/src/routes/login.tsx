@@ -4,8 +4,10 @@ import { Link, useNavigate } from "react-router-dom";
 
 interface Ires {
   data: {
-    loginSuccess: Boolean,
-    message: String
+    accessToken: string;
+    refreshToken: string;
+    memberId: number;
+    nickname: string;
   }
 }
 
@@ -26,17 +28,20 @@ const Login = () => {
   const onSubmit = async (e:React.FormEvent<HTMLFormElement>) => {
     setIsLoading(true);
     e.preventDefault();
-    const res:Ires = await axios.post("/api/users/login", {
+    const res:Ires = await axios.post("/user/signup", {
       id, password
     });
-
-    if(!res.data.loginSuccess){
-      window.confirm(res.data.message+"");
+    try {
+      console.log(res.data);
+      localStorage.clear();
+      localStorage.setItem('accessToken', res.data.accessToken);
+      localStorage.setItem('refreshToken', res.data.refreshToken);
+      navigate("/");
+    } catch(e) {
+      console.log(e);
+    } finally {
+      setIsLoading(false);
     }
-    else {
-      navigate('/');
-    }
-    setIsLoading(false);
   }
 
   return (
