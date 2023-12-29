@@ -29,7 +29,7 @@ const Login = () => {
     setIsLoading(true);
     e.preventDefault();
     const res:Ires = await axios.post("/user/signup", {
-      id, password
+      username: id, password
     });
     try {
       console.log(res.data);
