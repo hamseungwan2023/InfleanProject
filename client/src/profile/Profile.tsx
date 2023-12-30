@@ -1,5 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
+import DeleteAccount from "../routes/DeleteAccount";
+import { useNavigate } from "react-router-dom";
 
 const user = {
   nickname: "홍길동",
@@ -7,10 +9,12 @@ const user = {
   password: "비밀번호486",
 };
 const Profile = () => {
-  const [userReTouch, setUserReTouch] = useState(true);
-  const [showPassword, setShowPassword] = useState(false);
-  const [userNickname, setUserNickname] = useState("");
-  const [userPassword, setUserPassword] = useState("");
+  const [userReTouch, setUserReTouch] = useState<boolean>(true);
+  const [showPass, setShowPass] = useState<boolean>(false);
+  const [userNickname, setUserNickname] = useState<string>("");
+  const [userPass, setUserPass] = useState<string>("");
+
+  const navigate = useNavigate();
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -19,7 +23,7 @@ const Profile = () => {
       await axios.put("/:user_id", {
         //추후에 백엔드 api명세서 나오면 수정
         userNickname,
-        userPassword,
+        userPass,
       });
     } catch (e) {
       console.log(e);
@@ -30,7 +34,7 @@ const Profile = () => {
     if (e.target.nickname) {
       setUserNickname(e.target.value);
     } else {
-      setUserPassword(e.target.value);
+      setUserPass(e.target.value);
     }
   };
 
@@ -52,7 +56,7 @@ const Profile = () => {
             onChange={onChange}
           ></input>
           <h5>{user.email}</h5>
-          {showPassword === false ? (
+          {showPass === false ? (
             <div>
               <input
                 name="password"
@@ -60,9 +64,7 @@ const Profile = () => {
                 defaultValue={user.password}
                 onChange={onChange}
               ></input>
-              <button onClick={() => setShowPassword(true)}>
-                비밀번호 보이기
-              </button>
+              <button onClick={() => setShowPass(true)}>비밀번호 보이기</button>
             </div>
           ) : (
             <div>
@@ -72,7 +74,7 @@ const Profile = () => {
                 defaultValue={user.password}
                 onChange={onChange}
               ></input>
-              <button onClick={() => setShowPassword(false)}>
+              <button onClick={() => setShowPass(false)}>
                 비밀번호 가리기
               </button>
             </div>
@@ -82,6 +84,7 @@ const Profile = () => {
           <button onClick={() => setUserReTouch(true)}>수정 취소</button>
         </div>
       )}
+      <button onClick={() => navigate("/deleteAccount")}>계정 삭제</button>
     </div>
   );
 };

@@ -1,53 +1,59 @@
 import axios from "axios";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 interface Ires {
   data: {
-    loginSuccess: Boolean;
-    message: String;
+    accessToken: string;
+    refreshToken: string;
+    memberId: number;
+    nickname: string;
   };
 }
 
 const Login = () => {
-  const [id, setId] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.name === "id") {
-      setId(e.target.value);
+  const onChange = (e: any) => {
+    if (e.target.name === "username") {
+      setUsername(e.target.value);
     } else {
       setPassword(e.target.value);
     }
   };
 
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: any) => {
     setIsLoading(true);
     e.preventDefault();
-    const res: Ires = await axios.post("/api/users/login", {
-      id,
+    const res: Ires = await axios.post("http://localhost:8080/user/login", {
+      username,
       password,
     });
-
-    if (!res.data.loginSuccess) {
-      window.confirm(res.data.message + "");
-    } else {
+    try {
+      console.log(res.data);
+      localStorage.clear();
+      localStorage.setItem("accessToken", res.data.accessToken);
+      localStorage.setItem("refreshToken", res.data.refreshToken);
       navigate("/");
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   return (
     <form onSubmit={onSubmit}>
-      <label htmlFor="id">ID</label>
+      <label htmlFor="username">ID</label>
       <input
         onChange={onChange}
-        name="id"
+        name="username"
         type="text"
         placeholder="ID를 입력하세요"
-        value={id}
+        value={username}
         required
       />
       <label htmlFor="password">PASSWORD</label>
