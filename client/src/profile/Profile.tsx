@@ -1,6 +1,5 @@
 import { useState } from "react";
 import axios from "axios";
-import DeleteAccount from "../routes/DeleteAccount";
 import { useNavigate } from "react-router-dom";
 
 export const url = "http://localhost:8080";
