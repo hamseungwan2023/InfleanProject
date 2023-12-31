@@ -3,12 +3,12 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 export const url = "http://localhost:8080";
-
 const user = {
   nickname: "홍길동",
   email: "gildong@gmail.com",
   password: "비밀번호486",
 };
+
 const Profile = () => {
   const [userReTouch, setUserReTouch] = useState<boolean>(true);
   const [showPass, setShowPass] = useState<boolean>(false);
@@ -39,27 +39,35 @@ const Profile = () => {
     }
   };
 
+  let hidePassword = "";
+  for (let i = 0; i < user.password.length; i++) {
+    hidePassword += "*";
+  }
+  console.log(hidePassword);
+
   return (
     <div>
       {userReTouch === true ? (
         <div>
-          <h2>이름 : {user.nickname}</h2>
+          <h2>닉네임 : {user.nickname}</h2>
           <h5>이메일 : {user.email}</h5>
-          <h5>비밀번호 : {user.password}</h5>
+          <h5>비밀번호 : {hidePassword}</h5>
           <button onClick={() => setUserReTouch(false)}>수정</button>
           <button onClick={() => navigate("/deleteAccount")}>계정 삭제</button>
         </div>
       ) : (
         <div>
+          닉네임 :{" "}
           <input
             name="nickname"
             type="text"
             defaultValue={user.nickname}
             onChange={onChange}
           ></input>
-          <h5>{user.email}</h5>
+          이메일 : <h5>{user.email}</h5>
           {showPass === false ? (
             <div>
+              비밀번호:{" "}
               <input
                 name="password"
                 type="password"
@@ -70,6 +78,7 @@ const Profile = () => {
             </div>
           ) : (
             <div>
+              비밀번호 :{" "}
               <input
                 name="password"
                 type="text"
@@ -81,7 +90,6 @@ const Profile = () => {
               </button>
             </div>
           )}
-
           <button onClick={() => onSubmit}>수정 완료!</button>
           <button onClick={() => setUserReTouch(true)}>수정 취소</button>
         </div>
