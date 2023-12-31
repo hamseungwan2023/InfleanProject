@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { url } from "../profile/Profile";
 
 const Join = () => {
   const [username, setUsername] = useState("");
@@ -12,7 +13,7 @@ const Join = () => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      await axios.post("/join", {
+      await axios.post(`${url}/user/signup`, {
         username,
         nickname,
         password,

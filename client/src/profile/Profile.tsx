@@ -3,6 +3,8 @@ import axios from "axios";
 import DeleteAccount from "../routes/DeleteAccount";
 import { useNavigate } from "react-router-dom";
 
+export const url = "http://localhost:8080";
+
 const user = {
   nickname: "홍길동",
   email: "gildong@gmail.com",
@@ -20,7 +22,7 @@ const Profile = () => {
     e.preventDefault();
 
     try {
-      await axios.put("/:user_id", {
+      await axios.put(`${url}/:user_id`, {
         //추후에 백엔드 api명세서 나오면 수정
         userNickname,
         userPass,
@@ -42,10 +44,11 @@ const Profile = () => {
     <div>
       {userReTouch === true ? (
         <div>
-          <h2>{user.nickname}</h2>
-          <h5>{user.email}</h5>
-          <h5>{user.password}</h5>
+          <h2>이름 : {user.nickname}</h2>
+          <h5>이메일 : {user.email}</h5>
+          <h5>비밀번호 : {user.password}</h5>
           <button onClick={() => setUserReTouch(false)}>수정</button>
+          <button onClick={() => navigate("/deleteAccount")}>계정 삭제</button>
         </div>
       ) : (
         <div>
@@ -84,7 +87,6 @@ const Profile = () => {
           <button onClick={() => setUserReTouch(true)}>수정 취소</button>
         </div>
       )}
-      <button onClick={() => navigate("/deleteAccount")}>계정 삭제</button>
     </div>
   );
 };
