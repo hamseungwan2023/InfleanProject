@@ -5,6 +5,7 @@ import Login from "./routes/login";
 import Profile from "./profile/Profile";
 import DeleteAccount from "./routes/DeleteAccount";
 import Logout from "./routes/logout";
+import "./global.scss";
 
 const router = createBrowserRouter([
   {

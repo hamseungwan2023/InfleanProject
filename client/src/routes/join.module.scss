@@ -1,0 +1,239 @@
+button, input, select, textarea {
+  border-radius: 0;
+  border: none;
+  background: 0 0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  outline: 0;
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-text-size-adjust: none;
+}
+
+.form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 50px;
+
+  & > div {
+    box-sizing: border-box;
+    width: 460px;
+  }
+}
+
+.input_wrapper {
+  margin-bottom: 10px;
+  border-radius: 6px;
+  
+  &::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    border-radius: inherit;
+    border: 1px solid #c6c6c6;
+    pointer-events: none;
+    content: '';
+  }
+}
+
+.input {
+  flex: 1 1 auto;
+  font-size: 16px;
+  line-height: 22px;
+  color: #222;
+}
+
+[class*=join_wrapper] {
+  display: flex;
+  align-items: center;
+  position: relative;
+  min-height: 50px;
+  padding: 0 10px 0 45px;
+
+  & + [class*=wrapper] {
+    margin-top: -1px;
+  }
+
+  &:first-child {
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+  }
+
+  &:last-child {
+    border-bottom-right-radius: 6px;
+    border-bottom-left-radius: 6px;
+  }
+
+  &::before {
+    position: absolute;
+    top: 10px;
+    left: 9px;
+    background-repeat: no-repeat;
+    width: 30px;
+    height: 30px;
+    background-image: url(https://ssl.pstatic.net/static/nid/join/m_sp_06_realname_48b1e603.png);
+    background-size: 372px 326px;
+    background-repeat: no-repeat;
+
+    content: "";
+  }
+
+  &::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    border-radius: inherit;
+    border: 1px solid #dfdfdf;
+    pointer-events: none;
+    content: '';
+  }
+}
+
+.wrapper_id {
+  &::before {
+    background-position: -342px -64px;
+  }
+}
+
+.wrapper_password {
+  &::before {
+    background-position: -310px 0;
+  }
+}
+
+.wrapper_email {
+  &::before {
+    background-position: -96px -296px;
+  }
+}
+
+.wrapper_realname {
+  &::before {
+    background-position: -342px -64px;
+  }
+}
+
+.wrapper_birthday {
+  &::before {
+    background-position: -192px -296px;
+  }
+}
+
+.wrapper_phone {
+  &::before {
+    background-position: -310px -128px;
+  }
+}
+
+.wrapper_nickname {
+  &::before {
+    background-position: -342px -64px;
+  }
+}
+
+.password_info {
+  flex: none;
+  padding: 0 5px;
+}
+
+.btn_show {
+  margin-left: 4px;
+
+  &::before {
+    background-position: -256px -296px;
+    background-repeat: no-repeat;
+    background-image: url(https://ssl.pstatic.net/static/nid/join/m_sp_06_realname_48b1e603.png);
+    background-size: 372px 326px;
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    vertical-align: top;
+    content: "";
+  }
+}
+
+.error_text {
+  margin: 10px 4px 0;
+  font-size: 13px;
+  line-height: 18px;
+  color: #ff3f3f;
+}
+
+.profileImgInput {
+  display: none;
+}
+
+.wrapper_profileImg {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px;
+
+  &::before {
+    display: none;
+  }
+}
+
+.profileImg_title {
+  font-size: 22px;
+  color: #929294;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.profileImg_desc {
+  font-size: 16px;
+  color: #929294;
+  line-height: 22px;
+  margin-bottom: 20px;
+}
+
+.profileImg_label {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
+  border-radius: 50%;
+  cursor: pointer;
+
+  &::after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: inherit;
+    border: 1px solid #ededed;
+    content: "";
+  }
+
+  svg {
+    width: 100px;
+  }
+}
+
+.btn_submit {
+  width: 460px;
+  
+  input {
+    width: 100%;
+    padding: 14px 0;
+    border-radius: 6px;
+    border: 1px solid rgba(0,0,0,.05);
+    background: #81acff;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 22px;
+    color: #fff;
+  }
+}
+
+
+
