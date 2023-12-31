@@ -28,7 +28,7 @@ const Login = () => {
   const onSubmit = async (e: any) => {
     setIsLoading(true);
     e.preventDefault();
-    const res: Ires = await axios.post("http://localhost:8080/user/login", {
+    const res: Ires = await axios.post("/user/login", {
       username,
       password,
     });

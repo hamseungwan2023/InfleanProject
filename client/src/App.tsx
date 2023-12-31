@@ -4,6 +4,7 @@ import Join from "./routes/join";
 import Login from "./routes/login";
 import Profile from "./profile/Profile";
 import DeleteAccount from "./routes/DeleteAccount";
+import Logout from "./routes/logout";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
   {
     path: "/profile",
     element: <Profile />,
+  },
+  {
+    path: "/logout",
+    element: <Logout />,
   },
 ]);
 
