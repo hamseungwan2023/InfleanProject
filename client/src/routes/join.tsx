@@ -10,7 +10,6 @@ const Join = () => {
   const [birthday, setBirthday] = useState("");
   const [phone, setPhone] = useState("");
   const [nickname, setNickname] = useState("");
-  const [email, setEmail] = useState("");
   const [profileImg, setProfileImg] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -19,7 +18,7 @@ const Join = () => {
     setIsLoading(true);
     try{
       await axios.post("/user/signup" , {
-        username, nickname, password, email, profileImg
+        username, nickname, password, profileImg
       }); 
 
     } catch(e) {
@@ -34,10 +33,16 @@ const Join = () => {
       setUsername(value);
     } else if (e.target.name === "password") {
       setPassword(value);
+    } else if (e.target.name === "realname") {
+      setRealname(value);
+    } else if (e.target.name === "birthday") {
+      setBirthday(value);
+    } else if (e.target.name === "phone") {
+      setPhone(value);
     } else if (e.target.name === "nickname") {
       setNickname(value);
     } else {
-      setEmail(value);
+      return;
     }
   };
 
