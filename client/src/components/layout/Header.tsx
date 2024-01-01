@@ -1,13 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { regionList } from "../../constants/regionList";
 import style from "./Header.module.scss";
 
 const Header = () => {
-
-  const regionList = [
-    "서울", "경기", "강원", "충북", "충남", "인천", "대전", "경북", "경남", "대구", "부산", "전남", "전북", "광주", "제주"
-  ]
-
   const onClick = (e:React.MouseEvent) => {
     console.log(e);
   }

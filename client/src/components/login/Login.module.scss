@@ -2,11 +2,7 @@
 @import "../../scss/variables.scss";
 
 .area_login {
-  background-color: #f7f9fa;
-  width: 280px;
-  margin: 20px;
-  border: 1px solid #dbe1e5;
-  border-radius: 10px 10px 0 0;
+  border-bottom: 1px solid $asideBorder;
 }
 
 .wrap_login {
