@@ -1,8 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Style from "./profile.module.scss";
+import RetouchProfile from "./ReTouchProfile";
 
 export const url = "http://localhost:8080";
+export const srcUrl =
+  "https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg";
+
 const user = {
   nickname: "홍길동",
   email: "gildong@gmail.com",
@@ -11,31 +16,22 @@ const user = {
 
 const Profile = () => {
   const [userReTouch, setUserReTouch] = useState<boolean>(true);
-  const [showPass, setShowPass] = useState<boolean>(false);
-  const [userNickname, setUserNickname] = useState<string>("");
-  const [userPass, setUserPass] = useState<string>("");
-
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [userData, setUserData] = useState<string[]>([]);
   const navigate = useNavigate();
 
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  useEffect(() => {
+    setIsLoading(true);
+    // getUserData();
+    setIsLoading(false);
+  }, []);
 
+  const getUserData = async () => {
     try {
-      await axios.put(`${url}/:user_id`, {
-        //추후에 백엔드 api명세서 나오면 수정
-        userNickname,
-        userPass,
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  const onChange = (e: any) => {
-    if (e.target.nickname) {
-      setUserNickname(e.target.value);
-    } else {
-      setUserPass(e.target.value);
+      const response = await axios.get(`${url}/:user_id`);
+      setUserData(response.data);
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -43,55 +39,44 @@ const Profile = () => {
   for (let i = 0; i < user.password.length; i++) {
     hidePassword += "*";
   }
-  console.log(hidePassword);
 
   return (
     <div>
       {userReTouch === true ? (
-        <div>
-          <h2>닉네임 : {user.nickname}</h2>
-          <h5>이메일 : {user.email}</h5>
-          <h5>비밀번호 : {hidePassword}</h5>
-          <button onClick={() => setUserReTouch(false)}>수정</button>
-          <button onClick={() => navigate("/deleteAccount")}>계정 삭제</button>
+        <div className={Style.profile_wrapper}>
+          <h1>프로필</h1>
+          {/* <img src={profileImg} style={{ width: "100px" }}></img> //db 활성화 되면 사용 */}
+          <div className={Style.userInfo_wrapper}>
+            <div>
+              <img src={srcUrl} style={{ width: "100px" }}></img>
+            </div>
+            <div className={Style.nickname_wrapper}>
+              <h5>{user.nickname}</h5>
+            </div>
+            <div className={Style.email_wrapper}>
+              <h5>{user.email}</h5>
+            </div>
+            <div className={Style.password_wrapper}>
+              <h5>{hidePassword}</h5>
+            </div>
+
+            <button
+              className={Style.retouchBtn}
+              onClick={() => setUserReTouch(false)}
+            >
+              프로필 수정
+            </button>
+            <button
+              className={Style.retouchBtn}
+              onClick={() => navigate("/deleteAccount")}
+            >
+              계정 삭제
+            </button>
+          </div>
         </div>
       ) : (
         <div>
-          닉네임 :{" "}
-          <input
-            name="nickname"
-            type="text"
-            defaultValue={user.nickname}
-            onChange={onChange}
-          ></input>
-          이메일 : <h5>{user.email}</h5>
-          {showPass === false ? (
-            <div>
-              비밀번호:{" "}
-              <input
-                name="password"
-                type="password"
-                defaultValue={user.password}
-                onChange={onChange}
-              ></input>
-              <button onClick={() => setShowPass(true)}>비밀번호 보이기</button>
-            </div>
-          ) : (
-            <div>
-              비밀번호 :{" "}
-              <input
-                name="password"
-                type="text"
-                defaultValue={user.password}
-                onChange={onChange}
-              ></input>
-              <button onClick={() => setShowPass(false)}>
-                비밀번호 가리기
-              </button>
-            </div>
-          )}
-          <button onClick={() => onSubmit}>수정 완료!</button>
-          <button onClick={() => setUserReTouch(true)}>수정 취소</button>
+          <RetouchProfile userData={user} />
         </div>
       )}
     </div>
