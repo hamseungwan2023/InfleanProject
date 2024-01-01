@@ -1,6 +1,6 @@
-import axios, { AxiosRequestConfig } from 'axios';
+import axios from 'axios';
 import React, { useState } from 'react';
-import style from "./join.module.scss";
+import style from "./Join.module.scss";
 import classnames from "classnames";
 
 const Join = () => {

@@ -1,3 +1,6 @@
+@charset "utf-8";
+@import "../scss/variables.scss";
+
 button, input, select, textarea {
   border-radius: 0;
   border: none;
@@ -48,7 +51,7 @@ button, input, select, textarea {
   color: #222;
 }
 
-[class*=join_wrapper] {
+[class*=Join_wrapper] {
   display: flex;
   align-items: center;
   position: relative;
@@ -97,7 +100,7 @@ button, input, select, textarea {
 
   &.is_focus {
     &::after {
-      border: 1px solid #81acff;
+      border: 1px solid $main400;
       z-index: 10;
     }
   }

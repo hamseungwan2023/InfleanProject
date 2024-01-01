@@ -10,10 +10,10 @@ const user = {
 };
 
 const Profile = () => {
-  const [userReTouch, setUserReTouch] = useState<boolean>(true);
-  const [showPass, setShowPass] = useState<boolean>(false);
-  const [userNickname, setUserNickname] = useState<string>("");
-  const [userPass, setUserPass] = useState<string>("");
+  const [userReTouch, setUserReTouch] = useState(true);
+  const [showPass, setShowPass] = useState(false);
+  const [userNickname, setUserNickname] = useState("");
+  const [userPass, setUserPass] = useState("");
 
   const navigate = useNavigate();
 

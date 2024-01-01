@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { url } from "../profile/Profile";
+import { url } from "./Profile";
 
 const DeleteAccount = () => {
   const [deleteBtn, setDeleteBtn] = useState<boolean>(false);
