@@ -95,13 +95,19 @@ button, input, select, textarea {
     border-radius: inherit;
     border: 1px solid #dfdfdf;
     pointer-events: none;
+    z-index: 10;
     content: '';
   }
 
   &.is_focus {
     &::after {
       border: 1px solid $main400;
-      z-index: 10;
+    }
+  }
+
+  &.is_error {
+    &::after {
+      border: 2px solid #ff3f3f;
     }
   }
 }

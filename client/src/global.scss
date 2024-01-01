@@ -42,6 +42,11 @@ blockquote, q {
 	quotes: none;
 }
 
+button {
+  padding: 0;
+  margin: 0;
+}
+
 blockquote:before, blockquote:after,
 q:before, q:after {
 	content: '';
@@ -78,4 +83,16 @@ a {
   height: 1px;
   margin: -1px;
   overflow: hidden;
+}
+
+.layout {
+  display: flex;
+}
+
+.aside {
+  flex-shrink: 0;
+}
+
+.main {
+  flex: 1;
 }

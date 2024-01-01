@@ -17,13 +17,13 @@ const Join = () => {
   const [requiredMessage, setRequiredMessage] = useState("");
   const [selectedMessage, setSelectedMessage] = useState("");
 
-  const [isUsernameValid, setIsUsernameValid] = useState(false);
-  const [isPasswordValid, setIsPasswordValid] = useState(false);
-  const [isRealnameValid, setIsRealnameValid] = useState(false);
-  const [isBirthdayValid, setIsBirthdayValid] = useState(false);
-  const [isNicknameValid, setIsNicknameValid] = useState(false);
-  const [isPhoneValid, setIsPhoneValid] = useState(false);
-  const [isProfileImgValid, setIsProfileImgValid] = useState(false);
+  const [isUsernameValid, setIsUsernameValid] = useState(true);
+  const [isPasswordValid, setIsPasswordValid] = useState(true);
+  const [isRealnameValid, setIsRealnameValid] = useState(true);
+  const [isBirthdayValid, setIsBirthdayValid] = useState(true);
+  const [isNicknameValid, setIsNicknameValid] = useState(true);
+  const [isPhoneValid, setIsPhoneValid] = useState(true);
+  const [isProfileImgValid, setIsProfileImgValid] = useState(true);
 
   const [isUsernameFocus, setIsUsernameFocus] = useState(false);
   const [isPasswordFocus, setIsPasswordFocus] = useState(false);
@@ -78,6 +78,8 @@ const Join = () => {
           "비밀번호: 숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요."
         );
         setIsPasswordValid(false);
+        console.log("@");
+        console.log(isPasswordValid);
       } else {
         setRequiredMessage("");
         setIsPasswordValid(true);

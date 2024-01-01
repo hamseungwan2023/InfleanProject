@@ -1,7 +1,10 @@
 import React from "react";
+import Login from "../login/Login";
 
 const Aside = () => {
-  return <div>Aside</div>
+  return <aside className="aside">
+    <Login />
+  </aside>
 }
 
 export default Aside;

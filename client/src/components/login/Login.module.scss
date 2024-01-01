@@ -1,0 +1,88 @@
+@charset "utf-8";
+@import "../../scss/variables.scss";
+
+.area_login {
+  background-color: #f7f9fa;
+  width: 280px;
+  margin: 20px;
+  border: 1px solid #dbe1e5;
+  border-radius: 10px 10px 0 0;
+}
+
+.wrap_login {
+  padding: 17px 13px 12px;
+  word-break: break-all;
+}
+
+.top_text {
+  margin: 0 0 12px;
+  line-height: 14px;
+  letter-spacing: -0.1px;
+  font-size: 12px;
+  font-family: "Helvetica Reguler", "Malgun Gothic", "맑은 고딕", "Dotum", "돋움", "Helvetica", "Apple SD Gothic Neo", "sans-serif";
+  color: #808080;
+}
+
+.btn_login {
+  display: block;
+  width: 100%;
+  position: relative;
+  height: 48px;
+  background: $main400;
+  -webkit-border-radius: 2px;
+  border: 1px solid $main500;
+  border-radius: 2px;
+  text-align: center;
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 1.8px;
+  line-height: 1;
+}
+
+.bottom_menu {
+  display: flex;
+  justify-content: space-between;
+  margin: 12px 0 0;
+  line-height: 18px;
+  vertical-align: top;
+  font-family: "Helvetica Reguler", "Malgun Gothic", "맑은 고딕", "Dotum", "돋움", "Helvetica", "Apple SD Gothic Neo", "sans-serif";
+}
+
+.info_find {
+  display: flex;
+
+  a {
+    display: block;
+    font-size: 12px;
+    color: #404040;
+  }
+}
+
+.dot {
+  display: inline-block;
+  width: 3px;
+  height: 3px;
+  margin: 7px 4px 0;
+  background: #d8dce0;
+  border-radius: 3px;
+  vertical-align: top;
+}
+
+.sign_in {
+  margin-right: 10px;
+
+  a {
+    display: block;
+    font-size: 12px;
+    color: #404040;
+
+    &::before {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      background: url("data:image/svg+xml,%3Csvg width='18' height='18' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M9 9a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zm-5.25 3.5v2h10.5v-2c-.5-.667-2.45-2-5.25-2s-4.583 1.333-5.25 2z' fill='%23C1C4C9'/%3E%3C/svg%3E") no-repeat;
+      vertical-align: top;
+      content: "";
+    }
+  }
+}

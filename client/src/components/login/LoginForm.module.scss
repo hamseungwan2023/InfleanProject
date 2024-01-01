@@ -1,0 +1,105 @@
+@charset "utf-8";
+@import "../../scss/variables.scss";
+
+.form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+[class*=LoginForm_wrapper] {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 30px;
+  padding: 0 10px 0 35px;
+  border-radius: 6px;
+  background-color: #fff;
+
+  &::before {
+    position: absolute;
+    top: 0;
+    left: 4px;
+    background-repeat: no-repeat;
+    width: 30px;
+    height: 30px;
+    background-image: url(https://ssl.pstatic.net/static/nid/join/m_sp_06_realname_48b1e603.png);
+    background-size: 372px 326px;
+    background-repeat: no-repeat;
+    content: "";
+  }
+
+  &::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    border-radius: inherit;
+    border: 1px solid #dfdfdf;
+    pointer-events: none;
+    z-index: 10;
+    content: "";
+  }
+}
+
+  .wrapper_username {
+    margin-bottom: 10px;
+
+    &::before {
+      background-position: -342px -64px;
+    }
+}
+
+  .wrapper_password {
+    margin-bottom: 20px;
+    padding-right: 0;
+
+    &::before {
+      background-position: -310px 0;
+    }
+}
+
+.input {
+  flex: 1 1 auto;
+  font-size: 16px;
+  line-height: 22px;
+  color: #222;
+}
+
+.password_info {
+  flex: none;
+  padding: 0 5px;
+}
+
+.btn_show {
+  margin-left: 4px;
+
+  &::before {
+    background-position: -256px -296px;
+    background-repeat: no-repeat;
+    background-image: url(https://ssl.pstatic.net/static/nid/join/m_sp_06_realname_48b1e603.png);
+    background-size: 372px 326px;
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    vertical-align: top;
+    content: "";
+  }
+}
+
+.btn_submit {
+  width: 100%;
+  margin-bottom: 17px;
+  padding: 14px 0;
+  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  background: #81acff;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 22px;
+  color: #fff;
+}
