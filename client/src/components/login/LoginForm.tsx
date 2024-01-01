@@ -2,6 +2,7 @@ import React from "react";
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import classnames from "classnames";
 import style from "./LoginForm.module.scss";
 
 interface Ires {
@@ -17,6 +18,8 @@ const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isSecretPassword, setIsSecretPassword] = useState(true);
+
   const navigate = useNavigate();
 
   const onChange = (e: any) => {
@@ -26,6 +29,10 @@ const LoginForm = () => {
       setPassword(e.target.value);
     }
   };
+
+  const onClickPasswordShow = (e:React.MouseEvent) => {
+    setIsSecretPassword(!isSecretPassword);
+  }
 
   const onSubmit = async (e: any) => {
     setIsLoading(true);
@@ -65,14 +72,18 @@ const LoginForm = () => {
         <input
           onChange={onChange}
           name="password"
-          type="password"
+          type={isSecretPassword ? "password" : "text"}
           placeholder="비밀번호"
           value={password}
           maxLength={20}
           className={style.input}
           required
         />
-        <div className={style.password_info}><button type="button" className={style.btn_show}><span className="blind">비밀번호 숨기기</span></button></div>
+        <div className={style.password_info}>
+          <button type="button" className={classnames(style.btn_show, {[style.is_hide]: !isSecretPassword})} onClick={onClickPasswordShow}>
+            <span className="blind">비밀번호 숨기기</span>
+          </button>
+        </div>
       </div>
       <input
         type="submit"

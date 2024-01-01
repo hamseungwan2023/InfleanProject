@@ -35,6 +35,8 @@ const Join = () => {
 
   const [profileImgSrc, setProfileImgSrc] = useState("");
 
+  const [isSecretPassword, setIsSecretPassword] = useState(true);
+
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
@@ -183,6 +185,10 @@ const Join = () => {
     }
   }
 
+  const onClickPasswordShow = (e:React.MouseEvent) => {
+    setIsSecretPassword(!isSecretPassword);
+  }
+
   return (
     <form onSubmit={onSubmit} className={style.form}>
       <div className={style.input_wrapper}>
@@ -204,7 +210,7 @@ const Join = () => {
             onChange={onChange}
             onFocus={onFocus}
             name="password"
-            type="password"
+            type={isSecretPassword ? "password" : "text"}
             placeholder="비밀번호"
             value={password}
             maxLength={20}
@@ -212,7 +218,7 @@ const Join = () => {
             required
           />
           <div className={style.password_info}>
-            <button type="button" className={style.btn_show}>
+            <button type="button" className={classnames(style.btn_show, {[style.is_hide]: !isSecretPassword})} onClick={onClickPasswordShow}>
               <span className="blind">비밀번호 숨기기</span>
             </button>
           </div>

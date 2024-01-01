@@ -95,17 +95,20 @@ button, input, select, textarea {
     border-radius: inherit;
     border: 1px solid #dfdfdf;
     pointer-events: none;
-    z-index: 10;
     content: '';
   }
 
   &.is_focus {
+    z-index: 10;
+
     &::after {
       border: 1px solid $main400;
     }
   }
 
   &.is_error {
+    z-index: 20;
+
     &::after {
       border: 2px solid #ff3f3f;
     }
@@ -161,6 +164,12 @@ button, input, select, textarea {
 
 .btn_show {
   margin-left: 4px;
+
+  &.is_hide {
+    &::before {
+      background-position: -256px -264px;
+    }
+  }
 
   &::before {
     background-position: -256px -296px;

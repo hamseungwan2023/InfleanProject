@@ -41,8 +41,23 @@
     border-radius: inherit;
     border: 1px solid #dfdfdf;
     pointer-events: none;
-    z-index: 10;
     content: "";
+  }
+
+  &.is_focus {
+    z-index: 10;
+
+    &::after {
+      border: 1px solid $main400;
+    }
+  }
+
+  &.is_error {
+    z-index: 20;
+
+    &::after {
+      border: 2px solid #ff3f3f;
+    }
   }
 }
 
@@ -65,8 +80,8 @@
 
 .input {
   flex: 1 1 auto;
-  font-size: 16px;
-  line-height: 22px;
+  font-size: 13px;
+  line-height: 30px;
   color: #222;
 }
 
@@ -77,6 +92,12 @@
 
 .btn_show {
   margin-left: 4px;
+
+  &.is_hide {
+    &::before {
+      background-position: -256px -264px;
+    }
+  }
 
   &::before {
     background-position: -256px -296px;
@@ -96,8 +117,8 @@
   margin-bottom: 17px;
   padding: 14px 0;
   border-radius: 6px;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  background: #81acff;
+  border: 1px solid $main500;
+  background-color: $main400;
   font-size: 18px;
   font-weight: 700;
   line-height: 22px;
