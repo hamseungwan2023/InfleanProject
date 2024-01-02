@@ -26,7 +26,6 @@ const DeleteAccount = () => {
           password,
         },
       });
-      console.log(1);
       setGoodbyePage(true);
     } catch (err) {
       console.error(err);
@@ -37,7 +36,7 @@ const DeleteAccount = () => {
 
   return (
     <div>
-      회원탈퇴페이지
+      <h2>회원 탈퇴 페이지</h2>
       {goodbyePage === false ? (
         <div>
           <input

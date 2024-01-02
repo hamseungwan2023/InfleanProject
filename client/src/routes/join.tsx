@@ -183,7 +183,7 @@ const Join = () => {
     }else {
       return;
     }
-  }
+  };
 
   const onClickPasswordShow = (e:React.MouseEvent) => {
     setIsSecretPassword(!isSecretPassword);
