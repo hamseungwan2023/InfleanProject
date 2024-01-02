@@ -108,6 +108,7 @@
 
 .area_search {
   display: flex;
+  background-color: #fff;
   border: 1px solid $main700;
 }
 
@@ -160,6 +161,7 @@
   width: 128px;
   margin: 0 0 0 -1px;
   padding: 3px 0 4px;
+  background-color: #fff;
   border: 1px solid $main700;
 
   &[aria-hidden="true"] {

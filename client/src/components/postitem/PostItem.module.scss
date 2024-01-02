@@ -1,0 +1,12 @@
+@charset "utf-8";
+@import "../../scss/variables.scss";
+
+.item {
+  padding: 8px;
+  height: 77px;
+  border-bottom: 1px solid #dbe1e5;
+
+  &:last-child {
+    border-bottom: 0;
+  }
+}

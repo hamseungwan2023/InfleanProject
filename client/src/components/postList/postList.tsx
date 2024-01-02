@@ -1,8 +1,15 @@
 import React from "react";
+import { postList } from "../../constants/postList";
+import PostItem from "../postitem/PostItem";
+import style from "./PostList.module.scss";
 
 const PostList = () => {
-  return <div>
-    PostList
+  return <div className="postlist">
+    <ul className={style.list}>
+      {
+        postList.map((item,index) => <PostItem title={item}/>)
+      }
+    </ul>
   </div>
 }
 
