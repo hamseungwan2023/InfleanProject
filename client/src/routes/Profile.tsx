@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Style from "./profile.module.scss";
+import Style from "./Profile.module.scss";
 import RetouchProfile from "./ReTouchProfile";
 
 export const url = "http://localhost:8080";

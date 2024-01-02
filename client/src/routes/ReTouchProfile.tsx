@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import Style from "./profile.module.scss";
+import Style from "./Profile.module.scss";
 import axios from "axios";
 import { url } from "./Profile";
 import { srcUrl } from "./Profile";

@@ -231,7 +231,7 @@ const Join = () => {
             name="realname"
             type="text"
             placeholder="이름"
-            className={style.realname}
+            className={style.input}
             value={realname}
           />
         </div>
@@ -243,7 +243,7 @@ const Join = () => {
             name="birthday"
             type="text"
             placeholder="생년월일 8자리"
-            className={style.birthday}
+            className={style.input}
             value={birthday}
           />
         </div>
@@ -258,7 +258,7 @@ const Join = () => {
             name="nickname"
             type="text"
             placeholder="닉네임"
-            className={style.nickname}
+            className={style.input}
             value={nickname}
           />
         </div>
@@ -270,7 +270,7 @@ const Join = () => {
             name="phone"
             type="text"
             placeholder="휴대전화번호"
-            className={style.phone}
+            className={style.input}
             value={phone}
           />
         </div>
