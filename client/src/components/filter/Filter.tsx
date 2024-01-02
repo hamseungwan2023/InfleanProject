@@ -6,6 +6,20 @@ import style from "./Filter.module.scss";
 const Filter = () => {
 
   const [bottomFilterClick, setBottomFilterClick] = useState(0);
+  const [isClickSearch, setIsClickSearch] = useState(false);
+  const [dropdownOption, setDropdownOption] = useState(0);
+  const [search, setSearch] = useState("");
+
+  const searchDropdownOptions = ["글", "글+내용", "내용"];
+
+  const onChangeSearch = (e:React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
+  }
+
+  const onSubmitSearch = (e:React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // 글, 글+내용, 작성자에 따라 검색 ex) state=0(글), 1(글+내용), 2(작성자) ,search="김철수"
+  }
 
   return <div className="filter">
     <div className={style.main}>
@@ -30,6 +44,22 @@ const Filter = () => {
           )
         }
       </ul>
+      <form className={style.area_search}>
+        <div className={style.wrap_search}>
+          <a role="button" href="#" className={style.select_search} aria-expanded={isClickSearch} onClick={() => setIsClickSearch(!isClickSearch)}>{searchDropdownOptions[dropdownOption]}
+            <i className={style.icon_expand}><span className="blind">검색모드 펼치기</span></i>
+          </a>
+          <input type="text" onChange={onChangeSearch} value={search} name="search" className={style.input_search} maxLength={225}/>
+          <ul className={style.dropdown_select} aria-hidden={!isClickSearch}>
+            {searchDropdownOptions.map((item, index) => <li className={style.dropdown_option} role="presentation">
+              <button type="button" key={index} role="option" aria-selected={dropdownOption === index ? true : false} onClick={() => {setDropdownOption(index); setIsClickSearch(false)}} className={style.btn_option}>{item}</button>
+            </li>)}
+          </ul>
+        </div>
+        <button type="button" className={style.btn_search} aria-label="검색">
+          <i className={style.icon_search} />
+        </button>
+      </form>
     </div>
   </div>
 }
