@@ -18,7 +18,6 @@ const Profile = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [userData, setUserData] = useState<string[]>([]);
 
-  const [toBeforeProfile, setToBeforeProfile] = useState<boolean>(false);
   const [showPass, setShowPass] = useState<boolean>(false);
   const [nickName, setNickName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -184,7 +183,7 @@ const Profile = () => {
             </div>
             <button
               className={Style.retouchBtn}
-              onClick={() => setToBeforeProfile(true)}
+              onClick={() => setUserReTouch(true)}
             >
               수정 취소
             </button>

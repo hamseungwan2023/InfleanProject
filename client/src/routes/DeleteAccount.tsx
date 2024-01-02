@@ -100,6 +100,14 @@ const DeleteAccount = () => {
             )}
           </div>
           <div className={Style.last_info}>
+            <img
+              src="https://cdn.iconscout.com/icon/free/png-256/free-check-1780563-1514439.png"
+              style={{
+                width: "20px",
+                height: "20px",
+                background: "#81ACFF",
+              }}
+            ></img>
             <span className={Style.text_red}>
               탈퇴 후에는
               <span className={Style.text_default}>{user.email}</span>로 생성된

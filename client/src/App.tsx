@@ -8,6 +8,7 @@ import "./global.scss";
 import Home from "./routes/Home";
 import Layout from "./components/layout/Layout";
 import Aside from "./components/layout/Aside";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const router = createBrowserRouter([
   {
@@ -16,14 +17,16 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <div className="layout">
-          <Aside />
-          <Home />
-        </div>
+        element: (
+          <div className="layout">
+            <Aside />
+            <Home />
+          </div>
+        ),
       },
       {
         path: "/profile",
-        element: <Profile />
+        element: <Profile />,
       },
       {
         path: "/join",
@@ -31,14 +34,14 @@ const router = createBrowserRouter([
       },
       {
         path: "/deleteAccount",
-        element: <DeleteAccount />
+        element: <DeleteAccount />,
       },
       {
         path: "/logout",
         element: <Logout />,
       },
-    ]
-  }
+    ],
+  },
 ]);
 
 function App() {

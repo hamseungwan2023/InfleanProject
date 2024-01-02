@@ -23,24 +23,30 @@
   }
   .checkInput_wrapper {
     margin-top: 5%;
+    margin-left: 20px;
     .input_wrapper {
-      margin-left: 26%;
-      width: 500px;
-      height: 50px;
-      border: $main100 1px solid;
+      input {
+        width: 500px;
+        height: 50px;
+        border: $main100 1px solid;
+      }
     }
   }
   .button_wrapper {
     margin-left: 26%;
-    .normal_btn {
-      width: 500px;
+    button {
       height: 50px;
+      width: 500px;
+    }
+    .normal_btn {
+      height: 50px;
+      width: 500px;
       background-color: $main300;
       margin-top: 10px;
     }
     .red_btn {
-      width: 500px;
       height: 50px;
+      width: 500px;
       background-color: rgb(234, 145, 145);
       margin-top: 10px;
     }
