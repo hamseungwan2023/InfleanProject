@@ -11,5 +11,8 @@ export const CategoryList:TCategory[] = [
   },
   {
     category: ["중고거래","삽니다","팝니다","후기"]
+  },
+  {
+    category: ["게임","LOL","배그","오버워치"]
   }
 ]
