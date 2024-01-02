@@ -94,13 +94,22 @@ a {
 
 .aside {
   flex-shrink: 0;
-  background-color: $asideBackground; 
+  background-color: $mainBackground; 
   width: 280px; 
   margin: 20px; 
-  border: 1px solid $asideBorder;
+  border: 1px solid $mainBorder;
   border-radius: 10px;
+  box-shadow: 0 1px 3px 0 rgba(0,0,0,0.15);
 }
 
-.main {
+main {
   flex: 1;
+  margin: 20px 20px 20px 0px;
+}
+
+.filter {
+  background-color: #f7f9fa;
+  border: 1px solid #dbe1e5;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px 0 rgba(0,0,0,0.15);
 }

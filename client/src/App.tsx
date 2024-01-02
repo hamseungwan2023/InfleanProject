@@ -5,9 +5,9 @@ import Profile from "./routes/Profile";
 import DeleteAccount from "./routes/DeleteAccount";
 import Logout from "./routes/Logout";
 import "./global.scss";
-import Home from "./routes/Home";
 import Layout from "./components/layout/Layout";
 import Aside from "./components/layout/Aside";
+import Main from "./routes/Main";
 
 const router = createBrowserRouter([
   {
@@ -18,7 +18,7 @@ const router = createBrowserRouter([
         path: "/",
         element: <div className="layout">
           <Aside />
-          <Home />
+          <Main />
         </div>
       },
       {

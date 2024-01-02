@@ -4,6 +4,9 @@ export type TCategory = {
 
 export const CategoryList:TCategory[] = [
   {
+    category: ["전체"]
+  },
+  {
     category: ["시사","IT","게임","교육","연예","영화"]
   },
   {
