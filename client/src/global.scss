@@ -1,3 +1,6 @@
+@charset "utf-8";
+@import "./scss/variables.scss";
+
 /* http://meyerweb.com/eric/tools/css/reset/ 
    v2.0 | 20110126
    License: none (public domain)
@@ -91,6 +94,11 @@ a {
 
 .aside {
   flex-shrink: 0;
+  background-color: $asideBackground; 
+  width: 280px; 
+  margin: 20px; 
+  border: 1px solid $asideBorder;
+  border-radius: 10px;
 }
 
 .main {
