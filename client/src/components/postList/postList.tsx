@@ -4,7 +4,7 @@ import PostItem from "../postItem/PostItem";
 import style from "./PostList.module.scss";
 
 const PostList = () => {
-  return <div className="postlist">
+  return <div className="postlist" role="tabpanel">
     <ul className={style.list}>
       {
         postList.map((item,index) => <PostItem title={item}/>)

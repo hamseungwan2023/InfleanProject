@@ -8,6 +8,7 @@ import "./global.scss";
 import Layout from "./components/layout/Layout";
 import Aside from "./components/layout/Aside";
 import Main from "./routes/Main";
+import PostDetailRoute from "./routes/PostDetailRoute";
 
 const router = createBrowserRouter([
   {
@@ -16,10 +17,17 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <div className="layout">
+        element: <>
           <Aside />
           <Main />
-        </div>
+        </>
+      },
+      {
+        path: "/postDetail/:id",
+        element: <>
+          <Aside />
+          <PostDetailRoute />
+        </>
       },
       {
         path: "/profile",

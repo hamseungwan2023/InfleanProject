@@ -2,7 +2,7 @@
 @import "../../scss/variables.scss";
 
 .item {
-  border-top: $mainBorder;
+  border-top: 1px solid $mainBorder;
   padding: 9px 16px 8px;
 
   &:first-child {

@@ -103,6 +103,7 @@ a {
 
 .layout {
   display: flex;
+  align-items: flex-start;
 }
 
 .aside {
@@ -115,21 +116,22 @@ a {
   box-shadow: 0 1px 3px 0 rgba(0,0,0,0.15);
 }
 
-main {
+main, .postDetailRoute {
   flex: 1;
   margin: 20px 20px 20px 0px;
 }
 
-.filter {
+.filter, .postDetail {
   background-color: #f7f9fa;
   border: 1px solid #dbe1e5;
   border-radius: 10px;
   box-shadow: 0 1px 3px 0 rgba(0,0,0,0.15);
 }
 
-.postlist {
+.postlist, .comment {
   margin-top: 20px;
   background-color: #f7f9fa;
   border: 1px solid #dbe1e5;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.15);
   border-radius: 10px;
 }

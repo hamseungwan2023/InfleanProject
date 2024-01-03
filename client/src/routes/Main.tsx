@@ -3,7 +3,7 @@ import Filter from "../components/filter/Filter";
 import PostList from "../components/postList/PostList";
 
 const Main = () => {
-  return <main role="tabpanel">
+  return <main>
     <Filter />
     <PostList />
   </main>
