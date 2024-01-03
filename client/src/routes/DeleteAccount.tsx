@@ -16,7 +16,7 @@ const DeleteAccount = () => {
       setPassword(e.target.value);
     }
   };
-
+  console.log(username, password);
   const deleteUser = async (e: any) => {
     e.preventDefault();
     if (username === user.email && password === user.password) {

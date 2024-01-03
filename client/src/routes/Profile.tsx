@@ -23,6 +23,8 @@ const Profile = () => {
   const [password, setPassword] = useState<string>("");
   const [image, setImage] = useState<string>("");
 
+  const AllowedImageExtensions = [".jpg", ".jpeg", ".png", ".svg"]; // 허용할 이미지 확장자들
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,6 +33,7 @@ const Profile = () => {
     setIsLoading(false);
   }, []);
 
+  //userData를 가져오는 함수 useEffect에 주석 취소
   const getUserData = async () => {
     try {
       const response = await axios.get(`${url}/:user_id`);
@@ -40,33 +43,58 @@ const Profile = () => {
     }
   };
 
+  //비밀번호 길이만큼 *을 추가해주는 로직
   let hidePassword = "";
   for (let i = 0; i < user.password.length; i++) {
     hidePassword += "*";
   }
 
+  //image 유형 걸러주는 함수
+  const isValidImageExtension = (filename: any) => {
+    const extension = filename.slice(
+      ((filename.lastIndexOf(".") - 1) >>> 0) + 2
+    );
+    return AllowedImageExtensions.includes(`.${extension.toLowerCase()}`);
+  };
+
   const imageOnChange = (e: any) => {
     if (e.target.files !== null) {
       const selectedFiles = e.target.files as FileList;
       setImage(URL.createObjectURL(selectedFiles?.[0]));
+      if (!isValidImageExtension(image)) {
+        alert("jpg, jpeg, png, svg의 형태만 가능합니다.");
+        return null;
+      }
     }
   };
 
-  const onChange = (e: any) => {};
+  const onChange = (e: any) => {
+    if (e.target.nickName) {
+      setNickName(e.target.value);
+    } else {
+      setPassword(e.target.value);
+    }
+  };
 
-  //   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  //     e.preventDefault();
-  //     try {
-  //       await axios.put(`${url}/:user_id`, {
-  //         //추후에 백엔드 api명세서 나오면 수정
-  //         userData.userData.nickname,
-  //         userData.userData.password,
-  //         userData.userData.profileImg,
-  //       });
-  //     } catch (e) {
-  //       console.log(e);
-  //     }
-  //   };
+  //백엔드 명세서 나오면 사용
+  // const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  //   const passwordRegExp =
+  //     /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
+  //   if (!passwordRegExp.test(password)) {
+  //     alert("비밀번호: 숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요.");
+  //   }
+  //   e.preventDefault();
+  //   try {
+  //     await axios.put(`${url}/:user_id`, {
+  //       //추후에 백엔드 api명세서 나오면 수정
+  //       nickname: nickName,
+  //       password: password,
+  //       profileImg: image,
+  //     });
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // };
 
   return (
     <div>
