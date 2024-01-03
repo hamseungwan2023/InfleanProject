@@ -1,6 +1,6 @@
 import React from "react";
 import { postList } from "../../constants/postList";
-import PostItem from "../postitem/PostItem";
+import PostItem from "../postItem/PostItem";
 import style from "./PostList.module.scss";
 
 const PostList = () => {

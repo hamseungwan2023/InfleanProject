@@ -2,11 +2,122 @@
 @import "../../scss/variables.scss";
 
 .item {
-  padding: 8px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px 8px 0;
   height: 77px;
   border-bottom: 1px solid #dbe1e5;
 
   &:last-child {
     border-bottom: 0;
+  }
+}
+
+.link {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+}
+
+.recommend {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 48px;
+  height: 48px;
+  
+  svg {
+    margin: 0 auto 4px;
+  }
+
+  .count {
+    color: #98a0a7;
+    font-size: 14px;
+  }
+}
+
+.main {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  justify-content: center;
+  padding-right: 1px;
+}
+
+.title_wrap {
+  display: flex;
+
+  .title {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    color: #222;
+
+    &[data-visited="true"] {
+      color: #8b99a6b3;
+    }
+  }
+
+  .count {
+    padding-left: 5px;
+    color: $main600;
+    font-style: normal;
+    font-weight: 700;
+  }
+}
+
+.info {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 24px;
+  margin-top: 5px;
+  color: #8b99a6;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.category, .last_update {
+  display: flex;
+  align-items: center;
+  padding-right: 8px;
+  line-height: 24px;
+
+  &::after {
+    border-right: 1px solid #8b99a6;
+    height: 12px;
+    margin-left: 8px;
+    content: "";
+  }
+}
+
+.writter {
+  display: flex;
+  align-items: center;
+}
+
+.rank {
+  width: 15px;
+  height: 15px;
+  margin-right: 5px;
+  background-color: red;
+  border-radius: 50%;
+  line-height: 24px;
+}
+
+.thumbnail {
+  position: relative;
+  width: 93px;
+  height: 60px;
+
+  .img {
+    vertical-align: middle;
+    object-fit: cover;
   }
 }
