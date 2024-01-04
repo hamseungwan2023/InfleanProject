@@ -7,17 +7,36 @@ export default function ProtectedRoute({
   children: React.ReactNode;
 }) {
   // const user = localStorage.getItem("accessToken");
-
-  const accessToken = localStorage.getItem("accessToken");
-  const refreshToken = localStorage.getItem("refreshToken");
-
+  const accessToken = localStorage.getItem("accessToken") || "";
+  const refreshToken = localStorage.getItem("refreshToken") || "";
   if (!accessToken && !refreshToken) {
     return <Navigate to="/" />;
   }
-  return children;
-
-  // if (!user) {
-  //   return <Navigate to="/" />;
-  // }
-  // return children;
+  return <>{children}</>;
 }
+
+// const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+//   const accessToken = localStorage.getItem("accessToken");
+//   const refreshToken = localStorage.getItem("refreshToken");
+
+//   if (!accessToken && !refreshToken) {
+//     return <Navigate to="/" />;
+//   }
+//   return children;
+// };
+
+// export default ProtectedRoute;
+
+// const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
+//   children,
+// }) => {
+//   const accessToken = localStorage.getItem("accessToken") || "";
+//   const refreshToken = localStorage.getItem("refreshToken") || "";
+
+//   if (!accessToken && !refreshToken) {
+//     return <Navigate to="/" />;
+//   }
+//   return <>{children}</>;
+// };
+
+// export default ProtectedRoute;
