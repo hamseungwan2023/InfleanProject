@@ -170,6 +170,7 @@
 }
 
 .btn_option {
+  position: relative;
   width: 100%;
   padding: 0 9px;
   color: #333;
@@ -178,6 +179,7 @@
   font-weight: 400;
   font-size: 14px;
   text-align: left;
+  z-index: 100;
 
   &[aria-selected="true"] {
     color: $main600; 

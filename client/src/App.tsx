@@ -1,6 +1,5 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Join from "./routes/Join";
 import Profile from "./routes/Profile";
 import DeleteAccount from "./routes/DeleteAccount";
 import Logout from "./routes/Logout";
@@ -46,10 +45,6 @@ const router = createBrowserRouter([
             <Profile />
           </ProtectedRoute>
         ),
-      },
-      {
-        path: "/join",
-        element: <Join />,
       },
       {
         path: "/deleteAccount",
