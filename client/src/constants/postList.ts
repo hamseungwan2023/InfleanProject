@@ -4,7 +4,7 @@ export type TPostItem = {
   title: string;  //제목
   category: string;  // 카테고리
   //createdAt: Date;  // 생성일
-  writer: string;   // 작성자
+  writer: string;   // 작성자 닉네임
   rank: number;   // 작성자 등급(추천 수에 따름)
   finalLike: number;  // 추천 수- 비추천 수
   thumbnailUrl: string;  // 썸네일 url

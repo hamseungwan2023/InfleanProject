@@ -1,7 +1,7 @@
 import React from "react";
 import CommentList from "../components/commnet/CommentList";
-import PostDetail from "../components/postDetail/PostDetail";
-import PostList from "../components/postList/PostList";
+import PostDetail from "../components/post/PostDetail";
+import PostList from "../components/post/PostList";
 
 const PostDetailRoute = () => {
   return <section className="postDetailRoute">

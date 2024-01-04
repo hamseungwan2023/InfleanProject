@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { postDetailData } from "../../constants/post";
 import style from "./PostDetail.module.scss";
 
@@ -13,10 +14,10 @@ const PostDetail = () => {
         <div className={style.info_wrap}>
           <span className={style.category}>{postDetail.category}</span>
           <span className={style.last_update}>8시간 전</span>
-          <span className={style.writer}>
+          <Link to={`/wrote/${postDetail.writerId}`} className={style.writer}>
             <i className={style.rank} />
-            <span>{postDetail.writer}</span>
-          </span>
+            <span>{postDetail.writerNickname}</span>
+          </Link>
         </div>
         <div className={style.info_wrap}>
           <span className={style.views}>조회수 {postDetail.views}</span>

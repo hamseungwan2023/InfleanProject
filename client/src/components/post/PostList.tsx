@@ -1,13 +1,12 @@
 import React from "react";
 import { postListData } from "../../constants/postList";
-import PostItem from "../postItem/PostItem";
-import style from "./PostList.module.scss";
+import PostItem from "./PostItem";
 
 const PostList = () => {
 
   const postList = postListData;
   return <div className="postlist" role="tabpanel">
-    <ul className={style.list}>
+    <ul>
       {
         postList.map((item,index) => <PostItem postItem={item} key={index}/>)
       }

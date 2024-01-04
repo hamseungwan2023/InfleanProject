@@ -1,13 +1,16 @@
 import React from "react";
+import { commentListData } from "../../constants/comment";
 import style from "./Comment.module.scss";
 import CommentItem from "./CommentItem";
 
 const CommentList = () => {
+  const commentList = commentListData;
+
   return <div className="comment">
     {/* [TODO] 댓글 스크롤 시 data-in-view state설정 후 스타일 */}
     <div className={style.title_wrap} style={{position: "sticky", top: "0px", zIndex:"1000px"}} data-in-view={true}>
       <h2>댓글</h2>
-      <span className={style.count}>총 <em className={style.color}>56</em> 개</span>
+      <span className={style.count}>총 <em className={style.color}>{commentListData.length}</em> 개</span>
     </div>
     <ul className={style.tab_list} role="tablist">
       <li className={style.tab_item} role="presentation">
@@ -18,7 +21,9 @@ const CommentList = () => {
       </li>
     </ul>
     <ul role="tabpanel" className={style.comment_list}>
-      <CommentItem />
+      {
+        commentList.map((item, index) => <CommentItem comment={item} key={index} />)
+      }
     </ul>
   </div>
 }
