@@ -1,18 +1,21 @@
 export type TPost = {
-  title: string;
-  category: string;
-  //createdAt: Date;
-  writer: string;
-  rank: number;
-  views: number;
-  like: number;
-  dislike: number;
-  finalLike: number;
-  content: string;
-  commentCount: number;
+  id: number;   // 게시글 id
+  title: string;    // 제목
+  category: string;     //카테고리
+  //createdAt: Date;    //작성일
+  writer: string;    // 작성자
+  rank: number;     // 작성자 등급(레벨) 추천수에 따라 분류.
+  views: number;    //조회 수
+  like: number;   //추천 수
+  dislike: number;   //비추천 수
+  finalLike: number;  //  
+  content: string;    // 내용
+  commentCount: number;   //댓글 수
+  //추가할 것 : 이미지,비디오 파일 url list
 }
 
 export const postDetailData:TPost = {
+  id: 23,
   title: "제목입니다.",
   category: "시사",
   writer: "세종대왕",

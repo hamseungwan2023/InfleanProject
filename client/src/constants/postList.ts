@@ -1,19 +1,19 @@
 
 export type TPostItem = {
-  id: string;
-  title: string;
-  category: string;
-  //createdAt: Date;
-  writer: string;
-  rank: number;
-  finalLike: number;
-  thumbnailUrl: string;
-  commentCount: number;
+  id: number; //게시글 id
+  title: string;  //제목
+  category: string;  // 카테고리
+  //createdAt: Date;  // 생성일
+  writer: string;   // 작성자
+  rank: number;   // 작성자 등급(추천 수에 따름)
+  finalLike: number;  // 추천 수- 비추천 수
+  thumbnailUrl: string;  // 썸네일 url
+  commentCount: number;  // 댓글 수
 }
 
 export const postListData:TPostItem[] = [
   {
-    id: "aw2ad",
+    id: 23,
     title: "요즘 유행한다는 띠부씰.jpg",
     category: "시사",
     writer: "작성자123",
@@ -23,7 +23,7 @@ export const postListData:TPostItem[] = [
     commentCount: 13,
   },
   {
-    id: "aw2ad",
+    id: 23,
     title: "요즘 유행한다는 띠부씰.jpg",
     category: "시사",
     writer: "작성자123",
@@ -32,7 +32,7 @@ export const postListData:TPostItem[] = [
     thumbnailUrl: "https://opgg-com-image.akamaized.net/attach/images/20240103063850.2121435.jpg?image=w_200",
     commentCount: 13,
   },{
-    id: "aw2ad",
+    id: 23,
     title: "요즘 유행한다는 띠부씰.jpg",
     category: "시사",
     writer: "작성자123",
@@ -41,7 +41,7 @@ export const postListData:TPostItem[] = [
     thumbnailUrl: "https://opgg-com-image.akamaized.net/attach/images/20240103063850.2121435.jpg?image=w_200",
     commentCount: 13,
   },{
-    id: "aw2ad",
+    id: 23,
     title: "요즘 유행한다는 띠부씰.jpg",
     category: "시사",
     writer: "작성자123",
@@ -50,7 +50,7 @@ export const postListData:TPostItem[] = [
     thumbnailUrl: "https://opgg-com-image.akamaized.net/attach/images/20240103063850.2121435.jpg?image=w_200",
     commentCount: 13,
   },{
-    id: "aw2ad",
+    id: 23,
     title: "요즘 유행한다는 띠부씰.jpg",
     category: "시사",
     writer: "작성자123",
@@ -59,7 +59,7 @@ export const postListData:TPostItem[] = [
     thumbnailUrl: "https://opgg-com-image.akamaized.net/attach/images/20240103063850.2121435.jpg?image=w_200",
     commentCount: 13,
   },{
-    id: "aw2ad",
+    id: 23,
     title: "요즘 유행한다는 띠부씰.jpg",
     category: "시사",
     writer: "작성자123",
@@ -68,7 +68,7 @@ export const postListData:TPostItem[] = [
     thumbnailUrl: "https://opgg-com-image.akamaized.net/attach/images/20240103063850.2121435.jpg?image=w_200",
     commentCount: 13,
   },{
-    id: "aw2ad",
+    id: 23,
     title: "요즘 유행한다는 띠부씰.jpg",
     category: "시사",
     writer: "작성자123",
@@ -77,7 +77,7 @@ export const postListData:TPostItem[] = [
     thumbnailUrl: "https://opgg-com-image.akamaized.net/attach/images/20240103063850.2121435.jpg?image=w_200",
     commentCount: 13,
   },{
-    id: "aw2ad",
+    id: 23,
     title: "요즘 유행한다는 띠부씰.jpg",
     category: "시사",
     writer: "작성자123",
@@ -86,7 +86,7 @@ export const postListData:TPostItem[] = [
     thumbnailUrl: "https://opgg-com-image.akamaized.net/attach/images/20240103063850.2121435.jpg?image=w_200",
     commentCount: 13,
   },{
-    id: "aw2ad",
+    id: 23,
     title: "요즘 유행한다는 띠부씰.jpg",
     category: "시사",
     writer: "작성자123",
@@ -95,7 +95,7 @@ export const postListData:TPostItem[] = [
     thumbnailUrl: "https://opgg-com-image.akamaized.net/attach/images/20240103063850.2121435.jpg?image=w_200",
     commentCount: 13,
   },{
-    id: "aw2ad",
+    id: 23,
     title: "요즘 유행한다는 띠부씰.jpg",
     category: "시사",
     writer: "작성자123",
