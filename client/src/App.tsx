@@ -8,6 +8,8 @@ import "./global.scss";
 import Home from "./routes/Home";
 import Layout from "./components/layout/Layout";
 import Aside from "./components/layout/Aside";
+import ProtectedRoute from "./components/ProtectedRoute";
+import TestUserHome from "./redux/TestUserHome";
 
 const router = createBrowserRouter([
   {
@@ -16,14 +18,20 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <div className="layout">
-          <Aside />
-          <Home />
-        </div>
+        element: (
+          <div className="layout">
+            <Aside />
+            <Home />
+          </div>
+        ),
       },
       {
         path: "/profile",
-        element: <Profile />
+        element: (
+          <ProtectedRoute>
+            <Profile />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/join",
@@ -31,14 +39,23 @@ const router = createBrowserRouter([
       },
       {
         path: "/deleteAccount",
-        element: <DeleteAccount />
+        element: (
+          <ProtectedRoute>
+            <DeleteAccount />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/logout",
+
         element: <Logout />,
       },
-    ]
-  }
+      {
+        path: "/test",
+        element: <TestUserHome />,
+      },
+    ],
+  },
 ]);
 
 function App() {
