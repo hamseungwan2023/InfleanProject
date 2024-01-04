@@ -9,6 +9,7 @@ import Layout from "./components/layout/Layout";
 import Aside from "./components/layout/Aside";
 import Main from "./routes/Main";
 import PostDetailRoute from "./routes/PostDetailRoute";
+import PostWroteRoute from "./routes/PostWroteRoute";
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,13 @@ const router = createBrowserRouter([
         element: <>
           <Aside />
           <PostDetailRoute />
+        </>
+      },
+      {
+        path: "/postWrote/:id",
+        element: <>
+          <Aside />
+          <PostWroteRoute />
         </>
       },
       {

@@ -7,7 +7,7 @@ export type TComment = {
   writerNickname: string; //댓글 작성자 닉네임
   rank: number; // 작성자 등급
   like?: number; //추천 수 (대댓글 아닌 첫번째 댓글만)
-    //createdAt: Date;    //작성일 -> 나중에 작성일 기준으로 댓글 순서 나열
+  createdAt: string;    //작성일
   content: string; //내용
   // 추가할 것: 댓글 첨부 이미지 url (시간없으면 패스)
 }
@@ -20,6 +20,7 @@ export const commentListData:TComment[] = [
     writerNickname: "이순신2",
     rank: 0,
     like: 23,
+    createdAt: "2024-01-02T10:15:30",
     content: "안녕하세요. 첫번째 댓글입니다."
   },
   {
@@ -30,6 +31,7 @@ export const commentListData:TComment[] = [
     writerId: "asd1234", 
     writerNickname: "이순신3",
     rank: 1,
+    createdAt: "2014-01-02T10:15:30",
     content: "안녕하세요. 첫번째 댓글의 대댓글입니다."
   },
   {
@@ -40,6 +42,7 @@ export const commentListData:TComment[] = [
     writerId: "asd12345", 
     writerNickname: "이순신4",
     rank: 3,
+    createdAt: "2022-01-02T10:15:30",
     content: "안녕하세요. 첫번째 댓글의 대댓글2입니다."
   },
   {
@@ -50,6 +53,7 @@ export const commentListData:TComment[] = [
     writerId: "asd123456", 
     writerNickname: "이순신5",
     rank: 2,
+    createdAt: "2024-01-04T19:15:30",
     content: "안녕하세요. 첫번째 댓글의 대댓글2의 대댓글1입니다."
   },
   {
@@ -59,6 +63,7 @@ export const commentListData:TComment[] = [
     writerNickname: "두번째 댓글 작성자",
     rank: 4,
     like: -2,
+    createdAt: "2024-01-04T18:15:30",
     content: "안녕하세요. 두번째 댓글입니다^^"
   },
 ]

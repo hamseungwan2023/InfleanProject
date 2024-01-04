@@ -1,13 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { TPostItem } from "../../constants/postList";
+import { getDayMinuteCounter } from "../../utils/getDayMinuteCounter";
+import PostDetail from "./PostDetail";
 import style from "./PostItem.module.scss";
 
 type Tprops = {
   postItem: TPostItem
 }
 
-const PostItem = ({postItem: { id, title, category, writer, rank, finalLike, thumbnailUrl, commentCount } }: Tprops) => {
+const PostItem = ({postItem: { id, title, category, writer, rank, finalLike, thumbnailUrl, commentCount, createdAt } }: Tprops) => {
   return <li className={style.item}>
     <Link to={`/postDetail/${id}`} className={style.link} />
     <div className={style.recommend}>
@@ -23,7 +25,7 @@ const PostItem = ({postItem: { id, title, category, writer, rank, finalLike, thu
       </div>
       <div className={style.info}>
         <span className={style.category}>{category}</span>
-        <span className={style.last_update}>9시간 전</span>
+        <span className={style.last_update}>{getDayMinuteCounter(createdAt)}</span>
         <span className={style.writer}>
           <i className={style.rank}><span className="blind">레벨1</span></i>
           <span>{writer}</span>

@@ -2,6 +2,7 @@ import classNames from "classnames";
 import React from "react";
 import { Link } from "react-router-dom";
 import { TComment } from "../../constants/comment";
+import { getDayMinuteCounter } from "../../utils/getDayMinuteCounter";
 import style from "./Comment.module.scss";
 
 type TProps = {
@@ -31,8 +32,8 @@ const CommentItem = ({ comment } : TProps ) => {
       <div className={style.main_wrap}>
         <div className={style.info_wrap}>
           <span className={style.rank}><span className="blind">레벨1</span></span>
-          <Link to={`/wrote/${comment.writerId}`} className={style.writer}>{comment.writerNickname}</Link>
-          <span className={style.last_update}>4시간 전</span>
+          <Link to={`/postWrote/${comment.writerId}`} className={style.writer}>{comment.writerNickname}</Link>
+          <span className={style.last_update}>{getDayMinuteCounter(comment.createdAt)}</span>
         </div>
         <div className={style.content}>
           {comment.parentCommentNickname && <span className={style.tag_comment}>{comment.parentCommentNickname}</span>}{comment.content}

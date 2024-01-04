@@ -2,7 +2,7 @@ export type TPost = {
   id: number;   // 게시글 id
   title: string;    // 제목
   category: string;     //카테고리
-  //createdAt: Date;    //작성일
+  createdAt: string;    //작성일
   writerId: string; // 작성자 ID
   writerNickname: string;    // 작성자 닉네임
   rank: number;     // 작성자 등급(레벨) 추천수에 따라 분류.
@@ -19,6 +19,7 @@ export const postDetailData:TPost = {
   id: 23,
   title: "제목입니다.",
   category: "시사",
+  createdAt: "2024-01-02T10:15:30",
   writerId: "asd123",
   writerNickname: "세종대왕",
   rank: 0,

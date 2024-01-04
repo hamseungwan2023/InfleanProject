@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { postDetailData } from "../../constants/post";
+import { getDayMinuteCounter } from "../../utils/getDayMinuteCounter";
 import style from "./PostDetail.module.scss";
 
 const PostDetail = () => {
@@ -13,8 +14,8 @@ const PostDetail = () => {
       <div className={style.title_info}>
         <div className={style.info_wrap}>
           <span className={style.category}>{postDetail.category}</span>
-          <span className={style.last_update}>8시간 전</span>
-          <Link to={`/wrote/${postDetail.writerId}`} className={style.writer}>
+          <span className={style.last_update}>{getDayMinuteCounter(postDetail.createdAt)}</span>
+          <Link to={`/postWrote/${postDetail.writerId}`} className={style.writer}>
             <i className={style.rank} />
             <span>{postDetail.writerNickname}</span>
           </Link>

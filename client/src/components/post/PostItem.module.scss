@@ -122,3 +122,20 @@
     object-fit: cover;
   }
 }
+
+.post_wrote {
+  margin-bottom: 8px;
+  padding: 18px 16px 17px;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 1px 3px 0px;
+  background-color: $mainBackground;
+  border: 1px solid #dbe1e5;
+  line-height: 21px;
+  color: $mainText;
+  font-weight: 600;
+  border-radius: 10px;
+
+  strong {
+    color: $main700;
+    font-weight: 700;
+  }
+}
