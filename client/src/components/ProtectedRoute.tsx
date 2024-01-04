@@ -14,29 +14,3 @@ export default function ProtectedRoute({
   }
   return <>{children}</>;
 }
-
-// const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-//   const accessToken = localStorage.getItem("accessToken");
-//   const refreshToken = localStorage.getItem("refreshToken");
-
-//   if (!accessToken && !refreshToken) {
-//     return <Navigate to="/" />;
-//   }
-//   return children;
-// };
-
-// export default ProtectedRoute;
-
-// const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
-//   children,
-// }) => {
-//   const accessToken = localStorage.getItem("accessToken") || "";
-//   const refreshToken = localStorage.getItem("refreshToken") || "";
-
-//   if (!accessToken && !refreshToken) {
-//     return <Navigate to="/" />;
-//   }
-//   return <>{children}</>;
-// };
-
-// export default ProtectedRoute;
