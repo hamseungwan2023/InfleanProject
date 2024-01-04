@@ -9,6 +9,7 @@ import Home from "./routes/Home";
 import Layout from "./components/layout/Layout";
 import Aside from "./components/layout/Aside";
 import ProtectedRoute from "./components/ProtectedRoute";
+import TestUserHome from "./redux/TestUserHome";
 
 const router = createBrowserRouter([
   {
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
         path: "/logout",
 
         element: <Logout />,
+      },
+      {
+        path: "/test",
+        element: <TestUserHome />,
       },
     ],
   },
