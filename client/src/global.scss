@@ -50,6 +50,19 @@ button, input {
   margin: 0;
 }
 
+button, input, select, textarea {
+  border-radius: 0;
+  border: none;
+  background: 0 0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  outline: 0;
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-text-size-adjust: none;
+}
+
 blockquote:before, blockquote:after,
 q:before, q:after {
 	content: '';
@@ -90,17 +103,37 @@ a {
 
 .layout {
   display: flex;
+  justify-content: center;
+  align-items: flex-start;
 }
 
 .aside {
   flex-shrink: 0;
-  background-color: $asideBackground; 
+  background-color: $mainBackground; 
   width: 280px; 
   margin: 20px; 
-  border: 1px solid $asideBorder;
+  border: 1px solid $mainBorder;
   border-radius: 10px;
+  box-shadow: 0 1px 3px 0 rgba(0,0,0,0.15);
 }
 
-.main {
+main, .postDetailRoute, .postWroteRoute {
   flex: 1;
+  margin: 20px 20px 20px 0px;
+}
+
+.filter, .postDetail {
+  background-color: $mainBackground;
+  border: 1px solid #dbe1e5;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px 0 rgba(0,0,0,0.15);
+}
+
+.postlist, .comment {
+  margin-top: 20px;
+  background-color: $mainBackground;
+  border: 1px solid #dbe1e5;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+  overflow: hidden;
 }

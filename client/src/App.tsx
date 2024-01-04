@@ -5,11 +5,13 @@ import Profile from "./routes/Profile";
 import DeleteAccount from "./routes/DeleteAccount";
 import Logout from "./routes/Logout";
 import "./global.scss";
-import Home from "./routes/Home";
 import Layout from "./components/layout/Layout";
 import Aside from "./components/layout/Aside";
 import ProtectedRoute from "./components/ProtectedRoute";
 import TestUserHome from "./redux/TestUserHome";
+import Main from "./routes/Main";
+import PostDetailRoute from "./routes/PostDetailRoute";
+import PostWroteRoute from "./routes/PostWroteRoute";
 
 const router = createBrowserRouter([
   {
@@ -18,12 +20,24 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: (
-          <div className="layout">
-            <Aside />
-            <Home />
-          </div>
-        ),
+        element: <>
+          <Aside />
+          <Main />
+        </>
+      },
+      {
+        path: "/postDetail/:id",
+        element: <>
+          <Aside />
+          <PostDetailRoute />
+        </>
+      },
+      {
+        path: "/postWrote/:id",
+        element: <>
+          <Aside />
+          <PostWroteRoute />
+        </>
       },
       {
         path: "/profile",

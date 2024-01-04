@@ -1,19 +1,6 @@
 @charset "utf-8";
 @import "../scss/variables.scss";
 
-button, input, select, textarea {
-  border-radius: 0;
-  border: none;
-  background: 0 0;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  outline: 0;
-  text-decoration: none;
-  cursor: pointer;
-  -webkit-text-size-adjust: none;
-}
-
 .form {
   display: flex;
   justify-content: center;

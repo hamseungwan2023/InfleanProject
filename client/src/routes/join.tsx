@@ -248,7 +248,7 @@ const Join = () => {
           />
         </div>
       </div>
-      {requiredMessage !== "" ? <strong className={style.error_text}>{requiredMessage}</strong> : null}
+      {requiredMessage !== "" ? <strong className={style.error_text} role="alert">{requiredMessage}</strong> : null}
       <div className={style.input_wrapper}>
         <div className={classnames(style.wrapper_nickname, { [style.is_focus] : isNicknameFocus })}>
           <input
@@ -294,7 +294,7 @@ const Join = () => {
           <input id="profileImage" type="file" className={style.profileImgInput} accept="image/*" onChange={onProfileImageChange} />
         </div>
       </div>
-      {selectedMessage !== "" ? <strong className={style.error_text}>{selectedMessage}</strong> : null}
+      {selectedMessage !== "" ? <strong className={style.error_text} role="alert">{selectedMessage}</strong> : null}
       <div className={style.btn_submit}>
         <input type="submit" value={isLoading ? "처리 중 ..." : "회원가입"} />
       </div>
