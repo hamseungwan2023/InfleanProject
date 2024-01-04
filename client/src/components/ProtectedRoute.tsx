@@ -6,10 +6,18 @@ export default function ProtectedRoute({
 }: {
   children: React.ReactNode;
 }) {
-  const user = localStorage.getItem("accessToken");
+  // const user = localStorage.getItem("accessToken");
 
-  if (!user) {
+  const accessToken = localStorage.getItem("accessToken");
+  const refreshToken = localStorage.getItem("refreshToken");
+
+  if (!accessToken && !refreshToken) {
     return <Navigate to="/" />;
   }
   return children;
+
+  // if (!user) {
+  //   return <Navigate to="/" />;
+  // }
+  // return children;
 }

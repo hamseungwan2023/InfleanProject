@@ -27,7 +27,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/profile",
-        element: <Profile />,
+        element: (
+          <ProtectedRoute>
+            <Profile />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/join",
@@ -35,7 +39,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/deleteAccount",
-        element: <DeleteAccount />,
+        element: (
+          <ProtectedRoute>
+            <DeleteAccount />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/logout",
