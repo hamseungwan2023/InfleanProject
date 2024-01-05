@@ -4,12 +4,16 @@ import { Link } from "react-router-dom";
 import { TComment } from "../../constants/comment";
 import { getDayMinuteCounter } from "../../utils/getDayMinuteCounter";
 import style from "./Comment.module.scss";
+import CommentWrite from "./CommentWrite";
 
 type TProps = {
   comment: TComment,
+  setClickReplyBtnParentNumber: React.Dispatch<React.SetStateAction<number | null>>,
+  clickReplyBtnParentNumber: number | null,
 }
 
-const CommentItem = ({ comment } : TProps ) => {
+const CommentItem = ({ comment, clickReplyBtnParentNumber, setClickReplyBtnParentNumber } : TProps ) => {
+
   return (
     <>
       <li className={style.comment_item}>
@@ -37,13 +41,16 @@ const CommentItem = ({ comment } : TProps ) => {
             <button type="button" className={style.btn_report}>
               신고하기
             </button>
-            <button type="button" className={style.btn_reply}>
+            <button type="button" className={style.btn_reply} onClick={() => setClickReplyBtnParentNumber(comment.id)}>
               <img src="https://talk.op.gg/images/icon-reply@2x.png" alt="답글쓰기" width="16" />
               답글쓰기
             </button>
           </div>
         </div>
       </li>
+      {
+        comment.id === clickReplyBtnParentNumber && <CommentWrite isReplyComment />
+      }
       { comment.replyCommentList?.map(
           (replyComment, index) => (
             <li key={index} className={classNames(style.comment_item,style.has_reply)}>
@@ -63,7 +70,7 @@ const CommentItem = ({ comment } : TProps ) => {
                   <button type="button" className={style.btn_report}>
                     신고하기
                   </button>
-                  <button type="button" className={style.btn_reply}>
+                  <button type="button" className={style.btn_reply} onClick={() => setClickReplyBtnParentNumber(comment.id)}>
                     <img src="https://talk.op.gg/images/icon-reply@2x.png" alt="답글쓰기" width="16" />
                     답글쓰기
                   </button>
