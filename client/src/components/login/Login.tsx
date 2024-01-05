@@ -4,27 +4,25 @@ import style from "./Login.module.scss";
 import LoginForm from "./LoginForm";
 
 const Login = () => {
-  
   const [isBtnClick, setIsBtnClick] = useState(false);
 
-  const onClick = (e:React.MouseEvent) => {
+  const onClick = (e: React.MouseEvent) => {
     setIsBtnClick(true);
-  }
+  };
 
   return (
     <div className={style.area_login}>
       <div className={style.wrap_login}>
-        {isBtnClick ? 
+        {isBtnClick ? (
           <LoginForm />
-        : <>
-            <p className={style.top_text}>
-              글을 작성하시려면 로그인하세요.
-            </p>
+        ) : (
+          <>
+            <p className={style.top_text}>글을 작성하시려면 로그인하세요.</p>
             <button type="button" className={style.btn_login} onClick={onClick}>
               로그인
-            </button> 
+            </button>
           </>
-        }
+        )}
         <div className={style.bottom_menu}>
           <div className={style.info_find}>
             <Link to="">아이디 찾기</Link>
