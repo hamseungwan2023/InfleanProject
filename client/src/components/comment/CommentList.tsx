@@ -11,16 +11,16 @@ enum ECommentTab {
 }
 
 const CommentList = () => {
-  const [commentList, setCommentList] = useState<TComment[]>(filterCommentByRecent(commentListData));
+  const [commentList, setCommentList] = useState<TComment[]>(filterCommentByLikes(commentListData));
   const [tab, setTab] = useState<number>(1);
 
   const onClickTab = (tabIndex:ECommentTab) => {
     return (e:React.MouseEvent<HTMLElement>) => {
       setTab(tabIndex);
       if(tabIndex===ECommentTab.popular) {
-        setCommentList(filterCommentByLikes(commentList));
+        setCommentList(() => filterCommentByLikes(commentList));
       }else {
-        setCommentList(filterCommentByRecent(commentList));
+        setCommentList(() => filterCommentByRecent(commentList));
       }
     }
   }

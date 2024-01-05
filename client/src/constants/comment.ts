@@ -76,14 +76,4 @@ export const commentListData:TComment[] = [
     createdAt: "2024-01-05T20:15:31",
     content: "안녕하세요. 두번째 댓글입니다^^",
   },
-  {
-    id: 5,
-    postId: 23,  
-    writerId: "asd1234567", 
-    writerNickname: "두번째 댓글 작성자",
-    rank: 4,
-    like: -23,
-    createdAt: "2014-01-05T20:15:30",
-    content: "안녕하세요. 두번째 댓글입니다^^",
-  },
 ]

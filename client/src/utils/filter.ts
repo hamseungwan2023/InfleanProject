@@ -23,22 +23,7 @@ export const filterCommentByRecent = (commentList : TComment[]) => {
 
 // 댓글, 게시글 인기 순 반환 함수 
 const filterByLikes = (list : TComment[]) => {
-  console.log("@");
-  list.sort((a, b) => {
-    if(a.like && b.like) {
-      //a,b 둘다 추천 수 있을 때
-      return b.like-a.like;
-    } else if(b.like && !a.like) {
-      //b 추천 수 있고, a 추천 수 없을 때
-      return -1;
-    } else if(!(a.like || b.like)) {
-      // 둘다 없을 때 최신 순 나열
-      return 1;
-    } else {
-      //a 추천 수 있고, b 추천 수 없을 때
-      return -1;
-    }
-  });
+  list.sort((a, b) => b.like - a.like);
   return list;
 }
 
