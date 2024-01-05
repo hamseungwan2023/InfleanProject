@@ -12,7 +12,7 @@ export type TPost = {
   finalLike: number;  //  추천 수 - 비추천 수
   content: string;    // 내용
   commentCount: number;   //댓글 수
-  //추가할 것 : 이미지,비디오 파일 url list
+  //추가할 것 : 이미지,비디오 파일 url list,지역
 }
 
 export const postDetailData:TPost = {

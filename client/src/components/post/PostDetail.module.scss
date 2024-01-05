@@ -85,23 +85,41 @@
   border-radius: 6px;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.15);
   line-height: 50px;
-  color: $main500;
+  color: #222;
 
   span {
     margin: 2px 0 0 5px;
   }
 
+  svg {
+    fill: #dddfe4;
+  }
+
   & + .btn_recommend {
     margin-left: 20px;
-    color: #ff4f4f;
 
     svg {
-      fill: #ff4f4f;
       transform: rotate(180deg);
     }
   }
 
-  svg {
-    fill: $main300;
+  &:hover {
+    color: $main500;
+    border-color: $main300;
+
+    svg {
+      fill: $main300;
+    }
+  }
+
+  & + .btn_recommend {
+    &:hover {
+      border-color: #ff4f4f;
+      color: #ff4f4f;
+    
+      svg {
+        fill: #ff4f4f;
+      }
+    }
   }
 }

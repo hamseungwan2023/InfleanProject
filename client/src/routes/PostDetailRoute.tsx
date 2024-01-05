@@ -1,5 +1,5 @@
 import React from "react";
-import CommentList from "../components/commnet/CommentList";
+import CommentList from "../components/comment/CommentList";
 import PostDetail from "../components/post/PostDetail";
 import PostList from "../components/post/PostList";
 

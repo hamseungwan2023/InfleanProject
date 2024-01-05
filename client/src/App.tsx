@@ -11,6 +11,7 @@ import TestUserHome from "./redux/TestUserHome";
 import Main from "./routes/Main";
 import PostDetailRoute from "./routes/PostDetailRoute";
 import PostWroteRoute from "./routes/PostWroteRoute";
+import Join from "./routes/Join";
 
 const router = createBrowserRouter([
   {
@@ -56,8 +57,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/logout",
-
         element: <Logout />,
+      },
+      {
+        path: "/join",
+        element: <Join />,
       },
       {
         path: "/test",

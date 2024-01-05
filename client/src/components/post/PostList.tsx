@@ -1,11 +1,11 @@
-import moment from "moment";
 import React from "react";
 import { postListData } from "../../constants/postList";
+import { sortArrByDate } from "../../utils/filter";
 import PostItem from "./PostItem";
 
 const PostList = () => {
 
-  const postList = postListData.sort((a, b) => -moment(a.createdAt).diff(moment(b.createdAt)));
+  const postList = sortArrByDate(postListData);
 
   return <div className="postlist" role="tabpanel">
     <ul>
