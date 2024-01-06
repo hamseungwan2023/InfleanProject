@@ -12,6 +12,7 @@ import Main from "./routes/Main";
 import PostDetailRoute from "./routes/PostDetailRoute";
 import PostWroteRoute from "./routes/PostWroteRoute";
 import Join from "./routes/Join";
+import PostWriteRoute from "./routes/PostWriteRoute";
 
 const router = createBrowserRouter([
   {
@@ -37,6 +38,13 @@ const router = createBrowserRouter([
         element: <>
           <Aside />
           <PostWroteRoute />
+        </>
+      },
+      {
+        path: "/postWrite",
+        element: <>
+          <Aside />
+          <PostWriteRoute />
         </>
       },
       {
