@@ -80,13 +80,16 @@
     text-align: center;
 
     &:hover {
-      color: #fff;
-      background-color: $main400;
+      background-color: #f8f9fa;
     }
 
     &:last-child {
       color: #fff;
       background-color: $main600;
+
+      &:hover {
+        background-color: $main700;
+      }
     }
   }
 }

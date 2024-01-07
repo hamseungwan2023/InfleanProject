@@ -16,7 +16,7 @@ const Profile = () => {
         </div>
       </div>
       <nav className={style.nav}>
-        <Link to="/postWrote" className={style.link}>내가 쓴 글</Link>
+        <Link to="/postWrote/23" className={style.link}>내가 쓴 글</Link>
         <Link to="/profile" className={style.link}>프로필 수정</Link>
         <Link to="/postWrite" className={style.link}>글쓰기</Link>
       </nav>
