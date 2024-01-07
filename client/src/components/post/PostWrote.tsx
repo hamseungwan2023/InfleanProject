@@ -6,7 +6,7 @@ const PostWrote = () => {
     <div className={style.post_wrote}>
       <strong>세종대왕</strong> 님이 쓴 글
     </div>
-  )
-}
+  );
+};
 
 export default PostWrote;

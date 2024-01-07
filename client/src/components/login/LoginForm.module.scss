@@ -8,7 +8,7 @@
   flex-direction: column;
 }
 
-[class*=LoginForm_wrapper] {
+[class*="LoginForm_wrapper"] {
   display: flex;
   align-items: center;
   position: relative;
@@ -61,21 +61,21 @@
   }
 }
 
-  .wrapper_username {
-    margin-bottom: 10px;
+.wrapper_username {
+  margin-bottom: 10px;
 
-    &::before {
-      background-position: -342px -64px;
-    }
+  &::before {
+    background-position: -342px -64px;
+  }
 }
 
-  .wrapper_password {
-    margin-bottom: 20px;
-    padding-right: 0;
+.wrapper_password {
+  margin-bottom: 20px;
+  padding-right: 0;
 
-    &::before {
-      background-position: -310px 0;
-    }
+  &::before {
+    background-position: -310px 0;
+  }
 }
 
 .input {

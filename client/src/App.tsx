@@ -11,6 +11,7 @@ import TestUserHome from "./redux/TestUserHome";
 import Main from "./routes/Main";
 import PostDetailRoute from "./routes/PostDetailRoute";
 import PostWroteRoute from "./routes/PostWroteRoute";
+import Join from "./routes/Join";
 
 const router = createBrowserRouter([
   {
@@ -19,24 +20,30 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <>
-          <Aside />
-          <Main />
-        </>
+        element: (
+          <>
+            <Aside />
+            <Main />
+          </>
+        ),
       },
       {
         path: "/postDetail/:id",
-        element: <>
-          <Aside />
-          <PostDetailRoute />
-        </>
+        element: (
+          <>
+            <Aside />
+            <PostDetailRoute />
+          </>
+        ),
       },
       {
         path: "/postWrote/:id",
-        element: <>
-          <Aside />
-          <PostWroteRoute />
-        </>
+        element: (
+          <>
+            <Aside />
+            <PostWroteRoute />
+          </>
+        ),
       },
       {
         path: "/profile",
@@ -53,6 +60,10 @@ const router = createBrowserRouter([
             <DeleteAccount />
           </ProtectedRoute>
         ),
+      },
+      {
+        path: "/join",
+        element: <Join />,
       },
       {
         path: "/logout",

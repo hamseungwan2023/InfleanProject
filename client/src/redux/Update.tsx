@@ -7,6 +7,7 @@ const Update = () => {
   //   const { id } = useParams();
   const id = 1;
   const users = useSelector((state: any) => state.users);
+  // console.log(users)
   const dispatch = useDispatch();
   const existingUser = users.filter((f: any) => f.id === id);
   const { nickname, password } = existingUser[0];
