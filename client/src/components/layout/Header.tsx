@@ -9,14 +9,9 @@ const Header = () => {
   const navigate = useNavigate();
   const [userState, setUserState] = useState(false);
 
-  const accessToken = localStorage.getItem("accessToken") || "";
-  const refreshToken = localStorage.getItem("refreshToken") || "";
-  useEffect(() => {
-    setUserState(false);
-    if (accessToken.length && refreshToken.length > 0) {
-      setUserState(true);
-    }
-  }, [userState]);
+  // const accessToken = localStorage.getItem("accessToken") || "";
+  // const refreshToken = localStorage.getItem("refreshToken") || "";
+  useEffect(() => {}, []);
 
   const onClick = (e: React.MouseEvent) => {
     localStorage.clear();

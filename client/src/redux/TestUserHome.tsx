@@ -30,7 +30,7 @@ const TestUserHome = () => {
 
   return (
     <div>
-      {users.map((user: any, index: any) => (
+      {/* {users.map((user: any, index: any) => (
         <div key={index}>
           <h1>{user.id}</h1>
           <h2>{user.nickname}</h2>
@@ -39,7 +39,7 @@ const TestUserHome = () => {
           <button>수정</button>
           <button onClick={() => handleDelete(user.id)}>삭제</button>
         </div>
-      ))}
+      ))} */}
 
       <button onClick={(e) => testClick(e)}>로컬스토리지받기</button>
       <button onClick={(e) => clear(e)}>클리아</button>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import style from "./Login.module.scss";
 import Style from "./LoginForm.module.scss"; //로그인 버튼 클릭시 보이는 css
 
@@ -8,9 +8,9 @@ import { useNavigate } from "react-router-dom";
 import classnames from "classnames";
 import axios from "axios";
 
-import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "../../slices/login/thunk";
-import { userData } from "../../constants/userData";
+import { useSelector, useDispatch } from "react-redux";
+import { login } from "../../slices/login/reducer";
+import { AppDispatch, RootState } from "../../slices/store";
 
 interface Ires {
   data: {
@@ -28,21 +28,43 @@ interface LoginProps {
 const Login = () => {
   const [isBtnClick, setIsBtnClick] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLogin, setIsLogin] = useState(false);
   const [isSecretPassword, setIsSecretPassword] = useState(true);
 
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [data, setData] = useState<any>({});
 
+  const [loginData, setLoginData] = useState({});
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
-  // const users = useSelector((state: any) => state.users);
-  console.log(userData);
+  const dispatch: AppDispatch = useDispatch();
+
+  const user = useSelector((state: any) => state.auth.user);
+  const isLoggedIn = useSelector((state: any) => state.auth.isLoggedIn);
+
+  useEffect(() => {
+    if (isLoggedIn === false) {
+    } else {
+      alert(`${user.nickname}님 반갑습니다 !`);
+    }
+  }, [user, isLoggedIn]);
+
+  const handleLogin = (e: any) => {
+    e.preventDefault();
+    navigate("/");
+    dispatch(login(username, password));
+    localStorage.setItem("accessToken ", "fdsafd");
+    localStorage.setItem("refreshToken ", "asdfsafsdfd");
+    setIsBtnClick(false);
+  };
+
+  console.log("user", user);
+  console.log("isLoggedIn", isLoggedIn);
 
   const onClickPasswordShow = (e: React.MouseEvent) => {
     setIsSecretPassword(!isSecretPassword);
   };
+
   const onChange = (e: any) => {
     if (e.target.name === "username") {
       setUsername(e.target.value);
@@ -51,39 +73,24 @@ const Login = () => {
     }
   };
 
-  const SignIn = async () => {
-    const data = userData.find((user: any) => {
-      if (user.username === username && user.password === password) {
-        return user;
-      }
-    });
-    console.log(data);
-    // await axios
-    //   .post(`${process.env.REACT_APP_API_URL}/auth/login`, data)
-    //   .then((response) => {
-    //     localStorage.setItem("accessToken", response.data.token);
-    //     window.location.href = `${process.env.REACT_APP_CLIENT_URL}/HealthFoodData`;
-    //   });
-  };
-
   const onSubmit = async (e: any) => {
-    setIsLoading(true);
-    e.preventDefault();
-    const res: Ires = await axios.post("/user/login", {
-      username,
-      password,
-    });
-    try {
-      console.log(res.data);
-      localStorage.clear();
-      localStorage.setItem("accessToken", res.data.accessToken);
-      localStorage.setItem("refreshToken", res.data.refreshToken);
-      navigate("/");
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setIsLoading(false);
-    }
+    // setIsLoading(true);
+    // e.preventDefault();
+    // const res: Ires = await axios.post("/user/login", {
+    //   username,
+    //   password,
+    // });
+    // try {
+    //   console.log(res.data);
+    //   localStorage.clear();
+    //   localStorage.setItem("accessToken", res.data.accessToken);
+    //   localStorage.setItem("refreshToken", res.data.refreshToken);
+    //   navigate("/");
+    // } catch (e) {
+    //   console.error(e);
+    // } finally {
+    //   setIsLoading(false);
+    // }
   };
 
   return (
@@ -132,7 +139,10 @@ const Login = () => {
               disabled={isLoading}
               className={Style.btn_submit}
             /> */}
-            <button className={Style.btn_submit} onClick={SignIn}>
+            <button
+              className={Style.btn_submit}
+              onClick={(e) => handleLogin(e)}
+            >
               로그인하기
             </button>
           </form>
