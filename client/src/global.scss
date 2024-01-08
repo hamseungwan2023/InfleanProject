@@ -124,7 +124,7 @@ main, .postDetailRoute, .postWroteRoute, .postWriteRoute {
   margin: 20px 20px 20px 0px;
 }
 
-.filter, .postDetail, .postWrite {
+.filter, .postDetail {
   background-color: $mainBackground;
   border: 1px solid #dbe1e5;
   border-radius: 10px;
@@ -143,6 +143,7 @@ main, .postDetailRoute, .postWroteRoute, .postWriteRoute {
 .postWrite_warn {
   display: flex;
   align-items: center;
+  margin-top: 20px;
   padding: 10px;
   background-color: $mainBackground;
   border: 1px solid #dbe1e5;
@@ -180,3 +181,4 @@ main, .postDetailRoute, .postWroteRoute, .postWriteRoute {
     background-color: $main700;
   }
 }
+
