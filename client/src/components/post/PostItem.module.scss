@@ -217,16 +217,21 @@
   margin-top: 8px;
   border: 1px solid #dddfe4;
   border-radius: 4px;
-}
 
-.editor_toolbar {
-  border: 0;
-  padding: 10px 10px 9px;
-  background-color: #f8f9fa;
-  border-bottom: 1px solid #dddfe4;
+  .editor_toolbar {
+    padding: 10px 10px 9px;
+    border: 0;
+    border-radius: inherit;
+    border-bottom: 1px solid #dddfe4;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    background-color: #f8f9fa;
+  }
+  
 }
 
 .editor_content {
+  min-height: 300px;
   margin: 0 10px;
 }
 

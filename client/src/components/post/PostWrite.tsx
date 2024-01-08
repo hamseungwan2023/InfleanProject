@@ -20,7 +20,7 @@ const PostWrite = () => {
       const tempEditorState = EditorState.createWithContent(contentState);
       setEditorState(tempEditorState);
     }
-  })
+  }, []);
 
   const onEditorStateChange = (editorState: EditorState) => {
     // editorState에 값 설정
