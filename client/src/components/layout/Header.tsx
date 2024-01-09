@@ -2,21 +2,22 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { regionList } from "../../constants/regionList";
 import style from "./Header.module.scss";
-import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../../slices/login/reducer";
+import Logout from "../../routes/Logout";
 const Header = () => {
-  const navigate = useNavigate();
-  const [userState, setUserState] = useState(false);
+  const isLoggedIn = useSelector((state: any) => state.auth.isLoggedIn);
+  // const dispatch = useDispatch();
 
-  // const accessToken = localStorage.getItem("accessToken") || "";
-  // const refreshToken = localStorage.getItem("refreshToken") || "";
-  useEffect(() => {}, []);
+  // // const accessToken = localStorage.getItem("accessToken") || "";
+  // // const refreshToken = localStorage.getItem("refreshToken") || "";
 
-  const onClick = (e: React.MouseEvent) => {
-    localStorage.clear();
-    setUserState(false);
-  };
+  // const onClick = (e: React.MouseEvent) => {
+  //   e.preventDefault();
+  //   localStorage.clear();
+  //   dispatch(logout());
+  // };
 
   return (
     <header>
@@ -24,15 +25,7 @@ const Header = () => {
         <Link to="/" className={style.logo}>
           지역 익명 커뮤니티 RAC
         </Link>
-        {userState === true ? (
-          <button
-            type="button"
-            onClick={(e) => onClick(e)}
-            className={style.btn_logout}
-          >
-            로그아웃
-          </button>
-        ) : null}
+        {isLoggedIn === true ? <Logout /> : null}
       </div>
       <div className={style.header_service}>
         <ul role="menu" className={style.list}>
@@ -41,7 +34,6 @@ const Header = () => {
               <li role="presentation" key={index} className={style.item}>
                 <a
                   role="menuitem"
-                  onClick={onClick}
                   aria-current={false}
                   data-key={item}
                   href="#"

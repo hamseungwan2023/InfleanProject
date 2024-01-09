@@ -1,6 +1,11 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, Action } from "@reduxjs/toolkit";
 import axios from "axios";
-import { AppDispatch } from "../store";
+import { AppDispatch, RootState } from "../store";
+import { ThunkAction, ThunkDispatch } from "@reduxjs/toolkit";
+interface LogoutAction {
+  type: string;
+  payload: void;
+}
 
 export const baseUrl = "http://localhost:8080";
 const authSlice = createSlice({
@@ -35,7 +40,7 @@ export const login =
   (username: string, password: string) =>
   async (dispatch: AppDispatch): Promise<void> => {
     try {
-      const response = await axios.post(`${baseUrl}/login`, {
+      const response = await axios.post(`${baseUrl}/user/login`, {
         username: username,
         password: password,
       });
