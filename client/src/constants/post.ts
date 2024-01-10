@@ -15,6 +15,18 @@ export type TPost = {
   //추가할 것 : 이미지,비디오 파일 url list,지역
 }
 
+export type TPostWrite = {
+  id: number;   // 게시글 id
+  title: string;    // 제목
+  category: string;     //카테고리
+  createdAt: string;    //작성일 
+  writerId: string; // 작성자 ID
+  writerNickname: string;    // 작성자 닉네임
+  rank: number;     // 작성자 등급(레벨) 추천수에 따라 분류.
+  content: string;    // 내용
+  //추가할 것 : 이미지,비디오 파일 url list,지역
+}
+
 export const postDetailData:TPost = {
   id: 23,
   title: "제목입니다.",
