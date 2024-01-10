@@ -46,20 +46,12 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/profile",
-        element: (
-          <ProtectedRoute>
-            <Profile />
-          </ProtectedRoute>
-        ),
+        path: "/profile/:id",
+        element: <Profile />,
       },
       {
-        path: "/deleteAccount",
-        element: (
-          <ProtectedRoute>
-            <DeleteAccount />
-          </ProtectedRoute>
-        ),
+        path: "/deleteAccount/:id",
+        element: <DeleteAccount />,
       },
       {
         path: "/join",

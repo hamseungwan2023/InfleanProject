@@ -39,7 +39,6 @@ const Login = () => {
 
   useEffect(() => {
     if (isLoggedIn && user) {
-      alert(`${user.nickname}님 반갑습니다`);
       localStorage.setItem("user", JSON.stringify(user));
       setIsLogin(true);
     }
@@ -69,34 +68,15 @@ const Login = () => {
     }
   };
 
-  const onSubmit = async (e: any) => {
-    // setIsLoading(true);
-    // e.preventDefault();
-    // const res: Ires = await axios.post("/user/login", {
-    //   username,
-    //   password,
-    // });
-    // try {
-    //   console.log(res.data);
-    //   localStorage.clear();
-    //   localStorage.setItem("accessToken", res.data.accessToken);
-    //   localStorage.setItem("refreshToken", res.data.refreshToken);
-    //   navigate("/");
-    // } catch (e) {
-    //   console.error(e);
-    // } finally {
-    //   setIsLoading(false);
-    // }
-  };
-  const clear = () => {
-    localStorage.clear();
-  };
+  const toProfile = (e: any) => {};
+
+  console.log(user);
   return (
     <div className={style.area_login}>
-      {isLogin === false ? (
+      {isLoggedIn === false ? (
         <div className={style.wrap_login}>
           {isBtnClick ? (
-            <form onSubmit={onSubmit} className={Style.form}>
+            <form className={Style.form}>
               <div className={Style.wrapper_username}>
                 <input
                   onChange={onChange}
@@ -169,7 +149,19 @@ const Login = () => {
           </div>
         </div>
       ) : (
-        <div className={style.wrap_login}>{user?.nickname}님 반갑습니다.</div>
+        <div className={style.wrap_loginSucess}>
+          <img src={user?.profileImg} width={"100px"} />
+          <p>{user?.nickname}</p>
+          <div className={style.wrap_toUpdate}>
+            <button onClick={(e) => navigate(`/profile/${user.id}`)}>
+              수정
+              <img
+                src="https://png.pngtree.com/png-clipart/20190705/original/pngtree-vector-cog-wheel-icon-png-image_4271398.jpg"
+                width={"15px"}
+              ></img>
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );

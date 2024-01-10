@@ -1,16 +1,14 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 export default function ProtectedRoute({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  // const user = localStorage.getItem("accessToken");
-  const accessToken = localStorage.getItem("accessToken") || "";
-  const refreshToken = localStorage.getItem("refreshToken") || "";
-  if (!accessToken && !refreshToken) {
-    return <Navigate to="/" />;
-  }
+  const isLoggedIn = useSelector((state: any) => state.auth.isLoggedIn);
+  console.log(isLoggedIn);
+
   return <>{children}</>;
 }

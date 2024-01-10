@@ -85,3 +85,15 @@
     }
   }
 }
+
+.wrap_loginSucess {
+  display: flex;
+  font-size: 25px;
+  p {
+    margin-top: 40px;
+  }
+  .wrap_toUpdate {
+    // margin-top: 30px;
+    margin-left: 50px;
+  }
+}
