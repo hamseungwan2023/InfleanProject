@@ -2,22 +2,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { regionList } from "../../constants/regionList";
 import style from "./Header.module.scss";
-import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { logout } from "../../slices/login/reducer";
+import { useSelector } from "react-redux";
 import Logout from "../../routes/Logout";
 const Header = () => {
   const isLoggedIn = useSelector((state: any) => state.auth.isLoggedIn);
-  // const dispatch = useDispatch();
-
-  // // const accessToken = localStorage.getItem("accessToken") || "";
-  // // const refreshToken = localStorage.getItem("refreshToken") || "";
-
-  // const onClick = (e: React.MouseEvent) => {
-  //   e.preventDefault();
-  //   localStorage.clear();
-  //   dispatch(logout());
-  // };
 
   return (
     <header>

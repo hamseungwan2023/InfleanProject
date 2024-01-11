@@ -1,9 +1,9 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { url } from "./Profile";
 import Style from "./DeleteAccount.module.scss";
 import { useSelector } from "react-redux";
+import { baseUrl } from "../slices/login/reducer";
 
 const DeleteAccount = () => {
   const user = useSelector((state: any) => state.auth.user);
@@ -25,7 +25,7 @@ const DeleteAccount = () => {
     e.preventDefault();
     if (username === user.email && password === user.password) {
       try {
-        await axios.delete(`${url}/user/delete`, {
+        await axios.delete(`${baseUrl}/api/user/delete`, {
           data: {
             username,
             password,

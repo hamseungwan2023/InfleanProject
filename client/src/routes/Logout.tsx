@@ -1,16 +1,21 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../slices/login/reducer";
+import { baseUrl, logout } from "../slices/login/reducer";
 import style from "../components/layout/Header.module.scss";
+import axios from "axios";
 
 function Logout() {
   const isLoggedIn = useSelector((state: any) => state.auth.isLoggedIn);
   const dispatch = useDispatch();
-  const onClick = (e: React.MouseEvent) => {
+  const onClick = async (e: React.MouseEvent) => {
     e.preventDefault();
-    localStorage.clear();
-    dispatch(logout());
+    try {
+      await axios.delete(`${baseUrl}/api/user/logout`);
+      localStorage.clear();
+      dispatch(logout());
+    } catch (err) {
+      console.error(err);
+    }
   };
   return (
     <div>

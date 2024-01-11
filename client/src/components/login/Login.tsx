@@ -68,8 +68,6 @@ const Login = () => {
     }
   };
 
-  const toProfile = (e: any) => {};
-
   console.log(user);
   return (
     <div className={style.area_login}>
@@ -112,12 +110,12 @@ const Login = () => {
                   </button>
                 </div>
               </div>
-              {/* <input
-              type="submit"
-              value={isLoading ? "로그인 중 ..." : "로그인하기"}
-              disabled={isLoading}
-              className={Style.btn_submit}
-            /> */}
+              <input
+                type="submit"
+                value={isLoading ? "로그인 중 ..." : "로그인하기"}
+                disabled={isLoading}
+                className={Style.btn_submit}
+              />
               <button
                 className={Style.btn_submit}
                 onClick={(e) => handleLogin(e)}
