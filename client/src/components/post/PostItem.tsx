@@ -9,8 +9,8 @@ type Tprops = {
   postItem: TPostItem
 }
 
-const PostItem = ({postItem: { id, title, category, writer, rank, finalLike, thumbnailUrl, commentCount, createdAt } }: Tprops) => {
-  return <li className={style.item}>
+const PostItem = React.forwardRef<HTMLLIElement, Tprops>(({ postItem :{id, title, category, writer, rank, finalLike, thumbnailUrl, commentCount, createdAt} }, ref) => {
+  return <li className={style.item} ref={ref}>
     <Link to={`/postDetail/${id}`} className={style.link} />
     <div className={style.recommend}>
       <svg width="16" height="16" viewBox="0 0 16 16" fill="#dddfe4" xmlns="http://www.w3.org/2000/svg" data-type="default"><path d="M12.8215 10.4987L8.55564 4.31749C8.48688 4.21791 8.40159 4.13798 8.30561 4.08318C8.20963 4.02837 8.10524 4 7.9996 4C7.89396 4 7.78957 4.02837 7.69359 4.08318C7.59761 4.13798 7.51231 4.21791 7.44355 4.31749L3.17768 10.4987C2.77056 11.0887 3.1081 12 3.73373 12H12.2667C12.8923 12 13.2299 11.0887 12.8215 10.4987Z"></path></svg>
@@ -36,6 +36,6 @@ const PostItem = ({postItem: { id, title, category, writer, rank, finalLike, thu
       <img src={thumbnailUrl} alt="썸네일 이미지" width={93} height={60} className={style.img}/>
     </span>
   </li>
-}
+})
 
 export default PostItem;
