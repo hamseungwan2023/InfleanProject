@@ -1,4 +1,5 @@
 import axios from "axios";
+import moment from "moment";
 import React, { useCallback, useEffect, useState } from "react";
 import { postListData, realPostListData, TPostItem, TPostList } from "../../constants/postList";
 import useInfiniteScroll from "../../hooks/useInfiniteScroll";
@@ -6,24 +7,7 @@ import { sortArrByDate } from "../../utils/filter";
 import PostItem from "./PostItem";
 
 const PostList = () => {
-  const postList = postListData.sort(
-    (a, b) => -moment(a.createdAt).diff(moment(b.createdAt))
-  );
 
-<<<<<<< HEAD
-  return (
-    <div className="postlist" role="tabpanel">
-      <ul>
-        {postList.map((item, index) => (
-          <PostItem postItem={item} key={index} />
-        ))}
-      </ul>
-    </div>
-  );
-};
-
-export default PostList;
-=======
   const [pageInfo, setPageInfo] = useState({
     page: 1,
     totalPage: 1
@@ -110,4 +94,3 @@ export default PostList;
 }
 
 export default PostList;
->>>>>>> feature/20240105kdh
