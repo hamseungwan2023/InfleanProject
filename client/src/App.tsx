@@ -12,6 +12,7 @@ import Main from "./routes/Main";
 import PostDetailRoute from "./routes/PostDetailRoute";
 import PostWroteRoute from "./routes/PostWroteRoute";
 import Join from "./routes/Join";
+import PostWriteRoute from "./routes/PostWriteRoute";
 
 const router = createBrowserRouter([
   {
@@ -38,6 +39,20 @@ const router = createBrowserRouter([
       },
       {
         path: "/postWrote/:id",
+        element: <>
+          <Aside />
+          <PostWroteRoute />
+        </>
+      },
+      {
+        path: "/postWrite",
+        element: <>
+          <Aside />
+          <PostWriteRoute />
+        </>
+      },
+      {
+        path: "/profile",
         element: (
           <>
             <Aside />
@@ -59,8 +74,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/logout",
-
         element: <Logout />,
+      },
+      {
+        path: "/join",
+        element: <Join />,
       },
       {
         path: "/test",

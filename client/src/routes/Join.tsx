@@ -77,10 +77,9 @@ const Join = () => {
       const passwordRegExp = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
       if (!passwordRegExp.test(password)) {
         setRequiredMessage(
-          "비밀번호: 숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요."
+          "비밀번호: 숫자+영문자+특수문자 조합으로 8자리 이상 25자리 이하로 입력해주세요."
         );
         setIsPasswordValid(false);
-        console.log("@");
         console.log(isPasswordValid);
       } else {
         setRequiredMessage("");

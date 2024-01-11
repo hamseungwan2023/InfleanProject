@@ -119,7 +119,7 @@ a {
   box-shadow: 0 1px 3px 0 rgba(0,0,0,0.15);
 }
 
-main, .postDetailRoute, .postWroteRoute {
+main, .postDetailRoute, .postWroteRoute, .postWriteRoute {
   flex: 1;
   margin: 20px 20px 20px 0px;
 }
@@ -138,4 +138,46 @@ main, .postDetailRoute, .postWroteRoute {
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.15);
   border-radius: 10px;
   overflow: hidden;
+}
+
+.postWrite_warn {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+  padding: 10px;
+  background-color: $mainBackground;
+  border: 1px solid #dbe1e5;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px 0 rgba(0,0,0,0.15);
+
+  .postWrite_warn_text {
+    color: #7b858e;
+    font-size: 14px;
+    line-height: 20px;
+  }
+}
+
+.postWrite_btn_area {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+}
+
+.postWrite_btn {
+  width: 154px;
+  height: 48px;
+  border: 1px solid #dddfe4;
+  border-radius: 4px;
+  background-color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 38px;
+  color: #7b858e;
+  text-align: center;
+
+  &:last-child {
+    color: #fff;
+    background-color: $main700;
+  }
 }

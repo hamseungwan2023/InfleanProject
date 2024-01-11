@@ -123,6 +123,15 @@
   }
 }
 
+.post_write_wrap {
+  padding: 16px;
+  position: relative;
+  background-color: $mainBackground;
+  border: 1px solid #dbe1e5;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px 0 rgba(0,0,0,0.15);
+}
+
 .post_wrote {
   margin-bottom: 8px;
   padding: 18px 16px 17px;
@@ -139,3 +148,89 @@
     font-weight: 700;
   }
 }
+
+.post_write_form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding-top: 16px;
+  gap: 8px;
+}
+
+.post_write_select {
+  position: relative;
+  width: fit-content;
+  padding: 9px 30px 8px 15px;
+  border-radius: 4px;
+  line-height: 17px;
+  font-size: 14px;
+  border: 1px solid #dddfe4;
+  color: #98a0a7;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  appearance: none;
+  background-image: linear-gradient(45deg,transparent 50%,var(--gray700) 50%),linear-gradient(135deg,var(--gray700) 50%,transparent 50%);
+  -webkit-background-position: calc(100% - 15px) calc(1em + 2px),calc(100% - 10px) calc(1em + 2px);
+  background-position: calc(100% - 15px) calc(1em + 2px),calc(100% - 10px) calc(1em + 2px);
+  -webkit-background-size: 5px 5px,5px 5px;
+  background-size: 5px 5px,5px 5px;
+  background-repeat: no-repeat;
+
+  &::after {
+    position: absolute;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='5' fill='none'%3E%3Cpath fill='%23888' d='M9.018.151a.623.623 0 0 1 .814 0 .477.477 0 0 1 .06.666l-.06.064-4.425 3.968a.626.626 0 0 1-.742.054l-.072-.054L.168.88a.48.48 0 0 1 0-.73.626.626 0 0 1 .743-.054L.982.15 5 3.755 9.018.15Z'/%3E%3C/svg%3E")
+      no-repeat;
+    width: 10px;
+    height: 5px;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    vertical-align: top;
+    z-index: 10;
+    content: "";
+  }
+}
+
+.post_write_top {
+  padding: 8px 0px;
+}
+
+.post_write_top {
+  color: $mainText;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 21px;
+}
+
+.post_write_title {
+  box-sizing: border-box;
+  padding: 10px 32px 9px 16px;
+  border: 1px solid #dddfe4;
+  border-radius: 4px;
+  line-height: 17px;
+  font-size: 14px;
+  outline: none;
+}
+
+.editor_wrapper {
+  margin-top: 8px;
+  border: 1px solid #dddfe4;
+  border-radius: 4px;
+
+  .editor_toolbar {
+    padding: 10px 10px 9px;
+    border: 0;
+    border-radius: inherit;
+    border-bottom: 1px solid #dddfe4;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    background-color: #f8f9fa;
+  }
+}
+
+.editor_content {
+  min-height: 300px;
+  margin: 0 10px;
+}
+

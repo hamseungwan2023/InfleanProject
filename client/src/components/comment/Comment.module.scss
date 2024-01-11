@@ -214,3 +214,101 @@
     margin-right: 4px;
   }
 }
+
+.comment_write_wrap {
+  background-color: #f8f9fa;
+  padding: 24px 16px;
+
+  &.is_reply_comment {
+    position: relative;
+    padding-left: 92px;
+
+    .icon_reply {
+      position: absolute;
+      width: 9px;
+      height: 9px;
+      top: 26px;
+      left: 64px;
+      padding: 0;
+      border-left: 1px solid #c5cbd0;
+      border-bottom: 1px solid #c5cbd0;
+      z-index: 10;
+      content: "";
+    }
+  }
+}
+
+.comment_write_area {
+  border: 1px solid #dddfe4;
+  padding-top: 16px; 
+}
+
+textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 16px 16px;
+  border: none;
+  outline: none;
+  resize: none;
+  font-size: 14px;
+  line-height: 20px;
+  cursor: text;
+}
+
+.comment_write_bottom {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid #dddfe4;
+}
+
+.info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-grow: 1;
+  padding: 0 12px;
+}
+
+.label_image {
+  padding: 0;
+  background: none;
+  font-size: 16px;
+  color: #7b858e;
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 16px;
+  cursor: pointer;
+
+  &::before {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin-right: 4px;
+    background: url("https://talk.op.gg/images/icon-picture@2x.png") 0 0/16px 16px no-repeat;
+    vertical-align: top;
+    content: "";
+  }
+}
+
+.input_image {
+  display: none;
+}
+
+.content_length {
+  color: #7b858e;
+  font-size: 16px;
+  line-height: 16px;
+}
+
+.btn_comment_write {
+  flex-basis: 92px;
+  text-align: center;
+  font-size: 14px;
+  line-height: 38px;
+  border: 1px solid $main600;
+  -webkit-transition: all 0.3s cubic-bezier(0.075,0.82,0.165,1);
+  transition: all 0.3s cubic-bezier(0.075,0.82,0.165,1);
+  color: #fff;
+  background-color: $main600;
+}

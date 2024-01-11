@@ -1,4 +1,10 @@
 
+export type TPostList = {
+  data: TPostItem[], //페이지별 데이터 리스트
+  page: number, // 현재 페이지
+  totalPage: number  // 전체 페이지
+}
+
 export type TPostItem = {
   id: number; //게시글 id
   title: string;  //제목
@@ -9,6 +15,9 @@ export type TPostItem = {
   finalLike: number;  // 추천 수- 비추천 수
   thumbnailUrl: string;  // 썸네일 url
   commentCount: number;  // 댓글 수
+  // page: number;
+  // totalPage: number;
+  // isNotification : boolean; 공지글 여부
 }
 
 export const postListData:TPostItem[] = [
@@ -114,4 +123,62 @@ export const postListData:TPostItem[] = [
     thumbnailUrl: "https://opgg-com-image.akamaized.net/attach/images/20240103063850.2121435.jpg?image=w_200",
     commentCount: 13,
   },
+]
+
+export const realPostListData:TPostList[] = [
+  {
+    data: postListData,
+    page: 0,
+    totalPage: 10
+  },
+  {
+    data: postListData,
+    page: 1,
+    totalPage: 10
+  },
+  {
+    data: postListData,
+    page: 2,
+    totalPage: 10
+  },
+  {
+    data: postListData,
+    page: 3,
+    totalPage: 10
+  },
+  {
+    data: postListData,
+    page: 4,
+    totalPage: 10
+  },
+  {
+    data: postListData,
+    page: 5,
+    totalPage: 10
+  },
+  {
+    data: postListData,
+    page: 6,
+    totalPage: 10
+  },
+  {
+    data: postListData,
+    page: 7,
+    totalPage: 10
+  },
+  {
+    data: postListData,
+    page: 8,
+    totalPage: 10
+  },
+  {
+    data: postListData,
+    page: 9,
+    totalPage: 10
+  },
+  {
+    data: postListData,
+    page: 10,
+    totalPage: 10
+  }
 ]
