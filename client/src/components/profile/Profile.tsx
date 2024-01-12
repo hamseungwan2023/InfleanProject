@@ -11,7 +11,7 @@ const Profile = () => {
         <div className={style.info}>
           <div className={style.top_area}>
             <strong className={style.nickname}>세종 대왕</strong>
-            <Link to="" className={style.send_note}>쪽지<span className={style.unread_note_count}>23</span></Link>
+            <Link to="/noteList/23" className={style.send_note}>쪽지<span className={style.unread_note_count}>23</span></Link>
           </div>
           <span className={style.level}>레벨1</span>
           <div className={style.bar}><span className={style.gage}><span className="blind">0%</span></span></div>

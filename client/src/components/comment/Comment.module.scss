@@ -26,6 +26,18 @@
   &[data-in-view="false"] {
     box-shadow: 0 1px 3px 0 rgba(0,0,0,.15);
   }
+
+  &.is_fixed {
+    position: fixed;
+    box-sizing: border-box;
+    top: 0;
+    left: 322px;
+    right: 20px;
+    height: 50px;
+    background-color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 1px 3px 0px;
+    z-index: 30;
+  }
 }
 
 .tab_list {
