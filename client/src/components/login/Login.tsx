@@ -10,6 +10,7 @@ import classnames from "classnames";
 import { useSelector, useDispatch } from "react-redux";
 import { login } from "../../slices/login/reducer";
 import { AppDispatch, RootState } from "../../slices/store";
+import Profile from "../profile/Profile";
 
 interface Ires {
   data: {
@@ -110,12 +111,6 @@ const Login = () => {
                   </button>
                 </div>
               </div>
-              <input
-                type="submit"
-                value={isLoading ? "로그인 중 ..." : "로그인하기"}
-                disabled={isLoading}
-                className={Style.btn_submit}
-              />
               <button
                 className={Style.btn_submit}
                 onClick={(e) => handleLogin(e)}
@@ -137,9 +132,9 @@ const Login = () => {
           )}
           <div className={style.bottom_menu}>
             <div className={style.info_find}>
-              <Link to="">아이디 찾기</Link>
+              <Link to="/findid">아이디 찾기</Link>
               <span className={style.dot} />
-              <Link to="">비밀번호 찾기</Link>
+              <Link to="/findpw">비밀번호 찾기</Link>
             </div>
             <div className={style.sign_in}>
               <Link to="/join">회원가입</Link>
@@ -147,19 +142,7 @@ const Login = () => {
           </div>
         </div>
       ) : (
-        <div className={style.wrap_loginSucess}>
-          <img src={user?.profileImg} width={"100px"} />
-          <p>{user?.nickname}</p>
-          <div className={style.wrap_toUpdate}>
-            <button onClick={(e) => navigate(`/profile/${user.id}`)}>
-              수정
-              <img
-                src="https://png.pngtree.com/png-clipart/20190705/original/pngtree-vector-cog-wheel-icon-png-image_4271398.jpg"
-                width={"15px"}
-              ></img>
-            </button>
-          </div>
-        </div>
+        <Profile />
       )}
     </div>
   );

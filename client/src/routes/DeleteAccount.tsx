@@ -20,6 +20,9 @@ const DeleteAccount = () => {
       setPassword(e.target.value);
     }
   };
+
+  //비밀번호, 비밀번호 확인 만들어야함
+
   console.log(username, password);
   const deleteUser = async (e: any) => {
     e.preventDefault();
@@ -58,8 +61,8 @@ const DeleteAccount = () => {
                     }}
                   ></img>
                   <h3>
-                    사용하고 계신 아이디({user.username})는 탈퇴할 경우 재사용
-                    및 복구가 불가능 합니다.
+                    사용하고 계신 아이디는 탈퇴할 경우 재사용 및 복구가 불가능
+                    합니다.
                   </h3>
                 </div>
                 <div className={Style.warning}>

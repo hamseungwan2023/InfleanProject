@@ -10,7 +10,7 @@ function Logout() {
   const onClick = async (e: React.MouseEvent) => {
     e.preventDefault();
     try {
-      await axios.delete(`${baseUrl}/api/user/logout`);
+      // await axios.delete(`${baseUrl}/api/user/logout`);
       localStorage.clear();
       dispatch(logout());
     } catch (err) {
