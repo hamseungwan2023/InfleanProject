@@ -1,0 +1,201 @@
+@charset "utf-8";
+@import "../../scss/variables.scss";
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 30px;
+  padding-bottom: 15px;
+}
+
+.title {
+  display: flex;
+  align-items: flex-end;
+  font-weight: 500;
+
+  h4 {
+    color: #000;
+    font-size: 17px;
+  }
+
+  p {
+    margin-left: 8px;
+    padding-bottom: 2px;
+    color: #acacac;
+    font-size: 14px;
+
+    em {
+      color: $main700;
+      font-weight: 700;
+    }
+
+    span {
+      color: #666;
+      font-weight: 700;
+    }
+  }
+}
+
+.set_area {
+  display: flex;
+
+  a {
+    margin-left: 20px;
+  }
+
+  .btn_edit {
+    margin-left: 20px;
+    padding: 1px 0 0 18px;
+    background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 13 13'%3e%3cpath fill-rule='evenodd' fill='%237C7C7C' d='M12 8v4H8v1H5v-1H1V8H0V5h1V1h4V0h3v1h4v4h1v3h-1zm0-2h-1V2H7V1H6v1H2v4H1v1h1v4h4v1h1v-1h4V7h1V6zM8 6h1v1H8V6zM7 5h1v1H7V5zM5 6V5h1v1H5zm1 2H5V7h1v1zm2-1v1H7V7h1zM7 9H6V8h1v1zM4 7V6h1v1H4zm2-3h1v1H6V4z'/%3e%3c/svg%3e") 0 2px no-repeat;
+    background-size: 13px 13px;
+    color: #666;
+    font-size: 14px;
+  }
+
+  .btn_clear {
+    margin-left: 20px;
+    padding: 1px 0 0 18px;
+    position: relative;
+    background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 11 12'%3e%3cpath fill-rule='evenodd' fill='%237C7C7C' d='M10 5v6H9V5H2v6H1V5H0V1h3V0h5v1h3v4h-1zm0-3H1v2h9V2zm-6 8H3V6h1v4zm2 0H5V6h1v4zm2 0H7V6h1v4zm1 2H2v-1h7v1z'/%3e%3c/svg%3e") 0 2px no-repeat;
+    background-size: 11px 12px;
+    color: #666;
+    font-size: 14px;
+
+    &::before {
+      position: absolute;
+      top: 3px;
+      left: -10px;
+      background: #d7d7d7;
+      width: 1px;
+      height: 11px;
+      content: "";
+    }
+  }
+}
+
+.note_util {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-top: 1px solid #555;
+
+
+  .btn_list {
+    display: flex;
+
+    a {
+      margin-right: 7px;
+      padding: 0 8px;
+      border: 1px solid #d7d7d7;
+      border-radius: 2px;
+      color: #555;
+      line-height: 26px !important;
+      text-align: center;
+      font-size: 12px;
+      text-decoration: none !important;
+    }
+
+    .btn_remove {
+      background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 7'%3e%3cpath fill-rule='evenodd' fill='%23f43a1b' d='M2 7H0V6h1V5h1V4h1V3H2V2H1V1H0V0h2v1h1v1h2V1h1V0h2v1H7v1H6v1H5v1h1v1h1v1h1v1H6V6H5V5H3v1H2v1z'/%3e%3c/svg%3e") 0 3px no-repeat;
+      background-size: 8px 8px;
+      padding-left: 13px;
+    }
+  }
+}
+
+.select_area {
+  display: flex;
+
+  .select {
+    background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 13.5 8.5'%3e%3cpath stroke='%23555' fill='none' d='M2.2.5l4.3 4.63L10.8.5'/%3e%3c/svg%3e") calc(100% - 6px) 10px no-repeat;
+    background-size: 13px 8px;
+    height: 26px;
+    margin-left: 5px;
+    padding: 0 26px 0 10px;
+    border: 1px solid #d7d7d7;
+    border-radius: 2px;
+    color: #555;
+    font-size: 12px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    outline: none;
+  }
+}
+
+.note_table {
+  width: 100%;
+  border: none;
+  border-top: 1px solid #dbdbdb;
+  border-bottom: 1px solid #555;
+  border-collapse: collapse;
+
+  th {
+    padding: 12px 0 10px 0;
+    border: none;
+    border-bottom: 1px solid #dbdbdb;
+    color: #333;
+    text-align: center;
+    font-weight: normal;
+    font-size: 12px;
+
+    input {
+      display: inline-block;
+      appearance: auto;
+      width: 13px;
+      height: 13px;
+      vertical-align: top;
+    }
+  }
+
+  td {
+    padding: 12px 0 11px 0;
+    border: none;
+    border-bottom: 1px solid #dbdbdb;
+    color: #7b7b7b;
+    letter-spacing: -1px;
+    text-align: center;
+    word-break: break-all;
+    vertical-align: middle;
+    font-size: 12px;
+
+    &.none {
+      padding: 50px 0;
+    }
+
+    &:last-child {
+      border-bottom: 1px solid #555;
+    }
+  }
+}
+
+.paging {
+  margin-top: 20px;
+  text-align: center;
+
+  em {
+    display: inline-block;
+    padding: 2px 6px 3px 6px;
+    height: 14px !important;
+    margin: 0 3px;
+    border: 1px solid #396fcb;
+    vertical-align: top;
+    font-style: normal;
+    color: #396fcb;
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 15px;
+  }
+
+  a {
+    display: inline-block;
+    padding: 0 2px;
+    margin: 0 3px;
+    color: $mainText;
+    vertical-align: top;
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 21px;
+  }
+}

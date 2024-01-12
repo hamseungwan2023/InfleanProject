@@ -22,7 +22,8 @@ time, mark, audio, video {
 	margin: 0;
 	padding: 0;
 	border: 0;
-	font-size: 100%;
+	font-size: 14px;
+  color: $mainText;
 	font: inherit;
 	vertical-align: baseline;
 }
@@ -119,16 +120,21 @@ a {
   box-shadow: 0 1px 3px 0 rgba(0,0,0,0.15);
 }
 
-main, .postDetailRoute, .postWroteRoute, .postWriteRoute {
+main, .postDetailRoute, .postWroteRoute, .postWriteRoute, .noteList {
   flex: 1;
   margin: 20px 20px 20px 0px;
 }
 
-.filter, .postDetail {
+.filter, .postDetail, .noteList {
   background-color: $mainBackground;
   border: 1px solid #dbe1e5;
   border-radius: 10px;
   box-shadow: 0 1px 3px 0 rgba(0,0,0,0.15);
+}
+
+.noteList {
+  min-width: 980px;
+  padding: 15px;
 }
 
 .postlist, .comment {

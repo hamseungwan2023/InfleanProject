@@ -13,6 +13,7 @@ import PostDetailRoute from "./routes/PostDetailRoute";
 import PostWroteRoute from "./routes/PostWroteRoute";
 import Join from "./routes/Join";
 import PostWriteRoute from "./routes/PostWriteRoute";
+import NoteList from "./components/note/NoteList";
 
 const router = createBrowserRouter([
   {
@@ -83,6 +84,13 @@ const router = createBrowserRouter([
       {
         path: "/test",
         element: <TestUserHome />,
+      },
+      {
+        path: "/noteList/:id",
+        element: <>
+          <Aside />
+          <NoteList />
+        </>,
       },
     ],
   },
