@@ -14,6 +14,7 @@ import PostWroteRoute from "./routes/PostWroteRoute";
 import Join from "./routes/Join";
 import PostWriteRoute from "./routes/PostWriteRoute";
 import NoteList from "./components/note/NoteList";
+import NoteWrite from "./components/note/NoteWrite";
 
 const router = createBrowserRouter([
   {
@@ -93,6 +94,10 @@ const router = createBrowserRouter([
         </>,
       },
     ],
+  },
+  {
+    path: "/noteWrite/:id",
+    element: <NoteWrite />,
   },
 ]);
 
