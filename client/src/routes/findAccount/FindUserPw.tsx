@@ -3,25 +3,24 @@ import Style from "./FindAccount.module.scss";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { baseUrl } from "../../slices/login/reducer";
+import { useSelector } from "react-redux";
 
 const FindUserPw = () => {
-  const [secondClick, setSecondClick] = useState<boolean>(false);
-  const [emailClick, setEmailClick] = useState<boolean>(false);
-  const [phoneClick, setPhoneClick] = useState<boolean>(false);
   const [next, setNext] = useState<boolean>(false);
-  const [hide, setHide] = useState<boolean>(false);
+  const [secondClick, setSecondClick] = useState<boolean>(false);
 
   const [email, setEmail] = useState<string>("");
   const [number, setNumber] = useState<string>("");
+  const [userPhone, setUserPhone] = useState<string>("");
   const [accessCode, setAccessCode] = useState<string>("");
   const [uAccessCode, setUAccessCode] = useState<string>("");
   const [uPw, setUPw] = useState<string>("");
 
   const navigate = useNavigate();
 
+  const isLoggedIn = useSelector((state: any) => state.auth.isLoggedIn);
+
   useEffect(() => {
-    if (emailClick === true) setHide(true);
-    if (phoneClick === true) setHide(true);
     getNumber();
   });
 
@@ -35,17 +34,19 @@ const FindUserPw = () => {
     }
   };
 
-  const postEmail = async (e: any) => {
+  const getUserData = async (e: any) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${baseUrl}/api/user/findid`, {
-        email: email,
+      const response = await axios.post(`${baseUrl}/api/user/findpw`, {
+        username: email,
       });
-      setSecondClick(true);
+      setUserPhone(response.data.phoneNumber);
+      setNext(true);
     } catch (err) {
       console.error(err);
     }
   };
+
   const postPhone = async (e: any) => {
     e.preventDefault();
     try {
@@ -63,7 +64,7 @@ const FindUserPw = () => {
       const response = await axios.get(`${baseUrl}/api/user/certNumber
       `);
       setAccessCode(response.data.accesscode);
-      setUPw(response.data.username);
+      setUPw(response.data.password);
     } catch (err) {
       console.error(err);
     }
@@ -72,7 +73,7 @@ const FindUserPw = () => {
   const compareNumber = (e: any) => {
     e.preventDefault();
     if (accessCode === uAccessCode) {
-      alert(uPw);
+      alert(`비밀번호는 ${uPw} 입니다.`);
     } else {
       alert("인증번호가 다릅니다");
     }
@@ -80,81 +81,52 @@ const FindUserPw = () => {
 
   return (
     <div className={Style.find_wrap}>
-      <div>
-        <button
-          className={Style.FindAccount_Btn}
-          onClick={(e) => navigate("/findid")}
-        >
-          아이디 찾기
-        </button>
-        {next === false ? (
-          <div className={Style.confirm_wrap}>
-            <input
-              name="userId"
-              placeholder="비밆번호를 찾을 이메일을 입력하세요"
-              onChange={onChange}
-            ></input>
-            <button onClick={(e) => setNext(true)}>다음</button>
-          </div>
-        ) : (
-          <div>
+      {isLoggedIn === false ? (
+        <div>
+          <button
+            className={Style.FindAccount_Btn}
+            onClick={(e) => navigate("/findid")}
+          >
+            아이디 찾기
+          </button>
+          {next === false ? (
+            <div className={Style.confirm_wrap}>
+              <input
+                name="email"
+                placeholder="비밆번호를 찾을 이메일을 입력하세요"
+                onChange={onChange}
+              ></input>
+              <button onClick={(e) => getUserData(e)}>다음</button>
+            </div>
+          ) : (
             <div>
-              {emailClick === false ? (
-                <div>
-                  {hide === false ? (
-                    <button
-                      className={Style.firstClick}
-                      onClick={() => setEmailClick(true)}
-                    >
-                      이메일로 찾기
-                    </button>
-                  ) : null}
-                </div>
-              ) : (
-                <div className={Style.confirm_wrap}>
-                  <input
-                    name="email"
-                    placeholder="인증번호 받으실 이메일을 입력하세요"
-                    onChange={onChange}
-                  ></input>
-                  <button onClick={(e) => postEmail(e)}>인증번호 받기</button>
-                </div>
-              )}
-              {phoneClick === false ? (
-                <div>
-                  {hide === false ? (
-                    <button
-                      className={Style.firstClick}
-                      onClick={() => setPhoneClick(true)}
-                    >
-                      휴대전화로 찾기
-                    </button>
-                  ) : null}
-                </div>
-              ) : (
+              <div>
                 <div className={Style.confirm_wrap}>
                   <input
                     name="phone"
+                    // defaultValue={userPhone} 이메일의 휴대폰 번호
+
                     placeholder="인증번호 받으실 전화번호 입력하세요"
                     onChange={onChange}
                   ></input>
                   <button onClick={(e) => postPhone(e)}>인증번호 받기</button>
                 </div>
-              )}
-              {secondClick === true ? (
-                <div className={Style.confirm_wrap}>
-                  <input
-                    placeholder="인증번호를 입력하세요"
-                    name="uAccessCode"
-                    onChange={onChange}
-                  ></input>
-                  <button onClick={(e) => compareNumber(e)}>인증하기</button>
-                </div>
-              ) : null}
+
+                {secondClick === true ? (
+                  <div className={Style.confirm_wrap}>
+                    <input
+                      placeholder="인증번호를 입력하세요"
+                      name="uAccessCode"
+                      onChange={onChange}
+                    ></input>
+                    <button onClick={(e) => compareNumber(e)}>인증하기</button>
+                  </div>
+                ) : null}
+              </div>
             </div>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      ) : null}
     </div>
   );
 };
