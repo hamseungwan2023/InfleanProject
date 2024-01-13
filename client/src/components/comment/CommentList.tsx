@@ -19,8 +19,8 @@ const CommentList = () => {
   const commentListRef = useRef<HTMLDivElement>(null);
   const [isScrollOver, setIsScrollOver] = useState(false);
 
-  const [commentListSize, setCommentListSize] = useState(0);//댓글 리스트 높이
-  const [commentListTop, setCommentListTop] = useState(0);//댓글 리스트 top값
+  const commentListHeight = useRef(0);//댓글 리스트 높이
+  const commentListTop = useRef(0);//댓글 리스트 top값
 
   const onClickTab = (tabIndex:ECommentTab) => {
     return (e:React.MouseEvent<HTMLElement>) => {
@@ -34,13 +34,13 @@ const CommentList = () => {
   }
 
   const handleScroll = () => {
-    if(window.pageYOffset >= commentListTop && window.pageYOffset <= commentListTop+commentListSize) {
+    if(window.pageYOffset >= commentListTop.current && window.pageYOffset <= commentListTop.current+commentListHeight.current) {
+      console.log(commentListTop.current+commentListHeight.current);
+      console.log(window.pageYOffset);
       setIsScrollOver(true);
-      if(commentListRef.current) {
-        setCommentListSize(commentListRef.current.offsetHeight);
-        setCommentListTop(commentListRef.current.offsetTop);
-      }
     }else {
+      console.log(commentListTop.current+commentListHeight.current);
+      console.log(window.pageYOffset);
       setIsScrollOver(false);
     }
   }
@@ -51,6 +51,13 @@ const CommentList = () => {
       window.removeEventListener('scroll', handleScroll);
     }
   });
+
+  useEffect(()=> {
+    if(commentListRef.current) {
+      commentListHeight.current = commentListRef.current.offsetHeight;
+      commentListTop.current = commentListRef.current.offsetTop;
+    }
+  },[]);
 
   return <div className="comment">
     <div className={classNames(style.title_wrap, {[style.is_fixed]:isScrollOver})}>

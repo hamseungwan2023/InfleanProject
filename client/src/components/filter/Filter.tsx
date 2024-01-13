@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import classNames from "classnames";
+import React, { useEffect, useRef, useState } from "react";
 import { bottomFilterList } from "../../constants/bottomFilterList";
 import { CategoryList } from "../../constants/categoryList";
 import style from "./Filter.module.scss";
@@ -9,6 +10,10 @@ const Filter = () => {
   const [isClickSearch, setIsClickSearch] = useState(false);
   const [dropdownOption, setDropdownOption] = useState(0);
   const [search, setSearch] = useState("");
+  const filterTop = useRef(0);
+  const [isScrollOver, setIsScrollOver] = useState(false);
+
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   const searchDropdownOptions = ["글", "글+내용", "내용"];
 
@@ -21,7 +26,27 @@ const Filter = () => {
     // 글, 글+내용, 작성자에 따라 검색 ex) state=0(글), 1(글+내용), 2(작성자) ,search="김철수"
   }
 
-  return <div className="filter">
+  const handleScroll = () => {
+    if(window.pageYOffset >= filterTop.current) {
+      setIsScrollOver(true)
+    }else {
+      setIsScrollOver(false);
+    }
+  }
+
+  useEffect(()=> {
+    if(scrollRef.current) {
+        filterTop.current = scrollRef.current.offsetTop;
+      }
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener("scroll", handleScroll);
+    
+    return ()=> document.removeEventListener("scroll", handleScroll);
+  })
+
+  return <div className={classNames("filter", {"is_fixed": isScrollOver})} ref={scrollRef}>
     <div className={style.main}>
       <div className={style.category_area}>
         <div>

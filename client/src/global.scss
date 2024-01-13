@@ -187,3 +187,17 @@ main, .postDetailRoute, .postWroteRoute, .postWriteRoute, .noteList {
     background-color: $main700;
   }
 }
+
+.filter {
+  &.is_fixed {
+    position: fixed;
+    box-sizing: border-box;
+    top: 0;
+    left: 322px;
+    right: 20px;
+    height: 108px;
+    border-radius: 0;
+    z-index: 30;
+    box-shadow: none;
+  }
+}
