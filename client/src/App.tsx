@@ -81,18 +81,6 @@ const router = createBrowserRouter([
         element: <Logout />,
       },
       {
-        path: "/join",
-        element: <Join />,
-      },
-      {
-        path: "/join",
-        element: <Join />,
-      },
-      {
-        path: "/join",
-        element: <Join />,
-      },
-      {
         path: "/findid",
         element: <FindUserId />,
       },

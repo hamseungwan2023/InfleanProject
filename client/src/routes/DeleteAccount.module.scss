@@ -16,7 +16,7 @@
     font-size: 30px;
   }
   .info_wrapper {
-    margin-left: 18.5%;
+    margin-left: 20.5%;
     align-items: center;
     text-align: center;
     margin-top: 10%;
@@ -37,6 +37,7 @@
         width: 500px;
         height: 50px;
         border: $main100 1px solid;
+        text-align: center;
       }
     }
   }
@@ -63,7 +64,7 @@
     margin-top: 20px;
   }
   .text_red {
-    color: red;
+    color: rgb(247, 109, 109);
   }
   .text_default {
     color: $main700;

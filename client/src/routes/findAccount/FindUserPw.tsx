@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { baseUrl } from "../../slices/login/reducer";
 import { useSelector } from "react-redux";
+import Timer from "./Timer";
 
 const FindUserPw = () => {
   const [next, setNext] = useState<boolean>(false);
@@ -34,6 +35,7 @@ const FindUserPw = () => {
     }
   };
 
+  //이메일의 휴대폰 번호 가져오기
   const getUserData = async (e: any) => {
     e.preventDefault();
     try {
@@ -47,6 +49,7 @@ const FindUserPw = () => {
     }
   };
 
+  //폰번호에 인증번호 보내기
   const postPhone = async (e: any) => {
     e.preventDefault();
     try {
@@ -59,6 +62,7 @@ const FindUserPw = () => {
     }
   };
 
+  //인증번호 가져오기
   const getNumber = async () => {
     try {
       const response = await axios.get(`${baseUrl}/api/user/certNumber
@@ -70,6 +74,7 @@ const FindUserPw = () => {
     }
   };
 
+  //유저가 넣은 인증번호랑 get으로 가져온 인증번호 비교하기
   const compareNumber = (e: any) => {
     e.preventDefault();
     if (accessCode === uAccessCode) {
@@ -120,6 +125,7 @@ const FindUserPw = () => {
                       onChange={onChange}
                     ></input>
                     <button onClick={(e) => compareNumber(e)}>인증하기</button>
+                    <Timer />
                   </div>
                 ) : null}
               </div>
