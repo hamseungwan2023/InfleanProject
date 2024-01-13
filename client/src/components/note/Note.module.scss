@@ -104,6 +104,12 @@
     color: #666;
     font-size: 14px;
 
+    &:only-child {
+      &::before {
+        display: none;
+      }
+    }
+
     &::before {
       position: absolute;
       top: 3px;
@@ -173,6 +179,14 @@
   border-bottom: 1px solid #555;
   border-collapse: collapse;
 
+  tr {
+    &.is_read {
+      td {
+        color: gray;
+      }
+    }
+  }
+
   th {
     padding: 12px 0 10px 0;
     border: none;
@@ -195,19 +209,23 @@
     padding: 12px 0 11px 0;
     border: none;
     border-bottom: 1px solid #dbdbdb;
-    color: #7b7b7b;
+    color: $mainText;
     letter-spacing: -1px;
     text-align: center;
     word-break: break-all;
     vertical-align: middle;
     font-size: 12px;
 
-    &.none {
-      padding: 50px 0;
+    input {
+      display: inline-block;
+      appearance: auto;
+      width: 13px;
+      height: 13px;
+      vertical-align: top;
     }
 
-    &:last-child {
-      border-bottom: 1px solid #555;
+    &.none {
+      padding: 50px 0;
     }
   }
 }
