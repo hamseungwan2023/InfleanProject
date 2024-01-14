@@ -15,36 +15,36 @@ export type TPostItem = {
   finalLike: number;  // 추천 수- 비추천 수
   thumbnailUrl: string;  // 썸네일 url
   commentCount: number;  // 댓글 수
-  // page: number;
-  // totalPage: number;
-  // isNotification : boolean; 공지글 여부
+  isNotification : boolean; // 공지글 여부
 }
 
 export const postListData:TPostItem[] = [
   {
     id: 23,
-    title: "요즘 유행한다는 띠부씰.jpg",
+    title: "[공지] 멤버 등급 요구 조건",
     category: "시사",
     createdAt: "2024-01-04T18:15:30",
-    writer: "작성자123",
+    writer: "관리자1",
     rank: 0,
     finalLike: 22,
     thumbnailUrl: "https://opgg-com-image.akamaized.net/attach/images/20240103063850.2121435.jpg?image=w_200",
     commentCount: 13,
+    isNotification : true,
   },
   {
     id: 23,
-    title: "요즘 유행한다는 띠부씰.jpg",
+    title: "[공지] 게시글 규정",
     category: "시사",
     createdAt: "2024-01-01T19:15:30",
-    writer: "작성자123",
+    writer: "관리자2",
     rank: 0,
     finalLike: 22,
     thumbnailUrl: "https://opgg-com-image.akamaized.net/attach/images/20240103063850.2121435.jpg?image=w_200",
     commentCount: 13,
+    isNotification : true,
   },{
     id: 23,
-    title: "요즘 유행한다는 띠부씰.jpg",
+    title: "게시글",
     category: "시사",
     createdAt: "2023-12-23T19:15:30",
     writer: "작성자123",
@@ -52,6 +52,7 @@ export const postListData:TPostItem[] = [
     finalLike: 22,
     thumbnailUrl: "https://opgg-com-image.akamaized.net/attach/images/20240103063850.2121435.jpg?image=w_200",
     commentCount: 13,
+    isNotification : false,
   },{
     id: 23,
     title: "요즘 유행한다는 띠부씰.jpg",
@@ -62,6 +63,7 @@ export const postListData:TPostItem[] = [
     finalLike: 22,
     thumbnailUrl: "https://opgg-com-image.akamaized.net/attach/images/20240103063850.2121435.jpg?image=w_200",
     commentCount: 13,
+    isNotification : false,
   },{
     id: 23,
     title: "요즘 유행한다는 띠부씰.jpg2",
@@ -72,6 +74,7 @@ export const postListData:TPostItem[] = [
     finalLike: 22,
     thumbnailUrl: "https://opgg-com-image.akamaized.net/attach/images/20240103063850.2121435.jpg?image=w_200",
     commentCount: 13,
+    isNotification : false,
   },{
     id: 23,
     title: "요즘 유행한다는 띠부씰.jpg1",
@@ -82,6 +85,7 @@ export const postListData:TPostItem[] = [
     finalLike: 22,
     thumbnailUrl: "https://opgg-com-image.akamaized.net/attach/images/20240103063850.2121435.jpg?image=w_200",
     commentCount: 13,
+    isNotification : false,
   },{
     id: 23,
     title: "요즘 유행한다는 띠부씰.jpg3",
@@ -92,6 +96,7 @@ export const postListData:TPostItem[] = [
     finalLike: 22,
     thumbnailUrl: "https://opgg-com-image.akamaized.net/attach/images/20240103063850.2121435.jpg?image=w_200",
     commentCount: 13,
+    isNotification : false,
   },{
     id: 23,
     title: "요즘 유행한다는 띠부씰.jpg4",
@@ -102,6 +107,7 @@ export const postListData:TPostItem[] = [
     finalLike: 22,
     thumbnailUrl: "https://opgg-com-image.akamaized.net/attach/images/20240103063850.2121435.jpg?image=w_200",
     commentCount: 13,
+    isNotification : false,
   },{
     id: 23,
     title: "요즘 유행한다는 띠부씰.jpg5",
@@ -112,6 +118,7 @@ export const postListData:TPostItem[] = [
     finalLike: 22,
     thumbnailUrl: "https://opgg-com-image.akamaized.net/attach/images/20240103063850.2121435.jpg?image=w_200",
     commentCount: 13,
+    isNotification : false,
   },{
     id: 23,
     title: "요즘 유행한다는 띠부씰.jpg6",
@@ -122,6 +129,7 @@ export const postListData:TPostItem[] = [
     finalLike: 22,
     thumbnailUrl: "https://opgg-com-image.akamaized.net/attach/images/20240103063850.2121435.jpg?image=w_200",
     commentCount: 13,
+    isNotification : false,
   },
 ]
 

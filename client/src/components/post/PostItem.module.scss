@@ -13,6 +13,15 @@
   &:last-child {
     border-bottom: 0;
   }
+
+  &.is_notification {
+    background-color: $main100;
+
+    .title {
+      font-weight: 700;
+      color: $main600;
+    }
+  }
 }
 
 .link {
@@ -250,4 +259,12 @@
     text-decoration: underline;
     color: $mainText;
   }
+}
+
+.notice_icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 48px;
+  height: 24px;
 }

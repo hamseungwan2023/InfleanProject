@@ -163,6 +163,7 @@
   padding: 3px 0 4px;
   background-color: #fff;
   border: 1px solid $main700;
+  z-index: 100;
 
   &[aria-hidden="true"] {
     display: none;
