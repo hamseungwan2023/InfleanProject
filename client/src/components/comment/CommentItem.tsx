@@ -8,11 +8,11 @@ import CommentWrite from "./CommentWrite";
 
 type TProps = {
   comment: TComment,
-  setClickReplyBtnParentNumber: React.Dispatch<React.SetStateAction<number | null>>,
-  clickReplyBtnParentNumber: number | null,
+  setClickReplyBtnParentNickname: React.Dispatch<React.SetStateAction<string | null>>,
+  clickReplyBtnParentNickname: string | null,
 }
 
-const CommentItem = ({ comment, clickReplyBtnParentNumber, setClickReplyBtnParentNumber } : TProps ) => {
+const CommentItem = ({ comment, clickReplyBtnParentNickname, setClickReplyBtnParentNickname } : TProps ) => {
 
   return (
     <>
@@ -41,7 +41,7 @@ const CommentItem = ({ comment, clickReplyBtnParentNumber, setClickReplyBtnParen
             <button type="button" className={style.btn_report}>
               신고하기
             </button>
-            <button type="button" className={style.btn_reply} onClick={() => setClickReplyBtnParentNumber(comment.id)}>
+            <button type="button" className={style.btn_reply} onClick={() => setClickReplyBtnParentNickname(comment.writerNickname)}>
               <img src="https://talk.op.gg/images/icon-reply@2x.png" alt="답글쓰기" width="16" />
               답글쓰기
             </button>
@@ -49,10 +49,11 @@ const CommentItem = ({ comment, clickReplyBtnParentNumber, setClickReplyBtnParen
         </div>
       </li>
       {
-        comment.id === clickReplyBtnParentNumber && <CommentWrite isReplyComment />
+        comment.writerNickname === clickReplyBtnParentNickname && <CommentWrite isReplyComment />
       }
       { comment.replyCommentList?.map(
           (replyComment, index) => (
+            <>
             <li key={index} className={classNames(style.comment_item,style.has_reply)}>
               <div className={style.reply_wrap}>
                 <i className={style.icon_reply} />
@@ -70,13 +71,17 @@ const CommentItem = ({ comment, clickReplyBtnParentNumber, setClickReplyBtnParen
                   <button type="button" className={style.btn_report}>
                     신고하기
                   </button>
-                  <button type="button" className={style.btn_reply} onClick={() => setClickReplyBtnParentNumber(comment.id)}>
+                  <button type="button" className={style.btn_reply} onClick={() => setClickReplyBtnParentNickname(replyComment.writerNickname)}>
                     <img src="https://talk.op.gg/images/icon-reply@2x.png" alt="답글쓰기" width="16" />
                     답글쓰기
                   </button>
                 </div>
               </div>
             </li>
+            {
+              replyComment.writerNickname === clickReplyBtnParentNickname && <CommentWrite isReplyComment />
+            }
+            </>
           )
         )
       }

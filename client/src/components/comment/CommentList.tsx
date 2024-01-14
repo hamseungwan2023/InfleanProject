@@ -15,7 +15,7 @@ enum ECommentTab {
 const CommentList = () => {
   const [commentList, setCommentList] = useState<TComment[]>(filterCommentByRecent(commentListData));
   const [tab, setTab] = useState<number>(1);
-  const [clickReplyBtnParentNumber, setClickReplyBtnParentNumber] = useState<number | null>(null); 
+  const [clickReplyBtnParentNickname, setClickReplyBtnParentNickname] = useState<string | null>(null); 
   const commentListRef = useRef<HTMLDivElement>(null);
   const [isScrollOver, setIsScrollOver] = useState(false);
 
@@ -77,7 +77,7 @@ const CommentList = () => {
       </ul>
       <ul role="tabpanel" className={style.comment_list}>
         {
-          commentList.map((item, index) => <CommentItem comment={item} key={index} clickReplyBtnParentNumber={clickReplyBtnParentNumber} setClickReplyBtnParentNumber={setClickReplyBtnParentNumber} />)
+          commentList.map((item, index) => <CommentItem comment={item} key={index} clickReplyBtnParentNickname={clickReplyBtnParentNickname} setClickReplyBtnParentNickname={setClickReplyBtnParentNickname} />)
         }
       </ul>
     </div>
