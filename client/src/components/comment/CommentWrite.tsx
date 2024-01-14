@@ -14,8 +14,14 @@ const CommentWrite = ({ isReplyComment }: TProps) => {
     setContent(e.target.value);
   }
 
-  return (
-    <div className={classNames(style.comment_write_wrap, {[style.is_reply_comment] : isReplyComment})}>
+  const tag = isReplyComment ? "li" : "div";
+
+  const elementProps = {
+    className: classNames(style.comment_write_wrap, {[style.is_reply_comment] : isReplyComment}),
+  };
+
+  const children = (
+    <>
       {isReplyComment && <i className={style.icon_reply} />}
       <div className={style.comment_write_area}>
         <textarea name="content" id="comment_content" maxLength={1000} placeholder="주제와 무관한 댓글, 타인의 권리를 침해하거나 명예를 훼손하는 게시물은 별도의 통보 없이 제재를 받을 수 있습니다." value={content} onChange={onChangeContent}/>
@@ -28,8 +34,10 @@ const CommentWrite = ({ isReplyComment }: TProps) => {
         <button type="button" className={style.btn_comment_write}>작성</button>
       </div>
       </div>
-    </div>
+    </>
   )
+
+  return React.createElement(tag, elementProps, children);
 }
 
 export default CommentWrite
