@@ -27,7 +27,7 @@ const NoteWrite = () => {
           </div>
         </div>
       </div>
-      <div className={style.user_search} style={{display: "block"}}>
+      <div className={style.user_search} style={{display: "none"}}>
         <ListLoading />
       </div>
       <div className={style.content}>
