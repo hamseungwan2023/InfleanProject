@@ -13,6 +13,7 @@ import Join from "./routes/Join";
 import PostWriteRoute from "./routes/PostWriteRoute";
 import FindUserId from "./routes/findAccount/FindUserId";
 import FindUserPw from "./routes/findAccount/FindUserPw";
+import Modal from "./components/location/Modal";
 
 const router = createBrowserRouter([
   {
@@ -87,6 +88,10 @@ const router = createBrowserRouter([
       {
         path: "/findpw",
         element: <FindUserPw />,
+      },
+      {
+        path: "/test",
+        element: <Modal />,
       },
     ],
   },

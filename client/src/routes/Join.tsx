@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import style from "./Join.module.scss";
 import classnames from "classnames";
+import Modal from "../components/location/Modal";
 
 const Join = () => {
   const [username, setUsername] = useState("");
@@ -251,6 +252,7 @@ const Join = () => {
             </button>
           </div>
         </div>
+        <Modal />
         <div
           className={classnames(
             style.wrapper_realname,
