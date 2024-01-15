@@ -3,7 +3,6 @@ import Style from "./FindAccount.module.scss";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { baseUrl } from "../../slices/login/reducer";
-import { useSelector } from "react-redux";
 import Timer from "./Timer";
 
 const FindUserId = () => {
@@ -20,9 +19,15 @@ const FindUserId = () => {
 
   const navigate = useNavigate();
 
-  const isLoggedIn = useSelector((state: any) => state.auth.isLoggedIn);
+  const user = localStorage.getItem("user");
+  //로컬스토리지로 로그인여부 확인
 
   useEffect(() => {
+    if (user) {
+      alert("로그인하시면 볼 수 없는 페이지 입니다");
+      localStorage.clear();
+      navigate("/");
+    }
     if (emailClick === true) setHide(true);
     if (phoneClick === true) setHide(true);
     getNumber();
@@ -43,8 +48,10 @@ const FindUserId = () => {
     e.preventDefault();
     try {
       const response = await axios.post(`${baseUrl}/api/user/findid`, {
-        email: email,
+        username: email,
       });
+      setUId(response.data.username);
+
       setSecondClick(true);
     } catch (err) {
       console.error(err);
@@ -58,6 +65,7 @@ const FindUserId = () => {
       const response = await axios.post(`${baseUrl}/api/user/findid`, {
         phoneNumber: number,
       });
+      setUId(response.data.username);
       setSecondClick(true);
     } catch (err) {
       console.error(err);
@@ -69,8 +77,7 @@ const FindUserId = () => {
     try {
       const response = await axios.get(`${baseUrl}/api/user/certNumber
       `);
-      setAccessCode(response.data.accesscode);
-      setUId(response.data.username);
+      setAccessCode(response.data.certNumber);
     } catch (err) {
       console.error(err);
     }
@@ -88,71 +95,69 @@ const FindUserId = () => {
 
   return (
     <div className={Style.find_wrap}>
-      {isLoggedIn === false ? (
+      <div>
+        <button
+          className={Style.FindAccount_Btn}
+          onClick={(e) => navigate("/findpw")}
+        >
+          비밀번호 찾기
+        </button>
         <div>
-          <button
-            className={Style.FindAccount_Btn}
-            onClick={(e) => navigate("/findpw")}
-          >
-            비밀번호 찾기
-          </button>
-          <div>
-            {emailClick === false ? (
-              <div>
-                {hide === false ? (
-                  <button
-                    className={Style.firstClick}
-                    onClick={() => setEmailClick(true)}
-                  >
-                    이메일로 찾기
-                  </button>
-                ) : null}
-              </div>
-            ) : (
-              <div className={Style.confirm_wrap}>
-                <input
-                  name="email"
-                  placeholder="인증번호 받으실 이메일을 입력하세요"
-                  onChange={onChange}
-                ></input>
-                <button onClick={(e) => postEmail(e)}>인증번호 받기</button>
-              </div>
-            )}
-            {phoneClick === false ? (
-              <div>
-                {hide === false ? (
-                  <button
-                    className={Style.firstClick}
-                    onClick={() => setPhoneClick(true)}
-                  >
-                    휴대전화로 찾기
-                  </button>
-                ) : null}
-              </div>
-            ) : (
-              <div className={Style.confirm_wrap}>
-                <input
-                  name="phone"
-                  placeholder="인증번호 받으실 전화번호 입력하세요"
-                  onChange={onChange}
-                ></input>
-                <button onClick={(e) => postPhone(e)}>인증번호 받기</button>
-              </div>
-            )}
-            {secondClick === true ? (
-              <div className={Style.confirm_wrap}>
-                <input
-                  placeholder="인증번호를 입력하세요"
-                  name="uAccessCode"
-                  onChange={onChange}
-                ></input>
-                <button onClick={(e) => compareNumber(e)}>인증하기</button>
-                <Timer />
-              </div>
-            ) : null}
-          </div>
+          {emailClick === false ? (
+            <div>
+              {hide === false ? (
+                <button
+                  className={Style.firstClick}
+                  onClick={() => setEmailClick(true)}
+                >
+                  이메일로 찾기
+                </button>
+              ) : null}
+            </div>
+          ) : (
+            <div className={Style.confirm_wrap}>
+              <input
+                name="email"
+                placeholder="인증번호 받으실 이메일을 입력하세요"
+                onChange={onChange}
+              ></input>
+              <button onClick={(e) => postEmail(e)}>인증번호 받기</button>
+            </div>
+          )}
+          {phoneClick === false ? (
+            <div>
+              {hide === false ? (
+                <button
+                  className={Style.firstClick}
+                  onClick={() => setPhoneClick(true)}
+                >
+                  휴대전화로 찾기
+                </button>
+              ) : null}
+            </div>
+          ) : (
+            <div className={Style.confirm_wrap}>
+              <input
+                name="phone"
+                placeholder="인증번호 받으실 전화번호 입력하세요"
+                onChange={onChange}
+              ></input>
+              <button onClick={(e) => postPhone(e)}>인증번호 받기</button>
+            </div>
+          )}
+          {secondClick === true ? (
+            <div className={Style.confirm_wrap}>
+              <input
+                placeholder="인증번호를 입력하세요"
+                name="uAccessCode"
+                onChange={onChange}
+              ></input>
+              <button onClick={(e) => compareNumber(e)}>인증하기</button>
+              <Timer />
+            </div>
+          ) : null}
         </div>
-      ) : null}
+      </div>
     </div>
   );
 };

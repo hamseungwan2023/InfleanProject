@@ -13,7 +13,7 @@ const Profile = () => {
         <span className={style.rank} />
         <div className={style.info}>
           <strong className={style.nickname}>{user?.nickname}</strong>
-          <span className={style.level}>레벨2</span>
+          <span className={style.level}>레벨1</span>
           <div className={style.bar}>
             <span className={style.gage}>
               <span className="blind">0%</span>

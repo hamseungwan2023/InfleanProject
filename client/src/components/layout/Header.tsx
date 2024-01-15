@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import Logout from "../../routes/Logout";
 const Header = () => {
   const isLoggedIn = useSelector((state: any) => state.auth.isLoggedIn);
+  const user = localStorage.getItem("user");
 
   return (
     <header>
@@ -13,7 +14,7 @@ const Header = () => {
         <Link to="/" className={style.logo}>
           지역 익명 커뮤니티 RAC
         </Link>
-        {isLoggedIn === true ? <Logout /> : null}
+        {isLoggedIn === true || user ? <Logout /> : null}
       </div>
       <div className={style.header_service}>
         <ul role="menu" className={style.list}>

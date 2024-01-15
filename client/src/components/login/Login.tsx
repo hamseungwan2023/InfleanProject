@@ -36,7 +36,7 @@ const Login = () => {
 
   const user = useSelector((state: any) => state.auth.user);
   const isLoggedIn = useSelector((state: any) => state.auth.isLoggedIn);
-  console.log(isLoggedIn, 1);
+  // console.log(isLoggedIn, 1);
 
   useEffect(() => {
     if (isLoggedIn && user) {

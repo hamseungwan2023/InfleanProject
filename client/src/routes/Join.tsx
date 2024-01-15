@@ -1,5 +1,5 @@
-import axios from 'axios';
-import React, { useState } from 'react';
+import axios from "axios";
+import React, { useState } from "react";
 import style from "./Join.module.scss";
 import classnames from "classnames";
 
@@ -40,21 +40,27 @@ const Join = () => {
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-    try{
+    try {
       const formData = new FormData();
 
-      if(profileImg) {
+      if (profileImg) {
         formData.append("profileImg", profileImg);
         const jsonData = {
-          username, nickname, password, email: "awdad@naver.com"
+          username,
+          nickname,
+          password,
+          email: "awdad@naver.com",
         };
-  
-        formData.append("jsonData",new Blob([JSON.stringify(jsonData)], {type: 'application/json'}));
-        await axios.post("/user/signup" , formData, {
-          headers: {'Content-Type': 'multipart/form-data', charset: 'utf-8'},
+
+        formData.append(
+          "jsonData",
+          new Blob([JSON.stringify(jsonData)], { type: "application/json" })
+        );
+        await axios.post("/user/signup", formData, {
+          headers: { "Content-Type": "multipart/form-data", charset: "utf-8" },
         });
-      } 
-    } catch(e) {
+      }
+    } catch (e) {
       console.log(e);
     }
     setIsLoading(false);
@@ -66,7 +72,9 @@ const Join = () => {
       setUsername(value);
       const usernameRegExp = /^[a-zA-z0-9]{4,16}$/;
       if (!usernameRegExp.test(username)) {
-        setRequiredMessage("아이디: 4-16사이 대소문자 또는 숫자만 입력해 주세요.");
+        setRequiredMessage(
+          "아이디: 4-16사이 대소문자 또는 숫자만 입력해 주세요."
+        );
         setIsUsernameValid(false);
       } else {
         setRequiredMessage("");
@@ -74,7 +82,8 @@ const Join = () => {
       }
     } else if (e.target.name === "password") {
       setPassword(value);
-      const passwordRegExp = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
+      const passwordRegExp =
+        /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
       if (!passwordRegExp.test(password)) {
         setRequiredMessage(
           "비밀번호: 숫자+영문자+특수문자 조합으로 8자리 이상 25자리 이하로 입력해주세요."
@@ -150,9 +159,9 @@ const Join = () => {
     } else {
       return;
     }
-  }
+  };
 
-  const onClickProfileImg = (e:React.MouseEvent) => {
+  const onClickProfileImg = (e: React.MouseEvent) => {
     setIsProfileImgFocus(true);
     setIsUsernameFocus(false);
     setIsPasswordFocus(false);
@@ -160,38 +169,46 @@ const Join = () => {
     setIsBirthdayFocus(false);
     setIsPhoneFocus(false);
     setIsNicknameFocus(false);
-  }
+  };
 
-  const onProfileImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onProfileImageChange = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const { files } = e.target;
-    if(files && files.length === 1) {
+    if (files && files.length === 1) {
       /* const locationRef = ref(storage, `avatar/${user?.uid}`);
       const result = await uploadBytes(locationRef, file);
       const uploadUrl = await getDownloadURL(result.ref); */
-      const uploadUrl ="업로드된 url 받으면 여기에";
+      const uploadUrl = "업로드된 url 받으면 여기에";
       const reader = new FileReader();
 
       setProfileImg(files[0]);
       reader.readAsDataURL(files[0]);
       reader.onloadend = () => {
-        if(typeof reader.result === 'string') {
+        if (typeof reader.result === "string") {
           setProfileImgSrc(reader.result);
         }
-      }
+      };
       console.log(profileImgSrc);
-    }else {
+    } else {
       return;
     }
   };
 
-  const onClickPasswordShow = (e:React.MouseEvent) => {
+  const onClickPasswordShow = (e: React.MouseEvent) => {
     setIsSecretPassword(!isSecretPassword);
-  }
+  };
 
   return (
     <form onSubmit={onSubmit} className={style.form}>
       <div className={style.input_wrapper}>
-        <div className={classnames(style.wrapper_username, { [style.is_error] : !isUsernameValid }, { [style.is_focus] : isUsernameFocus })}>
+        <div
+          className={classnames(
+            style.wrapper_username,
+            { [style.is_error]: !isUsernameValid },
+            { [style.is_focus]: isUsernameFocus }
+          )}
+        >
           <input
             onChange={onChange}
             onFocus={onFocus}
@@ -204,7 +221,13 @@ const Join = () => {
             required
           />
         </div>
-        <div className={classnames(style.wrapper_password, { [style.is_error] : !isPasswordValid }, { [style.is_focus] : isPasswordFocus })}>
+        <div
+          className={classnames(
+            style.wrapper_password,
+            { [style.is_error]: !isPasswordValid },
+            { [style.is_focus]: isPasswordFocus }
+          )}
+        >
           <input
             onChange={onChange}
             onFocus={onFocus}
@@ -217,12 +240,24 @@ const Join = () => {
             required
           />
           <div className={style.password_info}>
-            <button type="button" className={classnames(style.btn_show, {[style.is_hide]: !isSecretPassword})} onClick={onClickPasswordShow}>
+            <button
+              type="button"
+              className={classnames(style.btn_show, {
+                [style.is_hide]: !isSecretPassword,
+              })}
+              onClick={onClickPasswordShow}
+            >
               <span className="blind">비밀번호 숨기기</span>
             </button>
           </div>
         </div>
-        <div className={classnames(style.wrapper_realname, { [style.is_error] : !isRealnameValid }, { [style.is_focus] : isRealnameFocus })}>
+        <div
+          className={classnames(
+            style.wrapper_realname,
+            { [style.is_error]: !isRealnameValid },
+            { [style.is_focus]: isRealnameFocus }
+          )}
+        >
           <input
             onChange={onChange}
             onFocus={onFocus}
@@ -234,7 +269,13 @@ const Join = () => {
             value={realname}
           />
         </div>
-        <div className={classnames(style.wrapper_birthday, { [style.is_error] : !isBirthdayValid }, { [style.is_focus] : isBirthdayFocus })}>
+        <div
+          className={classnames(
+            style.wrapper_birthday,
+            { [style.is_error]: !isBirthdayValid },
+            { [style.is_focus]: isBirthdayFocus }
+          )}
+        >
           <input
             onChange={onChange}
             onFocus={onFocus}
@@ -247,9 +288,17 @@ const Join = () => {
           />
         </div>
       </div>
-      {requiredMessage !== "" ? <strong className={style.error_text} role="alert">{requiredMessage}</strong> : null}
+      {requiredMessage !== "" ? (
+        <strong className={style.error_text} role="alert">
+          {requiredMessage}
+        </strong>
+      ) : null}
       <div className={style.input_wrapper}>
-        <div className={classnames(style.wrapper_nickname, { [style.is_focus] : isNicknameFocus })}>
+        <div
+          className={classnames(style.wrapper_nickname, {
+            [style.is_focus]: isNicknameFocus,
+          })}
+        >
           <input
             onChange={onChange}
             onFocus={onFocus}
@@ -261,7 +310,11 @@ const Join = () => {
             value={nickname}
           />
         </div>
-        <div className={classnames(style.wrapper_phone, { [style.is_focus] : isPhoneFocus })}>
+        <div
+          className={classnames(style.wrapper_phone, {
+            [style.is_focus]: isPhoneFocus,
+          })}
+        >
           <input
             onChange={onChange}
             onFocus={onFocus}
@@ -273,27 +326,55 @@ const Join = () => {
             value={phone}
           />
         </div>
-        <div className={classnames(style.wrapper_profileImg, { [style.is_error] : !isProfileImgValid }, { [style.is_focus] : isProfileImgFocus })}>
+        <div
+          className={classnames(
+            style.wrapper_profileImg,
+            { [style.is_error]: !isProfileImgValid },
+            { [style.is_focus]: isProfileImgFocus }
+          )}
+        >
           <strong className={style.profileImg_title}>프로필이미지 설정</strong>
-          <p className={style.profileImg_desc}>나중에 언제든지 변경할 수 있습니다.</p>
-          <label htmlFor="profileImage" className={classnames(style.profileImg_label , { [style.is_focus] : profileImgSrc.length >= 1 })} onClick={onClickProfileImg}>
+          <p className={style.profileImg_desc}>
+            나중에 언제든지 변경할 수 있습니다.
+          </p>
+          <label
+            htmlFor="profileImage"
+            className={classnames(style.profileImg_label, {
+              [style.is_focus]: profileImgSrc.length >= 1,
+            })}
+            onClick={onClickProfileImg}
+          >
             {profileImgSrc ? (
-                <img className={style.profile_img} src={profileImgSrc} alt="회원가입 프로필 이미지" />
-              ) : 
+              <img
+                className={style.profile_img}
+                src={profileImgSrc}
+                alt="회원가입 프로필 이미지"
+              />
+            ) : (
               <svg
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-              aria-hidden="true"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
               >
                 <path d="M10 8a3 3 0 100-6 3 3 0 000 6zM3.465 14.493a1.23 1.23 0 00.41 1.412A9.957 9.957 0 0010 18c2.31 0 4.438-.784 6.131-2.1.43-.333.604-.903.408-1.41a7.002 7.002 0 00-13.074.003z" />
               </svg>
-              }
+            )}
           </label>
-          <input id="profileImage" type="file" className={style.profileImgInput} accept="image/*" onChange={onProfileImageChange} />
+          <input
+            id="profileImage"
+            type="file"
+            className={style.profileImgInput}
+            accept="image/*"
+            onChange={onProfileImageChange}
+          />
         </div>
       </div>
-      {selectedMessage !== "" ? <strong className={style.error_text} role="alert">{selectedMessage}</strong> : null}
+      {selectedMessage !== "" ? (
+        <strong className={style.error_text} role="alert">
+          {selectedMessage}
+        </strong>
+      ) : null}
       <div className={style.btn_submit}>
         <input type="submit" value={isLoading ? "처리 중 ..." : "회원가입"} />
       </div>
