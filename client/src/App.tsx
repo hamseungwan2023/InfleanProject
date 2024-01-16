@@ -89,10 +89,6 @@ const router = createBrowserRouter([
         path: "/findpw",
         element: <FindUserPw />,
       },
-      {
-        path: "/test",
-        element: <Modal />,
-      },
     ],
   },
 ]);
