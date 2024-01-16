@@ -120,6 +120,23 @@
   }
 }
 
+.wrapper_roadAd {
+  button {
+    width: 405px;
+    height: 22px;
+    text-align: left;
+  }
+  &::before {
+    background-position: -288px -296px;
+  }
+}
+
+.wrapper_detailAd {
+  &::before {
+    background-position: -65px -266px;
+  }
+}
+
 .wrapper_realname {
   &::before {
     background-position: -342px -64px;

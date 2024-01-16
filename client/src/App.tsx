@@ -100,10 +100,6 @@ const router = createBrowserRouter([
         element: <FindUserPw />,
       },
       {
-        path: "/test",
-        element: <Modal />,
-      },
-      {
         path: "/noteList/:id",
         element: <>
           <Aside />

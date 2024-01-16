@@ -11,6 +11,9 @@ const Join = () => {
   const [birthday, setBirthday] = useState("");
   const [phone, setPhone] = useState("");
   const [nickname, setNickname] = useState("");
+  const [detailAd, setDetailAd] = useState<string>("");
+  const [roadAddress, setRoadAddress] = useState<string>("");
+
   const [profileImg, setProfileImg] = useState<Blob | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -25,6 +28,8 @@ const Join = () => {
   const [isNicknameValid, setIsNicknameValid] = useState(true);
   const [isPhoneValid, setIsPhoneValid] = useState(true);
   const [isProfileImgValid, setIsProfileImgValid] = useState(true);
+  const [isRoadAddressValid, setisRoadAddressValid] = useState();
+  const [isDetailAdValid, setIsDetailAdValid] = useState(true);
 
   const [isUsernameFocus, setIsUsernameFocus] = useState(false);
   const [isPasswordFocus, setIsPasswordFocus] = useState(false);
@@ -33,6 +38,10 @@ const Join = () => {
   const [isNicknameFocus, setIsNicknameFocus] = useState(false);
   const [isPhoneFocus, setIsPhoneFocus] = useState(false);
   const [isProfileImgFocus, setIsProfileImgFocus] = useState(false);
+  const [isRoadAddressFocus, setIsRoadAddressFocus] = useState(false);
+  const [isDetailAdFocus, setIsDetailAdFocus] = useState(false);
+
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const [profileImgSrc, setProfileImgSrc] = useState("");
 
@@ -65,6 +74,10 @@ const Join = () => {
       console.log(e);
     }
     setIsLoading(false);
+  };
+
+  const getAddress = (e: string) => {
+    setRoadAddress(e);
   };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -103,6 +116,8 @@ const Join = () => {
       setPhone(value);
     } else if (e.target.name === "nickname") {
       setNickname(value);
+    } else if (e.target.name === "detailAd") {
+      setDetailAd(value);
     } else {
       return;
     }
@@ -117,6 +132,7 @@ const Join = () => {
       setIsPhoneFocus(false);
       setIsNicknameFocus(false);
       setIsProfileImgFocus(false);
+      setIsDetailAdFocus(false);
     } else if (e.target.name === "password") {
       setIsPasswordFocus(true);
       setIsUsernameFocus(false);
@@ -125,6 +141,7 @@ const Join = () => {
       setIsPhoneFocus(false);
       setIsNicknameFocus(false);
       setIsProfileImgFocus(false);
+      setIsDetailAdFocus(false);
     } else if (e.target.name === "realname") {
       setIsRealnameFocus(true);
       setIsUsernameFocus(false);
@@ -133,6 +150,7 @@ const Join = () => {
       setIsPhoneFocus(false);
       setIsNicknameFocus(false);
       setIsProfileImgFocus(false);
+      setIsDetailAdFocus(false);
     } else if (e.target.name === "birthday") {
       setIsBirthdayFocus(true);
       setIsUsernameFocus(false);
@@ -141,6 +159,7 @@ const Join = () => {
       setIsPhoneFocus(false);
       setIsNicknameFocus(false);
       setIsProfileImgFocus(false);
+      setIsDetailAdFocus(false);
     } else if (e.target.name === "phone") {
       setIsPhoneFocus(true);
       setIsUsernameFocus(false);
@@ -149,8 +168,29 @@ const Join = () => {
       setIsBirthdayFocus(false);
       setIsNicknameFocus(false);
       setIsProfileImgFocus(false);
+      setIsDetailAdFocus(false);
     } else if (e.target.name === "nickname") {
       setIsNicknameFocus(true);
+      setIsUsernameFocus(false);
+      setIsPasswordFocus(false);
+      setIsRealnameFocus(false);
+      setIsBirthdayFocus(false);
+      setIsPhoneFocus(false);
+      setIsProfileImgFocus(false);
+      setIsDetailAdFocus(false);
+    } else if (e.target.name === "roadAddress") {
+      setIsRoadAddressFocus(true);
+      setIsNicknameFocus(false);
+      setIsUsernameFocus(false);
+      setIsPasswordFocus(false);
+      setIsRealnameFocus(false);
+      setIsBirthdayFocus(false);
+      setIsPhoneFocus(false);
+      setIsProfileImgFocus(false);
+      setIsDetailAdFocus(false);
+    } else if (e.target.name === "detailAd") {
+      setIsDetailAdFocus(true);
+      setIsNicknameFocus(false);
       setIsUsernameFocus(false);
       setIsPasswordFocus(false);
       setIsRealnameFocus(false);
@@ -170,6 +210,7 @@ const Join = () => {
     setIsBirthdayFocus(false);
     setIsPhoneFocus(false);
     setIsNicknameFocus(false);
+    setIsDetailAdFocus(false);
   };
 
   const onProfileImageChange = async (
@@ -200,6 +241,7 @@ const Join = () => {
     setIsSecretPassword(!isSecretPassword);
   };
 
+  console.log("roadAddress", roadAddress);
   return (
     <form onSubmit={onSubmit} className={style.form}>
       <div className={style.input_wrapper}>
@@ -252,7 +294,34 @@ const Join = () => {
             </button>
           </div>
         </div>
-        <Modal />
+        <div
+          className={classnames(style.wrapper_roadAd, {
+            [style.is_focus]: isRoadAddressFocus,
+          })}
+        >
+          <button onClick={(e) => setIsOpen(true)}>
+            {roadAddress.length > 0 ? roadAddress : "주소를 입력하세요"}
+          </button>
+        </div>
+        {isOpen && <Modal setIsOpen={setIsOpen} getAddress={getAddress} />}
+        <div
+          className={classnames(
+            style.wrapper_detailAd,
+            { [style.is_error]: !isDetailAdValid },
+            { [style.is_focus]: isDetailAdFocus }
+          )}
+        >
+          <input
+            onChange={onChange}
+            onFocus={onFocus}
+            id="detailAd"
+            name="detailAd"
+            type="text"
+            placeholder="상세 주소"
+            className={style.input}
+            value={detailAd}
+          />
+        </div>
         <div
           className={classnames(
             style.wrapper_realname,
