@@ -39,7 +39,7 @@ export const login =
   (username: string, password: string) =>
   async (dispatch: AppDispatch): Promise<void> => {
     try {
-      const response = await axios.post(`${baseUrl}/api/user/login`, {
+      const response = await axios.post(`http://localhost:8080/user/login`, {
         username: username,
         password: password,
       });

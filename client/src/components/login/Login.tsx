@@ -49,8 +49,8 @@ const Login = () => {
     e.preventDefault();
     navigate("/");
     dispatch(login(username, password));
-    localStorage.setItem("accessToken ", "fdsafd");
-    localStorage.setItem("refreshToken ", "asdfsafsdfd");
+    // localStorage.setItem("accessToken ", "fdsafd");
+    // localStorage.setItem("refreshToken ", "asdfsafsdfd");
     setIsBtnClick(false);
   };
 
