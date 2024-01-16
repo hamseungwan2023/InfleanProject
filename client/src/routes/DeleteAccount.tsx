@@ -11,34 +11,37 @@ const DeleteAccount = () => {
 
   const [deleteBtn, setDeleteBtn] = useState<boolean>(false);
   const [goodbyePage, setGoodbyePage] = useState<boolean>(false);
-  const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [confirmPw, setConfirmPw] = useState<string>("");
+
   const onChange = (e: any) => {
-    if (e.target.username === "username") {
-      setUsername(e.target.value);
-    } else {
+    if (e.target.username === "password") {
       setPassword(e.target.value);
+    } else {
+      setConfirmPw(e.target.value);
     }
   };
-  console.log(username, password);
+  // console.log(user?.password);
+  console.log("password", password);
+  console.log("confirmPw", confirmPw);
   const deleteUser = async (e: any) => {
     e.preventDefault();
-    if (username === user.email && password === user.password) {
+    if (password === confirmPw && password === user?.password) {
       try {
-        await axios.delete(`${baseUrl}/api/user/delete`, {
-          data: {
-            username,
-            password,
-          },
-        });
+        // await axios.delete(`${baseUrl}/api/user/delete`, {
+        //   data: {
+        //     password,
+        //   },
+        // }); 테스트시 주석 풀기
         setGoodbyePage(true);
       } catch (err) {
         console.error(err);
       }
     } else {
-      alert("아이디 or 비밀번호가 일치하지 않습니다");
+      alert("비밀번호가 같지 않습니다.");
     }
   };
+
   const navigate = useNavigate();
   return (
     <div>
@@ -58,8 +61,8 @@ const DeleteAccount = () => {
                     }}
                   ></img>
                   <h3>
-                    사용하고 계신 아이디({user.username})는 탈퇴할 경우 재사용
-                    및 복구가 불가능 합니다.
+                    사용하고 계신 아이디는 탈퇴할 경우 재사용 및 복구가 불가능
+                    합니다.
                   </h3>
                 </div>
                 <div className={Style.warning}>
@@ -72,15 +75,15 @@ const DeleteAccount = () => {
               <div className={Style.checkInput_wrapper}>
                 <div className={Style.input_wrapper}>
                   <input
-                    placeholder="아이디를 입력해주세요..."
-                    name="username"
+                    placeholder="비밀번호"
+                    name="password"
                     onChange={onChange}
                   ></input>
                 </div>
                 <div className={Style.input_wrapper}>
                   <input
-                    placeholder="비밀번호를 입력해주세요..."
-                    name="password"
+                    placeholder="비밀번호 확인"
+                    name="confirmPw"
                     onChange={onChange}
                   ></input>
                 </div>
@@ -97,7 +100,7 @@ const DeleteAccount = () => {
                   </div>
                 ) : (
                   <div className={Style.red_btn}>
-                    <button onClick={() => deleteUser}>
+                    <button onClick={(e) => deleteUser(e)}>
                       정말로 탈퇴하시겠습니까?
                     </button>
                   </div>

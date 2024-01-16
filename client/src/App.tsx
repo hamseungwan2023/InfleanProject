@@ -6,8 +6,6 @@ import Logout from "./routes/Logout";
 import "./global.scss";
 import Layout from "./components/layout/Layout";
 import Aside from "./components/layout/Aside";
-import ProtectedRoute from "./components/ProtectedRoute";
-import TestUserHome from "./redux/TestUserHome";
 import Main from "./routes/Main";
 import PostDetailRoute from "./routes/PostDetailRoute";
 import PostWroteRoute from "./routes/PostWroteRoute";
@@ -16,6 +14,9 @@ import PostWriteRoute from "./routes/PostWriteRoute";
 import NoteList from "./components/note/NoteList";
 import NoteWrite from "./components/note/NoteWrite";
 import PostCorrectRoute from "./routes/PostCorrectRoute";
+import FindUserId from "./routes/findAccount/FindUserId";
+import FindUserPw from "./routes/findAccount/FindUserPw";
+import Modal from "./components/location/Modal";
 
 const router = createBrowserRouter([
   {
@@ -42,17 +43,21 @@ const router = createBrowserRouter([
       },
       {
         path: "/postWrote/:id",
-        element: <>
-          <Aside />
-          <PostWroteRoute />
-        </>
+        element: (
+          <>
+            <Aside />
+            <PostWroteRoute />
+          </>
+        ),
       },
       {
         path: "/postWrite",
-        element: <>
-          <Aside />
-          <PostWriteRoute />
-        </>
+        element: (
+          <>
+            <Aside />
+            <PostWriteRoute />
+          </>
+        ),
       },
       {
         path: "/postCorrect/:id",
@@ -87,12 +92,16 @@ const router = createBrowserRouter([
         element: <Logout />,
       },
       {
-        path: "/join",
-        element: <Join />,
+        path: "/findid",
+        element: <FindUserId />,
+      },
+      {
+        path: "/findpw",
+        element: <FindUserPw />,
       },
       {
         path: "/test",
-        element: <TestUserHome />,
+        element: <Modal />,
       },
       {
         path: "/noteList/:id",

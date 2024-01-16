@@ -36,7 +36,7 @@ const Login = () => {
 
   const user = useSelector((state: any) => state.auth.user);
   const isLoggedIn = useSelector((state: any) => state.auth.isLoggedIn);
-  console.log(isLoggedIn, 1);
+  // console.log(isLoggedIn, 1);
 
   useEffect(() => {
     if (isLoggedIn && user) {
@@ -133,9 +133,9 @@ const Login = () => {
           )}
           <div className={style.bottom_menu}>
             <div className={style.info_find}>
-              <Link to="">아이디 찾기</Link>
+              <Link to="/findid">아이디 찾기</Link>
               <span className={style.dot} />
-              <Link to="">비밀번호 찾기</Link>
+              <Link to="/findpw">비밀번호 찾기</Link>
             </div>
             <div className={style.sign_in}>
               <Link to="/join">회원가입</Link>

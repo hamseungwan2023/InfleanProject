@@ -66,7 +66,7 @@ const Profile = () => {
     }
     e.preventDefault();
     try {
-      await axios.put(`${baseUrl}/api/profile/:id`, {
+      await axios.patch(`${baseUrl}/api/profile/:id`, {
         //추후에 백엔드 api명세서 나오면 수정
         nickname: nickName,
         password: password,
