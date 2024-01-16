@@ -6,7 +6,11 @@ import useInfiniteScroll from "../../hooks/useInfiniteScroll";
 import { sortArrByDate } from "../../utils/filter";
 import PostItem from "./PostItem";
 
-const PostList = () => {
+type TProps = {
+  isPostCorrect: boolean
+}
+
+const PostList = ({isPostCorrect}:TProps) => {
 
   const [pageInfo, setPageInfo] = useState({
     page: 1,
@@ -34,29 +38,34 @@ const PostList = () => {
   });
 
   useEffect(() => {
-    /* const res = axios.get<TPostList>(
-      `/api/postList?type=total&page=${pageInfo.page}`;
-      res.then((response) => {
-        if (response.status === 200) {
+    const getPostList = async() => {
+      const res = await axios.get(
+      `/api/postList?type=total&page=${pageInfo.page}`);
+  
+      try {
+        if (res.status === 200) {
           setPostList((prev) => {
             if (prev && prev.data?.length > 0) {
               return {
-                ...response.data,
-                data: [...prev.data, ...response.data.data]
+                ...res.data,
+                data: [...prev.data, ...res.data.data]
               };
             }
-            return response.data;
+            return res.data;
           });
-
+    
           setPageInfo((prev) => ({
             ...prev,
-            totalPage: response.data.total_pages
+            totalPage: res.data.totalPage
           }));
         }
-      })
-    ) */
+      }catch(e) {
+        console.log(e);
+      }
+    }
+    /*
     if(pageInfo.page <= realPostListData.length) {
-      const res = realPostListData[pageInfo.page-1];
+       const res = realPostListData[pageInfo.page-1];
       
       setPostList((prev) => {
         if(prev && prev.data.length > 0) {
@@ -72,8 +81,8 @@ const PostList = () => {
         ...prev,
         totalPage: res.totalPage
       }))
-    }
-    
+    }*/
+    getPostList();
   }, [pageInfo.page])
 
   return <div className="postlist" role="tabpanel">
@@ -81,7 +90,7 @@ const PostList = () => {
       {
         postList?.data.map((item,index) => {
           return (
-            <PostItem postItem={item} key={index} ref={postList.data.length - 1 === index ? setTarget : null}/>
+            <PostItem postItem={item} isPostCorrect={isPostCorrect} key={index} ref={postList.data.length - 1 === index ? setTarget : null}/>
             /*
             [TODO] 로딩시 로딩컴포넌트 노출
             { postList.data.length - 1 === index && isLoading && <Loading />}

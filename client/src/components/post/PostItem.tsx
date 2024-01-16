@@ -6,10 +6,11 @@ import { getDayMinuteCounter } from "../../utils/getDayMinuteCounter";
 import style from "./PostItem.module.scss";
 
 type Tprops = {
-  postItem: TPostItem;
+  postItem: TPostItem,
+  isPostCorrect: boolean
 };
 
-const PostItem = React.forwardRef<HTMLLIElement, Tprops>(({ postItem :{id, title, category, writer, rank, finalLike, thumbnailUrl, commentCount, createdAt, isNotification} }, ref) => {
+const PostItem = React.forwardRef<HTMLLIElement, Tprops>(({ postItem :{id, title, category, writer, rank, finalLike, thumbnailUrl, commentCount, createdAt, isNotification}, isPostCorrect }, ref) => {
   return <li className={classNames(style.item, {[style.is_notification] : isNotification})} ref={ref}>
     <Link to={`/postDetail/${id}`} className={style.link} />
     { isNotification ?     <div className={style.notice_icon}><img src="https://talk.op.gg/images/icon-notice@2x.png" alt="공지" width="24" /></div> :     
@@ -26,6 +27,7 @@ const PostItem = React.forwardRef<HTMLLIElement, Tprops>(({ postItem :{id, title
           {title}
         </strong>
         <em className={style.count}>[{commentCount}]</em>
+        {isPostCorrect && <Link to="/postCorrect/23" className={style.btn_correct}>수정하기</Link>}
       </div>
       <div className={style.info}>
         <span className={style.category}>{category}</span>
@@ -34,7 +36,7 @@ const PostItem = React.forwardRef<HTMLLIElement, Tprops>(({ postItem :{id, title
         </span>
         <span className={style.writer}>
           <i className={style.rank}>
-            <span className="blind">레벨1</span>
+            <span className="blind">레벨{rank}</span>
           </i>
           <span>{writer}</span>
         </span>

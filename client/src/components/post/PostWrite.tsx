@@ -1,20 +1,46 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { CategoryList } from "../../constants/categoryList";
 import { Editor } from 'react-draft-wysiwyg';
-import { ContentState, EditorState } from 'draft-js';
+import { ContentState, convertToRaw, EditorState } from 'draft-js';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import style from "./PostItem.module.scss";
-import draftToHtml from 'draftjs-to-html';
 import htmlToDraft from 'html-to-draftjs';
+import axios from "axios";
 
-const PostWrite = () => {
+type TProps = {
+  postId?: string,
+  isPostCorrect: boolean,
+  editorState: EditorState,
+  setEditorState: React.Dispatch<React.SetStateAction<Draft.DraftModel.ImmutableData.EditorState>>
+  category: string,
+  setCategory: React.Dispatch<React.SetStateAction<string>>,
+  title: string,
+  setTitle: React.Dispatch<React.SetStateAction<string>>
+}
 
-  const [editorState, setEditorState] = useState(EditorState.createEmpty());
+const PostWrite = ({postId, isPostCorrect, editorState, setEditorState, category, setCategory, title, setTitle}:TProps) => {
 
   useEffect(() => {
-    // 글 수정 시 불러올 때 const html = '<p>수정할 글 <strong>editor</strong>😀</p>';
-    const html="";
-;    const contentBlock = htmlToDraft(html);
+    let html="";
+
+    if(isPostCorrect) {
+      const getPostDetail = async () => {
+        const res = await axios.get(`/api/postDetail/${postId}`);
+        try {
+          if(res.status === 200) {
+            const {data: { content, category, title}} = res ;
+            html = content;
+            setCategory(category);
+            setTitle(title);
+          }
+        } catch(e) {
+          console.log(e);
+        }
+      }
+      getPostDetail();
+    }
+
+;   const contentBlock = htmlToDraft(html);
     if (contentBlock) {
       const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
       const tempEditorState = EditorState.createWithContent(contentState);
@@ -27,24 +53,32 @@ const PostWrite = () => {
     setEditorState(editorState);
   };
 
+  const onChangeTitle = (e:React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value);
+  }
+
+  const onChangeCategory = (e:React.ChangeEvent<HTMLSelectElement>) => {
+    setCategory(e.target.value);
+  }
+
   return (
     <div className={style.post_write_wrap}>
-      <h2 className={style.post_write_top}>게시글 작성</h2>
+      <h2 className={style.post_write_top}>게시글 {isPostCorrect ? "수정" : "작성"}</h2>
       <form className={style.post_write_form}>
-        <select name="category" className={style.post_write_select}>
+        <select name="category" className={style.post_write_select} onChange={onChangeCategory} value={category}>
           {CategoryList.map((item, index) => {
             if(index >=1) {
               return item.category.map((subItem, subIndex) => {
                 if(subIndex >=1 ){
                   return (
-                    <option className={style.option}>{subItem}</option>
+                    <option className={style.option} value={subItem}>{subItem}</option>
                   )
                 }
               })
             } else return null; 
           })}
         </select>
-        <input className={style.post_write_title} type="text" name="title" placeholder="제목" value=""/>
+        <input className={style.post_write_title} type="text" name="title" placeholder="제목" value={title} onChange={onChangeTitle}/>
       </form>
       <Editor 
         wrapperClassName={style.editor_wrapper}

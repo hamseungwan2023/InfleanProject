@@ -6,7 +6,7 @@ const PostWroteRoute = () => {
   return (
     <section className="postWroteRoute">
       <PostWrote />
-      <PostList />
+      <PostList isPostCorrect={true}/>
     </section>
   )
 }

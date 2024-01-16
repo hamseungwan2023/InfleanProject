@@ -15,6 +15,7 @@ import Join from "./routes/Join";
 import PostWriteRoute from "./routes/PostWriteRoute";
 import NoteList from "./components/note/NoteList";
 import NoteWrite from "./components/note/NoteWrite";
+import PostCorrectRoute from "./routes/PostCorrectRoute";
 
 const router = createBrowserRouter([
   {
@@ -51,6 +52,13 @@ const router = createBrowserRouter([
         element: <>
           <Aside />
           <PostWriteRoute />
+        </>
+      },
+      {
+        path: "/postCorrect/:id",
+        element: <>
+          <Aside />
+          <PostCorrectRoute />
         </>
       },
       {
