@@ -40,7 +40,7 @@ const PostList = ({isPostCorrect}:TProps) => {
   useEffect(() => {
     const getPostList = async() => {
       const res = await axios.get(
-      `/api/postList?type=total&page=${pageInfo.page}`);
+      `/api/postList/total?page=${pageInfo.page}`);
   
       try {
         if (res.status === 200) {
