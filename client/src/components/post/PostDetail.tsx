@@ -13,6 +13,7 @@ const PostDetail = () => {
   useEffect(() => {
     const getPostDetail = async () => {
       const res = await axios.get(`http://localhost:8080/api/postDetail/${postId}`);
+    
       try {
         if(res.status===200) {
           setPostDetail(res.data);

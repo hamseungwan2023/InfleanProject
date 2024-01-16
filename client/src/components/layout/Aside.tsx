@@ -5,7 +5,7 @@ import Profile from "../profile/Profile";
 
 const Aside = () => {
   return <aside className="aside">
-    <Profile />
+    <Login />
     {/* 로그인 시 <Profile /> 노출 */}
     <Category />
   </aside>

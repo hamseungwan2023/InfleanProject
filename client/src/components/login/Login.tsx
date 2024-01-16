@@ -10,6 +10,7 @@ import classnames from "classnames";
 import { useSelector, useDispatch } from "react-redux";
 import { login } from "../../slices/login/reducer";
 import { AppDispatch, RootState } from "../../slices/store";
+import Profile from "../profile/Profile";
 
 interface Ires {
   data: {
@@ -46,7 +47,6 @@ const Login = () => {
 
   const handleLogin = (e: any) => {
     e.preventDefault();
-    navigate("/");
     dispatch(login(username, password));
     localStorage.setItem("accessToken ", "fdsafd");
     localStorage.setItem("refreshToken ", "asdfsafsdfd");
@@ -110,15 +110,11 @@ const Login = () => {
                   </button>
                 </div>
               </div>
-              <input
-                type="submit"
-                value={isLoading ? "로그인 중 ..." : "로그인하기"}
-                disabled={isLoading}
-                className={Style.btn_submit}
-              />
               <button
                 className={Style.btn_submit}
-                onClick={(e) => handleLogin(e)}
+                value={isLoading ? "로그인 중 ..." : "로그인하기"}
+                disabled={isLoading}
+                onClick={handleLogin}
               >
                 로그인하기
               </button>
@@ -147,19 +143,7 @@ const Login = () => {
           </div>
         </div>
       ) : (
-        <div className={style.wrap_loginSucess}>
-          <img src={user?.profileImg} width={"100px"} />
-          <p>{user?.nickname}</p>
-          <div className={style.wrap_toUpdate}>
-            <button onClick={(e) => navigate(`/profile/${user.id}`)}>
-              수정
-              <img
-                src="https://png.pngtree.com/png-clipart/20190705/original/pngtree-vector-cog-wheel-icon-png-image_4271398.jpg"
-                width={"15px"}
-              ></img>
-            </button>
-          </div>
-        </div>
+        <Profile />
       )}
     </div>
   );
