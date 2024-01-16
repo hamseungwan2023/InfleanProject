@@ -43,9 +43,10 @@ export const login =
         username: username,
         password: password,
       });
+      localStorage.setItem("accessToken", response.data.accessToken);
+      localStorage.setItem("refreshToken", response.data.refreshToken);
+
       dispatch(loginSuccess(response.data));
-      console.log("로그인 성공");
-      console.log("사용자 정보", response.data);
     } catch (error) {
       dispatch(loginFailure("로그인에 실패했습니다."));
     }

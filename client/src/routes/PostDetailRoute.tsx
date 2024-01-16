@@ -8,7 +8,7 @@ const PostDetailRoute = () => {
     <section className="postDetailRoute">
       <PostDetail />
       <CommentList />
-      <PostList isPostCorrect={false}/>
+      {/* <PostList isPostCorrect={false}/> */}
     </section>
   );
 };

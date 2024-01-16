@@ -48,8 +48,6 @@ const Login = () => {
   const handleLogin = (e: any) => {
     e.preventDefault();
     dispatch(login(username, password));
-    // localStorage.setItem("accessToken ", "fdsafd");
-    // localStorage.setItem("refreshToken ", "asdfsafsdfd");
     setIsBtnClick(false);
   };
 
@@ -68,7 +66,6 @@ const Login = () => {
     }
   };
 
-  console.log(user);
   return (
     <div className={style.area_login}>
       {isLoggedIn === false ? (

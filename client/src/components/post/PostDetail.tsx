@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { Axios } from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { TPost } from "../../constants/post";
@@ -12,7 +12,11 @@ const PostDetail = () => {
 
   useEffect(() => {
     const getPostDetail = async () => {
-      const res = await axios.get(`http://localhost:8080/api/postDetail/${postId}`);
+      const res = await axios.get(`/api/postDetail/${postId}`,{
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+        }
+      });
     
       try {
         if(res.status===200) {
