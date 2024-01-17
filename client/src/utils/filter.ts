@@ -6,19 +6,21 @@ import { TComment } from "../constants/comment";
 
 // 시간 순 반환 
 export const sortArrByDate = (arr: any[]) => {
-  return arr.sort((a, b) => -moment(a.createdAt).diff(moment(b.createdAt)));
+  let tempArr = [...arr];
+  return tempArr.sort((a, b) => -moment(a.createdAt).diff(moment(b.createdAt)));
 }
 
 // 댓글 / 대댓글 계층에 따른 순서 반영 후 반환 
 export const filterCommentByRecent = (commentList : TComment[]) => {
-  sortArrByDate(commentList);
-  commentList.forEach((item, index, arr) => {
+  let tempArr = [...commentList];
+  tempArr = sortArrByDate(tempArr);
+  tempArr.forEach((item, index, arr) => {
     if(item.replyCommentList){
       sortArrByDate(item.replyCommentList);
     }
   })
 
-  return commentList;
+  return tempArr;
 }
 
 // 댓글, 게시글 인기 순 반환 함수 

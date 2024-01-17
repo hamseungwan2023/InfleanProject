@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { baseUrl, logout } from "../slices/login/reducer";
+import { logout } from "../slices/reducers/auth";
 import style from "../components/layout/Header.module.scss";
 import axios from "axios";
 
@@ -9,7 +9,11 @@ function Logout() {
   const onClick = async (e: React.MouseEvent) => {
     e.preventDefault();
     try {
-      // await axios.delete(`${baseUrl}/api/user/logout`);
+      await axios.delete("/user/logout" , { data: {
+        refreshToken: localStorage.getItem("refreshToken")
+      }, headers: {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+      }});
       localStorage.clear();
       dispatch(logout());
     } catch (err) {

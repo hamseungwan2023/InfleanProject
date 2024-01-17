@@ -2,7 +2,6 @@ import { useNavigate } from "react-router";
 import Style from "./FindAccount.module.scss";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { baseUrl } from "../../slices/login/reducer";
 import Timer from "./Timer";
 
 const FindUserPw = () => {
@@ -43,7 +42,7 @@ const FindUserPw = () => {
   const getUserData = async (e: any) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${baseUrl}/api/user/findpw`, {
+      const response = await axios.post(`/api/user/findpw`, {
         username: email,
       });
       setUserPhone(response.data.phoneNumber);
@@ -57,7 +56,7 @@ const FindUserPw = () => {
   const postPhone = async (e: any) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${baseUrl}/api/user/findid`, {
+      const response = await axios.post(`/api/user/findid`, {
         phoneNumber: number,
       });
       setAccessCode(response.data.certNumber);
@@ -70,7 +69,7 @@ const FindUserPw = () => {
   //인증번호 가져오기
   const getNumber = async () => {
     try {
-      const response = await axios.get(`${baseUrl}/api/user/certNumber
+      const response = await axios.get(`/api/user/certNumber
       `);
       setUPw(response.data.password);
     } catch (err) {

@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import classnames from "classnames";
 
 import { useSelector, useDispatch } from "react-redux";
-import { login } from "../../slices/login/reducer";
+import { login } from "../../slices/reducers/auth";
 import { AppDispatch, RootState } from "../../slices/store";
 import Profile from "../profile/Profile";
 
@@ -68,7 +68,7 @@ const Login = () => {
 
   return (
     <div className={style.area_login}>
-      {isLoggedIn === false ? (
+      {isLoggedIn === true ? (
         <div className={style.wrap_login}>
           {isBtnClick ? (
             <form className={Style.form}>

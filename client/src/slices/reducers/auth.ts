@@ -1,12 +1,7 @@
-import { createSlice, Action } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { AppDispatch, RootState } from "../store";
-interface LogoutAction {
-  type: string;
-  payload: void;
-}
+import { AppDispatch} from "../store";
 
-export const baseUrl = "http://localhost:8080";
 const authSlice = createSlice({
   name: "auth",
   initialState: {

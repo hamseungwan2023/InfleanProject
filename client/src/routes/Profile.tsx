@@ -3,7 +3,6 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Style from "./Profile.module.scss";
 import { useSelector } from "react-redux";
-import { baseUrl } from "../slices/login/reducer";
 
 export const srcUrl =
   "https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg";
@@ -66,7 +65,7 @@ const Profile = () => {
     }
     e.preventDefault();
     try {
-      await axios.patch(`${baseUrl}/api/profile/:id`, {
+      await axios.patch(`/api/profile/:id`, {
         //추후에 백엔드 api명세서 나오면 수정
         nickname: nickName,
         password: password,

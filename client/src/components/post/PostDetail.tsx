@@ -56,7 +56,7 @@ const PostDetail = () => {
           </div>
         </div>
       </div>
-      <div className={style.content_wrap}>{postDetail?.content}</div>
+      <div className={style.content_wrap} dangerouslySetInnerHTML={ postDetail && {__html: postDetail.content}}/>
       <div className={style.recommend_wrap}>
         <button type="button" className={style.btn_recommend}>
           <svg

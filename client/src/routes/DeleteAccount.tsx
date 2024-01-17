@@ -3,7 +3,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Style from "./DeleteAccount.module.scss";
 import { useSelector } from "react-redux";
-import { baseUrl } from "../slices/login/reducer";
 
 const DeleteAccount = () => {
   const user = useSelector((state: any) => state.auth.user);
@@ -13,6 +12,8 @@ const DeleteAccount = () => {
   const [goodbyePage, setGoodbyePage] = useState<boolean>(false);
   const [password, setPassword] = useState<string>("");
   const [confirmPw, setConfirmPw] = useState<string>("");
+
+  console.log(isLoggedIn);
 
   const onChange = (e: any) => {
     if (e.target.username === "password") {
@@ -45,7 +46,6 @@ const DeleteAccount = () => {
   const navigate = useNavigate();
   return (
     <div>
-      {isLoggedIn === true ? (
         <div>
           {goodbyePage === false ? (
             <div className={Style.deleteAccount_wrapper}>
@@ -126,9 +126,6 @@ const DeleteAccount = () => {
             <div>계정이 삭제 되었습니다</div>
           )}
         </div>
-      ) : (
-        <div>로그인이 안되면 못 보는 페이지</div>
-      )}
     </div>
   );
 };

@@ -13,6 +13,9 @@ export const getDayMinuteCounter = (date: string): number | string => {
   
   if (dayDiff === 0 && hourDiff === 0) { // 작성한지 1시간도 안지났을때
     const minutes = Math.ceil(-minutesDiff);
+    if(minutes <=5) {
+      return "방금";
+    }
     return minutes + '분 전';		 // '분' 로 표시
   }
 
