@@ -13,7 +13,7 @@ type TProps = {
 const PostList = ({isPostCorrect}:TProps) => {
 
   const [pageInfo, setPageInfo] = useState({
-    page: 1,
+    currentPage: 0,
     totalPage: 1
   });
 
@@ -23,10 +23,10 @@ const PostList = ({isPostCorrect}:TProps) => {
 
   const handleIntersect = useCallback(() => {
     setPageInfo((prev) => {
-      if( prev.totalPage > prev.page) {
+      if( prev.totalPage -1 > prev.currentPage) {
         return {
           ...prev,
-          page: prev.page + 1
+          currentPpage: prev.currentPage + 1
         };
       }
       return prev;
@@ -40,15 +40,19 @@ const PostList = ({isPostCorrect}:TProps) => {
   useEffect(() => {
     const getPostList = async() => {
       const res = await axios.get(
-      `/api/postList/total?page=${pageInfo.page}`);
+      `/api/postList/LOL?page=${pageInfo.currentPage}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+        }
+      });
   
       try {
         if (res.status === 200) {
           setPostList((prev) => {
-            if (prev && prev.data?.length > 0) {
+            if (prev && prev.dtos?.length > 0) {
               return {
                 ...res.data,
-                data: [...prev.data, ...res.data.data]
+                dtos: [...prev.dtos, ...res.data.dtos]
               };
             }
             return res.data;
@@ -83,14 +87,14 @@ const PostList = ({isPostCorrect}:TProps) => {
       }))
     }*/
     getPostList();
-  }, [pageInfo.page])
+  }, [pageInfo.currentPage])
 
   return <div className="postlist" role="tabpanel">
     <ul>
       {
-        postList?.data.map((item,index) => {
+        postList?.dtos.map((item,index) => {
           return (
-            <PostItem postItem={item} isPostCorrect={isPostCorrect} key={index} ref={postList.data.length - 1 === index ? setTarget : null}/>
+            <PostItem postItem={item} isPostCorrect={isPostCorrect} key={index} ref={postList.dtos.length - 1 === index ? setTarget : null}/>
             /*
             [TODO] 로딩시 로딩컴포넌트 노출
             { postList.data.length - 1 === index && isLoading && <Loading />}

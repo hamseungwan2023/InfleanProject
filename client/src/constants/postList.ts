@@ -1,7 +1,7 @@
 
 export type TPostList = {
-  data: TPostItem[], //페이지별 데이터 리스트
-  page: number, // 현재 페이지
+  dtos: TPostItem[], //페이지별 데이터 리스트
+  currentPage: number, // 현재 페이지
   totalPage: number  // 전체 페이지
 }
 
@@ -14,7 +14,7 @@ export type TPostItem = {
   rank: number;   // 작성자 등급(추천 수에 따름)
   finalLike: number;  // 추천 수- 비추천 수
   thumbnailUrl: string;  // 썸네일 url
-  commentCount: number;  // 댓글 수
+  contentCount: number;  // 댓글 수
   isNotification : boolean; // 공지글 여부
 }
 
@@ -28,7 +28,7 @@ export const postListData:TPostItem[] = [
     rank: 0,
     finalLike: 22,
     thumbnailUrl: "https://opgg-com-image.akamaized.net/attach/images/20240103063850.2121435.jpg?image=w_200",
-    commentCount: 13,
+    contentCount: 13,
     isNotification : true,
   },
   {
@@ -40,7 +40,7 @@ export const postListData:TPostItem[] = [
     rank: 0,
     finalLike: 22,
     thumbnailUrl: "https://opgg-com-image.akamaized.net/attach/images/20240103063850.2121435.jpg?image=w_200",
-    commentCount: 13,
+    contentCount: 13,
     isNotification : true,
   },{
     id: 23,
@@ -51,7 +51,7 @@ export const postListData:TPostItem[] = [
     rank: 0,
     finalLike: 22,
     thumbnailUrl: "https://opgg-com-image.akamaized.net/attach/images/20240103063850.2121435.jpg?image=w_200",
-    commentCount: 13,
+    contentCount: 13,
     isNotification : false,
   },{
     id: 23,
@@ -62,7 +62,7 @@ export const postListData:TPostItem[] = [
     rank: 0,
     finalLike: 22,
     thumbnailUrl: "https://opgg-com-image.akamaized.net/attach/images/20240103063850.2121435.jpg?image=w_200",
-    commentCount: 13,
+    contentCount: 13,
     isNotification : false,
   },{
     id: 23,
@@ -73,7 +73,7 @@ export const postListData:TPostItem[] = [
     rank: 0,
     finalLike: 22,
     thumbnailUrl: "https://opgg-com-image.akamaized.net/attach/images/20240103063850.2121435.jpg?image=w_200",
-    commentCount: 13,
+    contentCount: 13,
     isNotification : false,
   },{
     id: 23,
@@ -84,7 +84,7 @@ export const postListData:TPostItem[] = [
     rank: 0,
     finalLike: 22,
     thumbnailUrl: "https://opgg-com-image.akamaized.net/attach/images/20240103063850.2121435.jpg?image=w_200",
-    commentCount: 13,
+    contentCount: 13,
     isNotification : false,
   },{
     id: 23,
@@ -95,7 +95,7 @@ export const postListData:TPostItem[] = [
     rank: 0,
     finalLike: 22,
     thumbnailUrl: "https://opgg-com-image.akamaized.net/attach/images/20240103063850.2121435.jpg?image=w_200",
-    commentCount: 13,
+    contentCount: 13,
     isNotification : false,
   },{
     id: 23,
@@ -106,7 +106,7 @@ export const postListData:TPostItem[] = [
     rank: 0,
     finalLike: 22,
     thumbnailUrl: "https://opgg-com-image.akamaized.net/attach/images/20240103063850.2121435.jpg?image=w_200",
-    commentCount: 13,
+    contentCount: 13,
     isNotification : false,
   },{
     id: 23,
@@ -117,7 +117,7 @@ export const postListData:TPostItem[] = [
     rank: 0,
     finalLike: 22,
     thumbnailUrl: "https://opgg-com-image.akamaized.net/attach/images/20240103063850.2121435.jpg?image=w_200",
-    commentCount: 13,
+    contentCount: 13,
     isNotification : false,
   },{
     id: 23,
@@ -128,65 +128,65 @@ export const postListData:TPostItem[] = [
     rank: 0,
     finalLike: 22,
     thumbnailUrl: "https://opgg-com-image.akamaized.net/attach/images/20240103063850.2121435.jpg?image=w_200",
-    commentCount: 13,
+    contentCount: 13,
     isNotification : false,
   },
 ]
 
 export const realPostListData:TPostList[] = [
   {
-    data: postListData,
-    page: 0,
+    dtos: postListData,
+    currentPage: 0,
     totalPage: 10
   },
   {
-    data: postListData,
-    page: 1,
+    dtos: postListData,
+    currentPage: 1,
     totalPage: 10
   },
   {
-    data: postListData,
-    page: 2,
+    dtos: postListData,
+    currentPage: 2,
     totalPage: 10
   },
   {
-    data: postListData,
-    page: 3,
+    dtos: postListData,
+    currentPage: 3,
     totalPage: 10
   },
   {
-    data: postListData,
-    page: 4,
+    dtos: postListData,
+    currentPage: 4,
     totalPage: 10
   },
   {
-    data: postListData,
-    page: 5,
+    dtos: postListData,
+    currentPage: 5,
     totalPage: 10
   },
   {
-    data: postListData,
-    page: 6,
+    dtos: postListData,
+    currentPage: 6,
     totalPage: 10
   },
   {
-    data: postListData,
-    page: 7,
+    dtos: postListData,
+    currentPage: 7,
     totalPage: 10
   },
   {
-    data: postListData,
-    page: 8,
+    dtos: postListData,
+    currentPage: 8,
     totalPage: 10
   },
   {
-    data: postListData,
-    page: 9,
+    dtos: postListData,
+    currentPage: 9,
     totalPage: 10
   },
   {
-    data: postListData,
-    page: 10,
+    dtos: postListData,
+    currentPage: 10,
     totalPage: 10
   }
 ]

@@ -1,7 +1,11 @@
+import axios from "axios";
 import classNames from "classnames";
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import { Link, useParams } from "react-router-dom";
 import { TComment } from "../../constants/comment";
+import { loadReduxCommentList } from "../../slices/reducers/commentList";
+import { AppDispatch } from "../../slices/store";
 import { getDayMinuteCounter } from "../../utils/getDayMinuteCounter";
 import style from "./Comment.module.scss";
 import CommentWrite from "./CommentWrite";
@@ -15,6 +19,47 @@ type TProps = {
 
 const CommentItem = ({ comment, clickReplyBtnParentId, setClickReplyBtnParentId, setCommentList } : TProps ) => {
 
+  const [isEdit, setIsEdit] = useState(false);
+  const [isEditReplyComment, setIsEditReplyComment] = useState(false);
+  const [editNumber, setEditNumber] = useState(0);
+  const dispatch:AppDispatch = useDispatch();
+  const postId = useParams().id;
+
+  const onClickDelete = (commentId: number) => async () => {
+    try{
+      const res = await axios.delete(`/api/commentDelete/${commentId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+        }
+      });
+  
+      if(res.status===200) {
+        if(postId) {
+          dispatch(loadReduxCommentList(postId));
+        }
+      }
+    } catch(e) {
+      console.log(e);
+    }
+  }
+
+  const onClickReplyDelete = (replyCommentId: number) => async () => {
+    try{
+      const res = await axios.delete(`/api/replyCommentDelete/${replyCommentId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+        }
+      });
+  
+      if(res.status===200) {
+        if(postId) {
+          dispatch(loadReduxCommentList(postId));
+        }
+      }
+    } catch(e) {
+      console.log(e);
+    }
+  }
   return (
     <>
       <li className={style.comment_item}>
@@ -36,9 +81,17 @@ const CommentItem = ({ comment, clickReplyBtnParentId, setClickReplyBtnParentId,
             <span className={style.last_update}>{getDayMinuteCounter(comment.createdAt)}</span>
           </div>
           <div className={style.content}>
-            {comment.content}
+          {
+            isEdit ? <CommentWrite isReplyComment={false} setCommentList={setCommentList} isEditComment commentContent={comment.content} setIsEdit={setIsEdit} editNumber={editNumber}/>  : comment.content
+          }
           </div>
           <div className={style.bottom_wrap}>
+            <button type="button" className={style.btn_delete} onClick={onClickDelete(comment.id)}>
+              삭제하기
+            </button>
+            <button type="button" className={style.btn_edit} onClick={() => {setIsEdit(true); setEditNumber(comment.id)}}>
+              수정하기
+            </button>
             <button type="button" className={style.btn_report}>
               신고하기
             </button>
@@ -66,9 +119,18 @@ const CommentItem = ({ comment, clickReplyBtnParentId, setClickReplyBtnParentId,
                   <span className={style.last_update}>{getDayMinuteCounter(replyComment.createdAt)}</span>
                 </div>
                 <div className={style.content}>
-                  { replyComment.parentCommentNickname !== comment.writerNickname && <span className={style.tag_comment}>{replyComment.parentCommentNickname}</span>}{replyComment.content}
+                  { replyComment.parentCommentNickname !== comment.writerNickname && <span className={style.tag_comment}>{replyComment.parentCommentNickname}</span>}
+                  {
+                    isEditReplyComment ? <CommentWrite isReplyComment={true} setCommentList={setCommentList} isEditComment commentContent={replyComment.content} setIsEditReplyComment={setIsEditReplyComment} editNumber={editNumber}/>  : replyComment.content
+                  }
                 </div>
                 <div className={style.bottom_wrap}>
+                <button type="button" className={style.btn_delete} onClick={onClickReplyDelete(replyComment.id)}>
+                  삭제하기
+                </button>
+                <button type="button" className={style.btn_edit} onClick={() => {setIsEditReplyComment(true); setEditNumber(replyComment.id)}}>
+                  수정하기
+                </button>
                   <button type="button" className={style.btn_report}>
                     신고하기
                   </button>
