@@ -8,7 +8,6 @@ export default function ProtectedRoute({
   children: React.ReactNode;
 }) {
   const isLoggedIn = useSelector((state: any) => state.auth.isLoggedIn);
-  console.log(isLoggedIn);
 
   return <>{children}</>;
 }

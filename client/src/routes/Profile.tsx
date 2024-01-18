@@ -3,7 +3,6 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Style from "./Profile.module.scss";
 import { useSelector } from "react-redux";
-import { baseUrl } from "../slices/login/reducer";
 
 export const srcUrl =
   "https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg";
@@ -18,6 +17,7 @@ const Profile = () => {
 
   const user = useSelector((state: any) => state.auth.user);
   const isLoggedIn = useSelector((state: any) => state.auth.isLoggedIn);
+
   const AllowedImageExtensions = [".jpg", ".jpeg", ".png", ".svg"]; // 허용할 이미지 확장자들
 
   const navigate = useNavigate();
@@ -25,10 +25,10 @@ const Profile = () => {
   //userData를 가져오는 함수 useEffect에 주석 취소
 
   //비밀번호 길이만큼 *을 추가해주는 로직
-  let hidePassword = "";
-  for (let i = 0; i < user.password.length; i++) {
-    hidePassword += "*";
-  }
+  // let hidePassword = "";
+  // for (let i = 0; i < user.password.length; i++) {
+  //   hidePassword += "*";
+  // }
 
   //image 유형 걸러주는 함수
   const isValidImageExtension = (filename: any) => {
@@ -66,7 +66,7 @@ const Profile = () => {
     }
     e.preventDefault();
     try {
-      await axios.patch(`${baseUrl}/api/profile/:id`, {
+      await axios.patch(`/profile/update`, {
         //추후에 백엔드 api명세서 나오면 수정
         nickname: nickName,
         password: password,
@@ -94,10 +94,10 @@ const Profile = () => {
                   <h5>{user.nickname}</h5>
                 </div>
                 <div className={Style.email_wrapper}>
-                  <h5>{user.username}</h5>
+                  <h5>{user.email}</h5>
                 </div>
                 <div className={Style.password_wrapper}>
-                  <h5>{hidePassword}</h5>
+                  <h5>{}</h5>
                 </div>
                 <button
                   className={Style.retouchBtn}

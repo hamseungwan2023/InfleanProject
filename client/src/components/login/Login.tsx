@@ -34,13 +34,15 @@ const Login = () => {
 
   const dispatch: AppDispatch = useDispatch();
 
-  const user = useSelector((state: any) => state.auth.user);
-  const isLoggedIn = useSelector((state: any) => state.auth.isLoggedIn);
-  // console.log(isLoggedIn, 1);
+  const user = useSelector((state: any) => state.auth?.user);
+  const isLoggedIn = useSelector((state: any) => state.auth?.isLoggedIn);
 
   useEffect(() => {
     if (isLoggedIn && user) {
-      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("accessToken", JSON.stringify(user?.accessToken));
+      localStorage.setItem("refreshToken", JSON.stringify(user?.refreshToken));
+      localStorage.setItem("memberId", user.memberId);
+      localStorage.setItem("nickname", user.nickname);
       setIsLogin(true);
     }
   }, [user, isLoggedIn]);
@@ -67,11 +69,9 @@ const Login = () => {
       setPassword(e.target.value);
     }
   };
-
-  console.log(user);
   return (
     <div className={style.area_login}>
-      {isLoggedIn === false ? (
+      {!isLoggedIn ? (
         <div className={style.wrap_login}>
           {isBtnClick ? (
             <form className={Style.form}>

@@ -47,33 +47,50 @@ const Join = () => {
 
   const [isSecretPassword, setIsSecretPassword] = useState(true);
 
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  // const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   setIsLoading(true);
+  //   try {
+  //     const formData = new FormData();
+
+  //     if (profileImg) {
+  //       formData.append("profileImg", profileImg);
+  //       const jsonData = {
+  //         username,
+  //         nickname,
+  //         password,
+  //         email: "awdad@naver.com",
+  //       };
+
+  //       formData.append(
+  //         "jsonData",
+  //         new Blob([JSON.stringify(jsonData)], { type: "application/json" })
+  //       );
+  //       await axios.post("/user/signup", formData, {
+  //         headers: { "Content-Type": "multipart/form-data", charset: "utf-8" },
+  //       });
+  //     }
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  //   setIsLoading(false);
+  // };
+
+  const formData = {
+    username: username,
+    password: password,
+    nickname: nickname,
+    email: "fdsfasfa",
+  };
+
+  const onSubmit = async (e: any) => {
     e.preventDefault();
-    setIsLoading(true);
     try {
-      const formData = new FormData();
-
-      if (profileImg) {
-        formData.append("profileImg", profileImg);
-        const jsonData = {
-          username,
-          nickname,
-          password,
-          email: "awdad@naver.com",
-        };
-
-        formData.append(
-          "jsonData",
-          new Blob([JSON.stringify(jsonData)], { type: "application/json" })
-        );
-        await axios.post("/user/signup", formData, {
-          headers: { "Content-Type": "multipart/form-data", charset: "utf-8" },
-        });
-      }
-    } catch (e) {
-      console.log(e);
+      const response = await axios.post("/user/signup", formData);
+      console.log(response.data);
+    } catch (err) {
+      console.error(err);
     }
-    setIsLoading(false);
   };
 
   const getAddress = (e: string) => {
@@ -241,7 +258,6 @@ const Join = () => {
     setIsSecretPassword(!isSecretPassword);
   };
 
-  console.log("roadAddress", roadAddress);
   return (
     <form onSubmit={onSubmit} className={style.form}>
       <div className={style.input_wrapper}>

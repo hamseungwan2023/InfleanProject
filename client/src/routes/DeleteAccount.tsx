@@ -3,7 +3,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Style from "./DeleteAccount.module.scss";
 import { useSelector } from "react-redux";
-import { baseUrl } from "../slices/login/reducer";
 
 const DeleteAccount = () => {
   const user = useSelector((state: any) => state.auth.user);
@@ -28,11 +27,12 @@ const DeleteAccount = () => {
     e.preventDefault();
     if (password === confirmPw && password === user?.password) {
       try {
-        // await axios.delete(`${baseUrl}/api/user/delete`, {
-        //   data: {
-        //     password,
-        //   },
-        // }); 테스트시 주석 풀기
+        await axios.delete(`/user/delete`, {
+          data: {
+            username: user?.username,
+            password,
+          },
+        });
         setGoodbyePage(true);
       } catch (err) {
         console.error(err);

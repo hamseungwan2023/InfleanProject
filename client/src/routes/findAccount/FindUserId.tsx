@@ -2,7 +2,6 @@ import { useNavigate } from "react-router";
 import Style from "./FindAccount.module.scss";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { baseUrl } from "../../slices/login/reducer";
 import Timer from "./Timer";
 
 const FindUserId = () => {
@@ -47,7 +46,7 @@ const FindUserId = () => {
   const postEmail = async (e: any) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${baseUrl}/api/user/findid`, {
+      const response = await axios.post(`/user/findid`, {
         username: email,
       });
       setUId(response.data.username);
@@ -62,7 +61,7 @@ const FindUserId = () => {
   const postPhone = async (e: any) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${baseUrl}/api/user/findid`, {
+      const response = await axios.post(`/user/findid`, {
         phoneNumber: number,
       });
       setUId(response.data.username);
@@ -75,7 +74,7 @@ const FindUserId = () => {
   //인증번호 가져오기
   const getNumber = async () => {
     try {
-      const response = await axios.get(`${baseUrl}/api/user/certNumber
+      const response = await axios.get(`/api/user/certNumber
       `);
       setAccessCode(response.data.certNumber);
     } catch (err) {

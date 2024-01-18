@@ -16,7 +16,6 @@ import NoteWrite from "./components/note/NoteWrite";
 import PostCorrectRoute from "./routes/PostCorrectRoute";
 import FindUserId from "./routes/findAccount/FindUserId";
 import FindUserPw from "./routes/findAccount/FindUserPw";
-import Modal from "./components/location/Modal";
 
 const router = createBrowserRouter([
   {
@@ -61,10 +60,12 @@ const router = createBrowserRouter([
       },
       {
         path: "/postCorrect/:id",
-        element: <>
-          <Aside />
-          <PostCorrectRoute />
-        </>
+        element: (
+          <>
+            <Aside />
+            <PostCorrectRoute />
+          </>
+        ),
       },
       {
         path: "/profile",
@@ -101,10 +102,12 @@ const router = createBrowserRouter([
       },
       {
         path: "/noteList/:id",
-        element: <>
-          <Aside />
-          <NoteList />
-        </>,
+        element: (
+          <>
+            <Aside />
+            <NoteList />
+          </>
+        ),
       },
     ],
   },

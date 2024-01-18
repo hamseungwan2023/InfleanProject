@@ -1,12 +1,8 @@
 import { createSlice, Action } from "@reduxjs/toolkit";
 import axios from "axios";
 import { AppDispatch, RootState } from "../store";
-interface LogoutAction {
-  type: string;
-  payload: void;
-}
+import { PURGE } from "redux-persist";
 
-export const baseUrl = "http://localhost:8080";
 const authSlice = createSlice({
   name: "auth",
   initialState: {
@@ -35,6 +31,8 @@ const authSlice = createSlice({
 
 export const { loginSuccess, loginFailure, logout } = authSlice.actions;
 
+export const selectAuth = (state: RootState) => state.auth;
+
 export const login =
   (username: string, password: string) =>
   async (dispatch: AppDispatch): Promise<void> => {
@@ -46,6 +44,8 @@ export const login =
       dispatch(loginSuccess(response.data));
       console.log("로그인 성공");
       console.log("사용자 정보", response.data);
+      localStorage.setItem("accessToken", response.data.accessToken);
+      localStorage.setItem("refreshToken", response.data.refreshToken);
     } catch (error) {
       dispatch(loginFailure("로그인에 실패했습니다."));
     }
