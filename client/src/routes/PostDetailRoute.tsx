@@ -10,7 +10,7 @@ const PostDetailRoute = () => {
     <section className="postDetailRoute">
       <PostDetail commentCount={commentCount}/>
       <CommentList setCommentCount={setCommentCount}/>
-      {/* <PostList isPostCorrect={false}/> */}
+      <PostList isPostCorrect={false}/>
     </section>
   );
 };

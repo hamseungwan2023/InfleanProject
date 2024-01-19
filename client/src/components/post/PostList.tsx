@@ -45,7 +45,7 @@ const PostList = ({isPostCorrect}:TProps) => {
     const getPostList = async() => {
       setIsLoading(true);
       const res = await axios.get(
-      `/api/postList/LOL?page=${pageInfo.currentPage}`, {
+      `/api/postList?page=${pageInfo.currentPage}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`
         }

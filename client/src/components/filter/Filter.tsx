@@ -9,6 +9,7 @@ const Filter = () => {
   const [bottomFilterClick, setBottomFilterClick] = useState(0);
   const [isClickSearch, setIsClickSearch] = useState(false);
   const [dropdownOption, setDropdownOption] = useState(0);
+  const [category, setCategory] = useState(CategoryList[0].category[0]);
   const [search, setSearch] = useState("");
   const filterTop = useRef(0);
   const [isScrollOver, setIsScrollOver] = useState(false);
@@ -24,6 +25,10 @@ const Filter = () => {
   const onSubmitSearch = (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // 글, 글+내용, 작성자에 따라 검색 ex) state=0(글), 1(글+내용), 2(작성자) ,search="김철수"
+  }
+
+  const onChangeSelect = (e:React.ChangeEvent<HTMLSelectElement>) => {
+    setCategory(e.target.value);
   }
 
   const handleScroll = () => {
@@ -51,11 +56,11 @@ const Filter = () => {
       <div className={style.category_area}>
         <div>
           <button type="button" className={style.category_wrap}>
-            <div className={style.title}>전체</div>
+            <div className={style.title}>{category}</div>
           </button>
         </div>
-        <select className={style.select}>
-          {CategoryList.map((item) => item.category.map((subItem) => <option key="subItem">{subItem}</option>)) }
+        <select className={style.select} onChange={onChangeSelect} value={category}>
+          {CategoryList.map((item) => item.category.map((subItem) => <option key="subItem" value={subItem}>{subItem}</option>)) }
         </select>
       </div>
     </div>
