@@ -17,7 +17,11 @@ enum ECommentTab {
   popular= 2,
 }
 
-const CommentList = () => {
+type TProps = {
+  setCommentCount: React.Dispatch<React.SetStateAction<number>>
+}
+
+const CommentList = ({ setCommentCount }: TProps) => {
   const postId = useParams().id;
   const dispatch:AppDispatch = useDispatch();
   const reduxCommentList = useSelector((state:any) => state.commentList.commentList);
@@ -63,12 +67,15 @@ const CommentList = () => {
   useEffect(()=> {
     if(postId) dispatch(loadReduxCommentList(postId));
     setCommentList(filterCommentByRecent(reduxCommentList));
-    console.log(reduxCommentList);
     if(commentListRef.current) {
       commentListHeight.current = commentListRef.current.offsetHeight;
       commentListTop.current = commentListRef.current.offsetTop;
     }
   },[]);
+
+  useEffect(() => {
+    setCommentCount(countComment(commentList));
+  }, [commentList])
 
   return <div className="comment">
     <div className={classNames(style.title_wrap, {[style.is_fixed]:isScrollOver})}>

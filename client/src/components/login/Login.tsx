@@ -68,8 +68,7 @@ const Login = () => {
 
   return (
     <div className={style.area_login}>
-      {isLoggedIn === true ? (
-        <div className={style.wrap_login}>
+      <div className={style.wrap_login}>
           {isBtnClick ? (
             <form className={Style.form}>
               <div className={Style.wrapper_username}>
@@ -139,9 +138,6 @@ const Login = () => {
             </div>
           </div>
         </div>
-      ) : (
-        <Profile />
-      )}
     </div>
   );
 };

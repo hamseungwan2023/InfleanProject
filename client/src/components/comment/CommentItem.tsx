@@ -60,6 +60,7 @@ const CommentItem = ({ comment, clickReplyBtnParentId, setClickReplyBtnParentId,
       console.log(e);
     }
   }
+
   return (
     <>
       <li className={style.comment_item}>
@@ -82,7 +83,7 @@ const CommentItem = ({ comment, clickReplyBtnParentId, setClickReplyBtnParentId,
           </div>
           <div className={style.content}>
           {
-            isEdit ? <CommentWrite isReplyComment={false} setCommentList={setCommentList} isEditComment commentContent={comment.content} setIsEdit={setIsEdit} editNumber={editNumber}/>  : comment.content
+            isEdit ? <CommentWrite isReplyComment={false} setCommentList={setCommentList} isEditComment commentContent={comment.content} setIsEdit={setIsEdit} editNumber={editNumber}/>  : (comment.deleted ? "삭제된 댓글 입니다." :comment.content)
           }
           </div>
           <div className={style.bottom_wrap}>
@@ -121,7 +122,7 @@ const CommentItem = ({ comment, clickReplyBtnParentId, setClickReplyBtnParentId,
                 <div className={style.content}>
                   { replyComment.parentCommentNickname !== comment.writerNickname && <span className={style.tag_comment}>{replyComment.parentCommentNickname}</span>}
                   {
-                    isEditReplyComment ? <CommentWrite isReplyComment={true} setCommentList={setCommentList} isEditComment commentContent={replyComment.content} setIsEditReplyComment={setIsEditReplyComment} editNumber={editNumber}/>  : replyComment.content
+                    isEditReplyComment ? <CommentWrite isReplyComment={true} setCommentList={setCommentList} isEditComment commentContent={replyComment.content} setIsEditReplyComment={setIsEditReplyComment} editNumber={editNumber}/>  : ( replyComment.deleted ? "삭제된 댓글입니다." : replyComment.content)
                   }
                 </div>
                 <div className={style.bottom_wrap}>

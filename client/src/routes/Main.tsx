@@ -5,7 +5,6 @@ import PostList from "../components/post/PostList";
 const Main = () => {
   return <main>
     <Filter />
-    <PostList isPostCorrect={false}/>
   </main>
 }
 
