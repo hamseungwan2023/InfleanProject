@@ -201,3 +201,14 @@ main, .postDetailRoute, .postWroteRoute, .postWriteRoute, .postCorrectRoute, .no
     box-shadow: none;
   }
 }
+
+.loading_wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+
+  img {
+    width: 100px;
+  }
+}

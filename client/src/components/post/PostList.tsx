@@ -2,9 +2,10 @@ import axios from "axios";
 import moment from "moment";
 import React, { useCallback, useEffect, useState } from "react";
 import { postListData, realPostListData, TPostItem, TPostList } from "../../constants/postList";
-import useInfiniteScroll from "../../hooks/useInfiniteScroll";
+import useInfiniteScroll, { IntersectionHandler } from "../../hooks/useInfiniteScroll";
 import { sortArrByDate } from "../../utils/filter";
 import PostItem from "./PostItem";
+import LoadingSvg from "../../svg/Loading.svg";
 
 type TProps = {
   isPostCorrect: boolean
@@ -17,21 +18,24 @@ const PostList = ({isPostCorrect}:TProps) => {
     totalPage: 1
   });
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const [target, setTarget] = useState<Element | null >(null);
-  // const [isLoading, setIsLoading] = (false);
   const [postList, setPostList] = useState<TPostList>();
 
-  const handleIntersect = useCallback(() => {
-    setPageInfo((prev) => {
-      if( prev.totalPage -1 > prev.currentPage) {
-        return {
-          ...prev,
-          currentPpage: prev.currentPage + 1
-        };
-      }
-      return prev;
-    })
-  }, []);
+  const handleIntersect: IntersectionHandler = async (entry, observer) => {
+    if(!isLoading) {
+      setPageInfo((prev) => {
+        if( prev.totalPage -1 > prev.currentPage) {
+          return {
+            ...prev,
+            currentPage: prev.currentPage + 1
+          };
+        }
+        return prev;
+      })
+    }
+  };
 
   useInfiniteScroll(handleIntersect, target, {
     threshold: 1
@@ -39,6 +43,7 @@ const PostList = ({isPostCorrect}:TProps) => {
 
   useEffect(() => {
     const getPostList = async() => {
+      setIsLoading(true);
       const res = await axios.get(
       `/api/postList/LOL?page=${pageInfo.currentPage}`, {
         headers: {
@@ -62,7 +67,9 @@ const PostList = ({isPostCorrect}:TProps) => {
             ...prev,
             totalPage: res.data.totalPage
           }));
+          
         }
+        setIsLoading(false);
       }catch(e) {
         console.log(e);
       }
@@ -94,13 +101,12 @@ const PostList = ({isPostCorrect}:TProps) => {
       {
         postList?.dtos.map((item,index) => {
           return (
-            <PostItem postItem={item} isPostCorrect={isPostCorrect} key={index} ref={19 === index ? setTarget : null}/>
-            /*
-            [TODO] 로딩시 로딩컴포넌트 노출
-            { postList.data.length - 1 === index && isLoading && <Loading />}
-             */
+            <PostItem postItem={item} isPostCorrect={isPostCorrect} key={index} ref={postList.dtos.length - 1 === index ? setTarget : null}/>
           )
         })
+      }
+      {
+        pageInfo.currentPage < pageInfo.totalPage-1 && isLoading && <div className="loading_wrap"><img src={LoadingSvg} alt="로딩중" /></div>
       }
     </ul>
   </div>
