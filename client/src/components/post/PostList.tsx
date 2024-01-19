@@ -94,7 +94,7 @@ const PostList = ({isPostCorrect}:TProps) => {
       {
         postList?.dtos.map((item,index) => {
           return (
-            <PostItem postItem={item} isPostCorrect={isPostCorrect} key={index} ref={postList.dtos.length - 1 === index ? setTarget : null}/>
+            <PostItem postItem={item} isPostCorrect={isPostCorrect} key={index} ref={19 === index ? setTarget : null}/>
             /*
             [TODO] 로딩시 로딩컴포넌트 노출
             { postList.data.length - 1 === index && isLoading && <Loading />}

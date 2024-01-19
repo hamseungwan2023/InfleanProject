@@ -13,6 +13,7 @@ const useInfiniteScroll = (onIntersect: () => void, target: Element | null, opti
   useEffect(
     () => {
       const observer = new IntersectionObserver(handleIntersect, options);
+      console.log("@");
       target && observer.observe(target);
       return () => {
         observer.disconnect();
