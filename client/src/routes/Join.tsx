@@ -4,13 +4,20 @@ import style from "./Join.module.scss";
 import classnames from "classnames";
 import Modal from "../components/location/Modal";
 
+interface objectUser {
+  username: string;
+  nickname: string;
+  password: string;
+  email: string;
+}
+
 const Join = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const [realname, setRealname] = useState("");
   const [birthday, setBirthday] = useState("");
   const [phone, setPhone] = useState("");
-  const [nickname, setNickname] = useState("");
+  const [nickname, setNickname] = useState<string>("");
   const [detailAd, setDetailAd] = useState<string>("");
   const [roadAddress, setRoadAddress] = useState<string>("");
 
@@ -76,18 +83,38 @@ const Join = () => {
   //   setIsLoading(false);
   // };
 
-  const formData = {
-    username: username,
-    password: password,
-    nickname: nickname,
-    email: "fdsfasfa",
-  };
-
   const onSubmit = async (e: any) => {
     e.preventDefault();
+    // const data = Object.fromEntries(formData);
+
     try {
-      const response = await axios.post("/user/signup", formData);
-      console.log(response.data);
+      const formData = new FormData();
+
+      let reqUserJoinFormDto = {
+        username: username,
+        nickname: nickname,
+        password: password,
+      };
+      // let reqUserJoinFormDto: objectUser = {
+      //   username: "e123rn1ame",
+      //   nickname: "nick12name",
+      //   password: "pas1sw5ord",
+      //   email: "a123ds2@email.com",
+      // };
+      formData.append(
+        "reqUserJoinFormDto",
+        new Blob([JSON.stringify(reqUserJoinFormDto)], {
+          type: "application/json",
+        })
+      );
+      console.log(formData);
+      const response = await axios.post("/user/signup", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      console.log(formData);
+      console.log(response.data, 1);
     } catch (err) {
       console.error(err);
     }
@@ -96,7 +123,6 @@ const Join = () => {
   const getAddress = (e: string) => {
     setRoadAddress(e);
   };
-
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value;
     if (e.target.name === "username") {
@@ -259,7 +285,7 @@ const Join = () => {
   };
 
   return (
-    <form onSubmit={onSubmit} className={style.form}>
+    <form onSubmit={(e) => onSubmit(e)} className={style.form}>
       <div className={style.input_wrapper}>
         <div
           className={classnames(
