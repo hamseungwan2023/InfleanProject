@@ -7,7 +7,7 @@
   text-align: center;
   margin-left: 5%;
   width: 1000px;
-  height: 500px;
+  height: 600px;
   border: $main200 1px solid;
 
   h1 {
@@ -31,6 +31,7 @@
   .checkInput_wrapper {
     margin-top: 5%;
     margin-left: 20px;
+    margin-bottom: 20px;
     .input_wrapper {
       input {
         cursor: default;

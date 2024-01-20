@@ -5,6 +5,7 @@ import classnames from "classnames";
 import Modal from "../components/location/Modal";
 
 interface objectUser {
+  type?: string;
   username: string;
   nickname: string;
   password: string;
@@ -18,8 +19,9 @@ const Join = () => {
   const [birthday, setBirthday] = useState("");
   const [phone, setPhone] = useState("");
   const [nickname, setNickname] = useState<string>("");
-  const [detailAd, setDetailAd] = useState<string>("");
   const [roadAddress, setRoadAddress] = useState<string>("");
+  const [detailAd, setDetailAd] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
 
   const [profileImg, setProfileImg] = useState<Blob | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -30,6 +32,7 @@ const Join = () => {
 
   const [isUsernameValid, setIsUsernameValid] = useState(true);
   const [isPasswordValid, setIsPasswordValid] = useState(true);
+  const [isEmailValid, setIsEmailValid] = useState(true);
   const [isRealnameValid, setIsRealnameValid] = useState(true);
   const [isBirthdayValid, setIsBirthdayValid] = useState(true);
   const [isNicknameValid, setIsNicknameValid] = useState(true);
@@ -41,6 +44,8 @@ const Join = () => {
   const [isUsernameFocus, setIsUsernameFocus] = useState(false);
   const [isPasswordFocus, setIsPasswordFocus] = useState(false);
   const [isRealnameFocus, setIsRealnameFocus] = useState(false);
+  const [isEmailFocus, setIsEmailFocus] = useState(false);
+
   const [isBirthdayFocus, setIsBirthdayFocus] = useState(false);
   const [isNicknameFocus, setIsNicknameFocus] = useState(false);
   const [isPhoneFocus, setIsPhoneFocus] = useState(false);
@@ -54,75 +59,85 @@ const Join = () => {
 
   const [isSecretPassword, setIsSecretPassword] = useState(true);
 
-  // const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   setIsLoading(true);
-  //   try {
-  //     const formData = new FormData();
-
-  //     if (profileImg) {
-  //       formData.append("profileImg", profileImg);
-  //       const jsonData = {
-  //         username,
-  //         nickname,
-  //         password,
-  //         email: "awdad@naver.com",
-  //       };
-
-  //       formData.append(
-  //         "jsonData",
-  //         new Blob([JSON.stringify(jsonData)], { type: "application/json" })
-  //       );
-  //       await axios.post("/user/signup", formData, {
-  //         headers: { "Content-Type": "multipart/form-data", charset: "utf-8" },
-  //       });
-  //     }
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  //   setIsLoading(false);
-  // };
-
-  const onSubmit = async (e: any) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // const data = Object.fromEntries(formData);
-
+    setIsLoading(true);
     try {
       const formData = new FormData();
 
-      let reqUserJoinFormDto = {
-        username: username,
-        nickname: nickname,
-        password: password,
-      };
-      // let reqUserJoinFormDto: objectUser = {
-      //   username: "e123rn1ame",
-      //   nickname: "nick12name",
-      //   password: "pas1sw5ord",
-      //   email: "a123ds2@email.com",
-      // };
-      formData.append(
-        "reqUserJoinFormDto",
-        new Blob([JSON.stringify(reqUserJoinFormDto)], {
-          type: "application/json",
-        })
-      );
-      console.log(formData);
-      const response = await axios.post("/user/signup", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      console.log(formData);
-      console.log(response.data, 1);
-    } catch (err) {
-      console.error(err);
+      if (profileImg) {
+        formData.append("profileImg", profileImg);
+        const jsonData = {
+          username,
+          nickname,
+          password,
+          email,
+          roadAddress,
+          detailAd,
+          phone,
+          realname,
+          birthday,
+        };
+
+        formData.append(
+          "jsonData",
+          new Blob([JSON.stringify(jsonData)], { type: "application/json" })
+        );
+        await axios.post("/user/signup", formData, {
+          headers: { "Content-Type": "multipart/form-data", charset: "utf-8" },
+        });
+      }
+    } catch (e) {
+      console.log(e);
     }
+    setIsLoading(false);
   };
+
+  // const onSubmit = async (e: any) => {
+  //   e.preventDefault();
+
+  //   try {
+  //     const formData = new FormData();
+  //     console.log(username, nickname, password);
+
+  //     let reqUserJoinFormDto = {
+  //       username: username,
+  //       email: email,
+  //       nickname: nickname,
+  //       password: password,
+  //     };
+
+  //     // let reqUserJoinFormDto: objectUser = {
+  //     //   username: "e123rn1ame",
+  //     //   nickname: "nick12name",
+  //     //   password: "pas1sw5ord",
+  //     //   email: "a123ds2@email.com",
+  //     // };
+
+  //     formData.append(
+  //       "reqUserJoinFormDto",
+  //       new Blob([JSON.stringify(reqUserJoinFormDto)], {
+  //         type: "application/json",
+  //       })
+  //     );
+  //     console.log(formData);
+  //     const response = await axios.post("/user/signup", formData, {
+  //       headers: {
+  //         "Content-Type": "multipart/form-data",
+  //       },
+  //     });
+
+  //     console.log(formData);
+  //     console.log(response.data, 1);
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
 
   const getAddress = (e: string) => {
     setRoadAddress(e);
   };
+
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value;
     if (e.target.name === "username") {
@@ -151,6 +166,8 @@ const Join = () => {
         setRequiredMessage("");
         setIsPasswordValid(true);
       }
+    } else if (e.target.name === "email") {
+      setEmail(value);
     } else if (e.target.name === "realname") {
       setRealname(value);
     } else if (e.target.name === "birthday") {
@@ -171,6 +188,16 @@ const Join = () => {
       setIsUsernameFocus(true);
       setIsPasswordFocus(false);
       setIsRealnameFocus(false);
+      setIsBirthdayFocus(false);
+      setIsPhoneFocus(false);
+      setIsNicknameFocus(false);
+      setIsProfileImgFocus(false);
+      setIsDetailAdFocus(false);
+    } else if (e.target.name === "email") {
+      setIsEmailFocus(false);
+      setIsRealnameFocus(false);
+      setIsUsernameFocus(false);
+      setIsPasswordFocus(false);
       setIsBirthdayFocus(false);
       setIsPhoneFocus(false);
       setIsNicknameFocus(false);
@@ -247,6 +274,7 @@ const Join = () => {
 
   const onClickProfileImg = (e: React.MouseEvent) => {
     setIsProfileImgFocus(true);
+    setIsEmailFocus(false);
     setIsUsernameFocus(false);
     setIsPasswordFocus(false);
     setIsRealnameFocus(false);
@@ -303,6 +331,25 @@ const Join = () => {
             value={username}
             className={style.input}
             maxLength={20}
+            required
+          />
+        </div>
+        <div
+          className={classnames(
+            style.wrapper_email,
+            { [style.is_error]: !isEmailValid },
+            { [style.is_focus]: isEmailFocus }
+          )}
+        >
+          <input
+            onChange={onChange}
+            onFocus={onFocus}
+            name="email"
+            type="text"
+            placeholder="이메일"
+            value={email}
+            className={style.input}
+            maxLength={30}
             required
           />
         </div>
@@ -400,13 +447,6 @@ const Join = () => {
             value={birthday}
           />
         </div>
-      </div>
-      {requiredMessage !== "" ? (
-        <strong className={style.error_text} role="alert">
-          {requiredMessage}
-        </strong>
-      ) : null}
-      <div className={style.input_wrapper}>
         <div
           className={classnames(style.wrapper_nickname, {
             [style.is_focus]: isNicknameFocus,
@@ -439,6 +479,13 @@ const Join = () => {
             value={phone}
           />
         </div>
+      </div>
+      {requiredMessage !== "" ? (
+        <strong className={style.error_text} role="alert">
+          {requiredMessage}
+        </strong>
+      ) : null}
+      <div className={style.input_wrapper}>
         <div
           className={classnames(
             style.wrapper_profileImg,
