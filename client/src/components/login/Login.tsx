@@ -39,10 +39,6 @@ const Login = () => {
 
   useEffect(() => {
     if (isLoggedIn && user) {
-      localStorage.setItem("accessToken", JSON.stringify(user?.accessToken));
-      localStorage.setItem("refreshToken", JSON.stringify(user?.refreshToken));
-      localStorage.setItem("memberId", user.memberId);
-      localStorage.setItem("nickname", user.nickname);
       setIsLogin(true);
     }
   }, [user, isLoggedIn]);

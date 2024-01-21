@@ -1,16 +1,12 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import style from "./Join.module.scss";
 import classnames from "classnames";
 import Modal from "../components/location/Modal";
-
-interface objectUser {
-  type?: string;
-  username: string;
-  nickname: string;
-  password: string;
-  email: string;
-}
+import { useDispatch } from "react-redux";
+import { login } from "../slices/login/reducer";
+import { useNavigate } from "react-router-dom";
+import { AppDispatch } from "../slices/store";
 
 const Join = () => {
   const [username, setUsername] = useState<string>("");
@@ -25,6 +21,7 @@ const Join = () => {
 
   const [profileImg, setProfileImg] = useState<Blob | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [findUser, setFindUser] = useState(false);
 
   // 오류메세지, 유효여부 상태 저장
   const [requiredMessage, setRequiredMessage] = useState("");
@@ -59,7 +56,11 @@ const Join = () => {
 
   const [isSecretPassword, setIsSecretPassword] = useState(true);
 
-  const onSubmit = async (e: any) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  useEffect(() => {}, []);
+
+  const onSubmit = async (e: any, dispatch: AppDispatch): Promise<void> => {
     e.preventDefault();
     try {
       const formData = new FormData();
@@ -79,7 +80,6 @@ const Join = () => {
           // birthday,
           //서버 업데이트 되면 주석풀기
         };
-        console.log(jsonData);
         formData.append(
           "reqUserJoinFormDto",
           new Blob([JSON.stringify(jsonData)], { type: "application/json" })
@@ -87,7 +87,10 @@ const Join = () => {
         const response = await axios.post("/user/signup", formData, {
           headers: { "Content-Type": "multipart/form-data", charset: "utf-8" },
         });
-        console.log(response.data);
+        console.log(response.data.username);
+        dispatch(login(username, password));
+        navigate("/");
+
         console.log("success");
       }
     } catch (e) {
@@ -274,7 +277,7 @@ const Join = () => {
   };
 
   return (
-    <form onSubmit={(e) => onSubmit(e)} className={style.form}>
+    <form onSubmit={(e) => onSubmit(e, dispatch)} className={style.form}>
       <div className={style.input_wrapper}>
         <div
           className={classnames(

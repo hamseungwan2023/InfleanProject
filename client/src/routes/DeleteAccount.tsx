@@ -38,28 +38,26 @@ const DeleteAccount = () => {
     }
   };
 
-  const deleteUser = async (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
+  const deleteUser = async (e: any) => {
     e.preventDefault();
     const token = localStorage.getItem("accessToken");
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    };
-    const userDelete = {
-      username: username,
-      password: password,
-    };
+
     if (password === confirmPw) {
       try {
         const response = await axios.delete(`/user/delete`, {
-          data: userDelete,
-          headers: headers,
+          data: {
+            username: username,
+            password: password,
+          },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         });
+        console.log(response);
+
         // dispatch(logout());
         // localStorage.clear();
         console.log("삭제성공");
-        console.log(response.data);
         // navigate("/logout");
       } catch (err) {
         console.error("삭제 실패", err);
