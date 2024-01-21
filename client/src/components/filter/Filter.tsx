@@ -1,7 +1,11 @@
 import classNames from "classnames";
 import React, { useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { bottomFilterList } from "../../constants/bottomFilterList";
 import { CategoryList } from "../../constants/categoryList";
+import { clickedCategory } from "../../slices/reducers/category";
+import { AppDispatch } from "../../slices/store";
 import style from "./Filter.module.scss";
 
 const Filter = () => {
@@ -13,6 +17,16 @@ const Filter = () => {
   const [search, setSearch] = useState("");
   const filterTop = useRef(0);
   const [isScrollOver, setIsScrollOver] = useState(false);
+
+  const dispatch:AppDispatch = useDispatch();
+
+  useEffect(()=>{dispatch(clickedCategory(category))},[category]); // 셀렉트 변경시 리덕스 카테고리 값 같이변경
+
+  const reduxCategory = useSelector((state:any) => state.category.category); //리덕스 카테고리값
+
+  useEffect(()=> {
+    setCategory(reduxCategory);
+  },[reduxCategory]);
 
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -30,6 +44,8 @@ const Filter = () => {
   const onChangeSelect = (e:React.ChangeEvent<HTMLSelectElement>) => {
     setCategory(e.target.value);
   }
+
+
 
   const handleScroll = () => {
     if(window.pageYOffset >= filterTop.current) {

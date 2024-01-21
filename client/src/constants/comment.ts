@@ -8,7 +8,7 @@ export type TComment = {
   createdAt: string;    //작성일
   content: string; // 내용
   replyCommentList?: TReplyComment[]; // 대댓글 리스트
-  deleted: boolean; //삭제여부
+  delete: boolean; //삭제여부
   // 추가할 것: 댓글 첨부 이미지 url (시간없으면 패스)
 }
 
@@ -21,7 +21,7 @@ export type TReplyComment = {
   rank: number; // 작성자 등급
   createdAt: string;    // 작성일
   content: string; // 내용
-  deleted: boolean; //삭제여부
+  delete: boolean; //삭제여부
   // 추가할 것: 댓글 첨부 이미지 url (시간없으면 패스)
   // (승완) :
 };

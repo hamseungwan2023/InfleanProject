@@ -13,7 +13,7 @@ type TProps = {
 }
 
 const PostList = ({isPostCorrect}:TProps) => {
-  const category = useSelector((state:any) => state.category);
+  const category = useSelector((state:any) => state.category.category);
 
   const [pageInfo, setPageInfo] = useState({
     currentPage: 0,
@@ -43,43 +43,48 @@ const PostList = ({isPostCorrect}:TProps) => {
     threshold: 1
   });
 
-  useEffect(() => {
-    const getPostList = async() => {
-      setIsLoading(true);
+  const getPostList = async() => {
+    setIsLoading(true);
 
-      console.log(category);
-      let api=`/api/postList?category=LOL&page=${pageInfo.currentPage}`;
+    console.log(category);
+    let api=`/api/postList/${category}?page=${pageInfo.currentPage}`;
 
-      const res = await axios.get(
-      api, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-        }
-      });
-  
-      try {
-        if (res.status === 200) {
-          setPostList((prev) => {
-            if (prev && prev.dtos?.length > 0) {
-              return {
-                ...res.data,
-                dtos: [...prev.dtos, ...res.data.dtos]
-              };
-            }
-            return res.data;
-          });
-    
-          setPageInfo((prev) => ({
-            ...prev,
-            totalPage: res.data.totalPage
-          }));
-          
-        }
-        setIsLoading(false);
-      }catch(e) {
-        console.log(e);
-      }
+    if(category==="전체") {
+      api=`/api/postList?page=${pageInfo.currentPage}`;
     }
+
+    const res = await axios.get(
+    api, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+      }
+    });
+
+    try {
+      if (res.status === 200) {
+        setPostList((prev) => {
+          if (prev && prev.dtos?.length > 0) {
+            return {
+              ...res.data,
+              dtos: [...prev.dtos, ...res.data.dtos]
+            };
+          }
+          return res.data;
+        });
+  
+        setPageInfo((prev) => ({
+          ...prev,
+          totalPage: res.data.totalPage
+        }));
+        
+      }
+      setIsLoading(false);
+    }catch(e) {
+      console.log(e);
+    }
+  }
+
+  useEffect(() => {
     /*
     if(pageInfo.page <= realPostListData.length) {
        const res = realPostListData[pageInfo.page-1];
@@ -100,7 +105,18 @@ const PostList = ({isPostCorrect}:TProps) => {
       }))
     }*/
     getPostList();
-  }, [pageInfo.currentPage, category])
+  }, [pageInfo.currentPage])
+
+  useEffect(()=> {
+    setPageInfo({currentPage: 0, totalPage: 1});
+    setPostList({
+      dtos: [],
+      currentPage: 0,
+      totalPage: 1
+    });
+
+    getPostList();
+  },[category]);
 
   return <div className="postlist" role="tabpanel">
     <ul>

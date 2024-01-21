@@ -27,7 +27,7 @@ const PostDetail = ({commentCount}:TProps) => {
     } catch (e: any) {
       console.log(e.response.data.message);
       if(e.response.data.message === "이미 좋아요/싫어요한 게시글에 좋아요/싫어요를 할 수 없습니다.") {
-        window.confirm("이미 추천한 게시글에 추천을 할 수 없습니다.")
+        window.confirm("이미 추천/비추천한 게시글에 추천을 할 수 없습니다.")
       }else if(e.response.data.message === "자신이 작성한 게시글에는 좋아요를 할 수 없습니다.") {
         window.confirm("자신이 작성한 게시글에는 추천을 할 수 없습니다.")
       }
@@ -47,8 +47,8 @@ const PostDetail = ({commentCount}:TProps) => {
     } catch (e: any) {
       console.log(e.response.data.message);
       if(e.response.data.message === "이미 좋아요/싫어요한 게시글에 좋아요/싫어요를 할 수 없습니다.") {
-        window.confirm("이미 추천한 게시글에 비추천을 할 수 없습니다.")
-      }else if(e.response.data.message === "자신이 작성한 게시글에는 좋아요를 할 수 없습니다.") {
+        window.confirm("이미 추천/비추천한 게시글에 비추천을 할 수 없습니다.")
+      }else if(e.response.data.message === "자신이 작성한 게시글에는 싫어요를 할 수 없습니다.") {
         window.confirm("자신이 작성한 게시글에는 비추천을 할 수 없습니다.")
       }
     }
