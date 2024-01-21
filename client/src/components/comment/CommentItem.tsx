@@ -81,7 +81,7 @@ const CommentItem = ({ comment, clickReplyBtnParentId, setClickReplyBtnParentId,
             <Link to={`/postWrote/${comment.writerId}`} className={style.writer}>{comment.writerNickname}</Link>
             <span className={style.last_update}>{getDayMinuteCounter(comment.createdAt)}</span>
           </div>
-          <div className={style.content}>
+          <div className={classNames(style.content, {[style.is_deleted] : comment.deleted})}>
           {
             isEdit ? <CommentWrite isReplyComment={false} setCommentList={setCommentList} isEditComment commentContent={comment.content} setIsEdit={setIsEdit} editNumber={editNumber}/>  : (comment.deleted ? "삭제된 댓글 입니다." :comment.content)
           }
@@ -119,7 +119,7 @@ const CommentItem = ({ comment, clickReplyBtnParentId, setClickReplyBtnParentId,
                   <Link to={`/postWrote/${replyComment.writerId}`} className={style.writer}>{replyComment.writerNickname}</Link>
                   <span className={style.last_update}>{getDayMinuteCounter(replyComment.createdAt)}</span>
                 </div>
-                <div className={style.content}>
+                <div className={classNames(style.content, {[style.is_deleted] : replyComment.deleted})}>
                   { replyComment.parentCommentNickname !== comment.writerNickname && <span className={style.tag_comment}>{replyComment.parentCommentNickname}</span>}
                   {
                     isEditReplyComment ? <CommentWrite isReplyComment={true} setCommentList={setCommentList} isEditComment commentContent={replyComment.content} setIsEditReplyComment={setIsEditReplyComment} editNumber={editNumber}/>  : ( replyComment.deleted ? "삭제된 댓글입니다." : replyComment.content)

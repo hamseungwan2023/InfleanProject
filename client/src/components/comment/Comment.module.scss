@@ -202,6 +202,11 @@
     color: $main700;
     margin-right: 4px;
   }
+
+  &.is_deleted {
+    color: gray;
+    font-weight: 500;
+  }
 }
 
 .bottom_wrap {

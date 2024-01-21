@@ -6,12 +6,14 @@ import useInfiniteScroll, { IntersectionHandler } from "../../hooks/useInfiniteS
 import { sortArrByDate } from "../../utils/filter";
 import PostItem from "./PostItem";
 import LoadingSvg from "../../svg/Loading.svg";
+import { useSelector } from "react-redux";
 
 type TProps = {
   isPostCorrect: boolean
 }
 
 const PostList = ({isPostCorrect}:TProps) => {
+  const category = useSelector((state:any) => state.category);
 
   const [pageInfo, setPageInfo] = useState({
     currentPage: 0,
@@ -44,8 +46,12 @@ const PostList = ({isPostCorrect}:TProps) => {
   useEffect(() => {
     const getPostList = async() => {
       setIsLoading(true);
+
+      console.log(category);
+      let api=`/api/postList?category=LOL&page=${pageInfo.currentPage}`;
+
       const res = await axios.get(
-      `/api/postList?page=${pageInfo.currentPage}`, {
+      api, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`
         }
@@ -94,7 +100,7 @@ const PostList = ({isPostCorrect}:TProps) => {
       }))
     }*/
     getPostList();
-  }, [pageInfo.currentPage])
+  }, [pageInfo.currentPage, category])
 
   return <div className="postlist" role="tabpanel">
     <ul>
