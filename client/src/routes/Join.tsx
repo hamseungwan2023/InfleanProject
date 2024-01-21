@@ -59,80 +59,41 @@ const Join = () => {
 
   const [isSecretPassword, setIsSecretPassword] = useState(true);
 
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: any) => {
     e.preventDefault();
-    setIsLoading(true);
     try {
       const formData = new FormData();
 
-      if (profileImg) {
-        formData.append("profileImg", profileImg);
+      //프로필 이미지 결정나면 느낌표 지울 예정
+      if (!profileImg) {
+        // formData.append("profileImg", profileImg);
         const jsonData = {
-          username,
-          nickname,
-          password,
-          email,
-          roadAddress,
-          detailAd,
-          phone,
-          realname,
-          birthday,
+          username: username,
+          nickname: nickname,
+          password: password,
+          email: email,
+          // roadAddress,
+          // detailAd,
+          // phone,
+          // realname,
+          // birthday,
+          //서버 업데이트 되면 주석풀기
         };
-
+        console.log(jsonData);
         formData.append(
-          "jsonData",
+          "reqUserJoinFormDto",
           new Blob([JSON.stringify(jsonData)], { type: "application/json" })
         );
-        await axios.post("/user/signup", formData, {
+        const response = await axios.post("/user/signup", formData, {
           headers: { "Content-Type": "multipart/form-data", charset: "utf-8" },
         });
+        console.log(response.data);
+        console.log("success");
       }
     } catch (e) {
       console.log(e);
     }
-    setIsLoading(false);
   };
-
-  // const onSubmit = async (e: any) => {
-  //   e.preventDefault();
-
-  //   try {
-  //     const formData = new FormData();
-  //     console.log(username, nickname, password);
-
-  //     let reqUserJoinFormDto = {
-  //       username: username,
-  //       email: email,
-  //       nickname: nickname,
-  //       password: password,
-  //     };
-
-  //     // let reqUserJoinFormDto: objectUser = {
-  //     //   username: "e123rn1ame",
-  //     //   nickname: "nick12name",
-  //     //   password: "pas1sw5ord",
-  //     //   email: "a123ds2@email.com",
-  //     // };
-
-  //     formData.append(
-  //       "reqUserJoinFormDto",
-  //       new Blob([JSON.stringify(reqUserJoinFormDto)], {
-  //         type: "application/json",
-  //       })
-  //     );
-  //     console.log(formData);
-  //     const response = await axios.post("/user/signup", formData, {
-  //       headers: {
-  //         "Content-Type": "multipart/form-data",
-  //       },
-  //     });
-
-  //     console.log(formData);
-  //     console.log(response.data, 1);
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // };
 
   const getAddress = (e: string) => {
     setRoadAddress(e);

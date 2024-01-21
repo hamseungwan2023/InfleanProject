@@ -38,19 +38,23 @@ const DeleteAccount = () => {
     }
   };
 
-  const deleteUser = async (e: any) => {
+  const deleteUser = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     e.preventDefault();
+    const token = localStorage.getItem("accessToken");
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+    const userDelete = {
+      username: username,
+      password: password,
+    };
     if (password === confirmPw) {
-      const userDelete = {
-        username: username,
-        password: password,
-      };
       try {
-        const response = await axios.post(`/user/delete`, {
+        const response = await axios.delete(`/user/delete`, {
           data: userDelete,
-          headers: {
-            Authorization: `${localStorage.getItem("accessToken")}`,
-          },
+          headers: headers,
         });
         // dispatch(logout());
         // localStorage.clear();
