@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { login } from "../slices/login/reducer";
 import { useNavigate } from "react-router-dom";
 import { AppDispatch } from "../slices/store";
+import { regionList } from "../constants/regionList";
 
 const Join = () => {
   const [username, setUsername] = useState<string>("");
@@ -16,7 +17,6 @@ const Join = () => {
   const [phone, setPhone] = useState("");
   const [nickname, setNickname] = useState<string>("");
   const [roadAddress, setRoadAddress] = useState<string>("");
-  const [detailAd, setDetailAd] = useState<string>("");
   const [email, setEmail] = useState<string>("");
 
   const [profileImg, setProfileImg] = useState<Blob | null>(null);
@@ -36,7 +36,6 @@ const Join = () => {
   const [isPhoneValid, setIsPhoneValid] = useState(true);
   const [isProfileImgValid, setIsProfileImgValid] = useState(true);
   const [isRoadAddressValid, setisRoadAddressValid] = useState();
-  const [isDetailAdValid, setIsDetailAdValid] = useState(true);
 
   const [isUsernameFocus, setIsUsernameFocus] = useState(false);
   const [isPasswordFocus, setIsPasswordFocus] = useState(false);
@@ -48,7 +47,6 @@ const Join = () => {
   const [isPhoneFocus, setIsPhoneFocus] = useState(false);
   const [isProfileImgFocus, setIsProfileImgFocus] = useState(false);
   const [isRoadAddressFocus, setIsRoadAddressFocus] = useState(false);
-  const [isDetailAdFocus, setIsDetailAdFocus] = useState(false);
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -59,9 +57,11 @@ const Join = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   useEffect(() => {}, []);
-
   const onSubmit = async (e: any, dispatch: AppDispatch): Promise<void> => {
     e.preventDefault();
+    const userAddress = roadAddress.substring(0, 2);
+    console.log("userAddress", userAddress);
+
     try {
       const formData = new FormData();
 
@@ -73,11 +73,10 @@ const Join = () => {
           nickname: nickname,
           password: password,
           email: email,
-          // roadAddress,
-          // detailAd,
-          // phone,
-          // realname,
-          // birthday,
+          //roadAddress: userAddress,
+          //phone: phone,
+          //realname: realname,
+          //birthday: birthday,
           //서버 업데이트 되면 주석풀기
         };
         formData.append(
@@ -87,10 +86,8 @@ const Join = () => {
         const response = await axios.post("/user/signup", formData, {
           headers: { "Content-Type": "multipart/form-data", charset: "utf-8" },
         });
-        console.log(response.data.username);
         dispatch(login(username, password));
         navigate("/");
-
         console.log("success");
       }
     } catch (e) {
@@ -140,8 +137,6 @@ const Join = () => {
       setPhone(value);
     } else if (e.target.name === "nickname") {
       setNickname(value);
-    } else if (e.target.name === "detailAd") {
-      setDetailAd(value);
     } else {
       return;
     }
@@ -156,7 +151,6 @@ const Join = () => {
       setIsPhoneFocus(false);
       setIsNicknameFocus(false);
       setIsProfileImgFocus(false);
-      setIsDetailAdFocus(false);
     } else if (e.target.name === "email") {
       setIsEmailFocus(false);
       setIsRealnameFocus(false);
@@ -166,7 +160,6 @@ const Join = () => {
       setIsPhoneFocus(false);
       setIsNicknameFocus(false);
       setIsProfileImgFocus(false);
-      setIsDetailAdFocus(false);
     } else if (e.target.name === "password") {
       setIsPasswordFocus(true);
       setIsUsernameFocus(false);
@@ -175,7 +168,6 @@ const Join = () => {
       setIsPhoneFocus(false);
       setIsNicknameFocus(false);
       setIsProfileImgFocus(false);
-      setIsDetailAdFocus(false);
     } else if (e.target.name === "realname") {
       setIsRealnameFocus(true);
       setIsUsernameFocus(false);
@@ -184,7 +176,6 @@ const Join = () => {
       setIsPhoneFocus(false);
       setIsNicknameFocus(false);
       setIsProfileImgFocus(false);
-      setIsDetailAdFocus(false);
     } else if (e.target.name === "birthday") {
       setIsBirthdayFocus(true);
       setIsUsernameFocus(false);
@@ -193,7 +184,6 @@ const Join = () => {
       setIsPhoneFocus(false);
       setIsNicknameFocus(false);
       setIsProfileImgFocus(false);
-      setIsDetailAdFocus(false);
     } else if (e.target.name === "phone") {
       setIsPhoneFocus(true);
       setIsUsernameFocus(false);
@@ -202,7 +192,6 @@ const Join = () => {
       setIsBirthdayFocus(false);
       setIsNicknameFocus(false);
       setIsProfileImgFocus(false);
-      setIsDetailAdFocus(false);
     } else if (e.target.name === "nickname") {
       setIsNicknameFocus(true);
       setIsUsernameFocus(false);
@@ -211,19 +200,8 @@ const Join = () => {
       setIsBirthdayFocus(false);
       setIsPhoneFocus(false);
       setIsProfileImgFocus(false);
-      setIsDetailAdFocus(false);
     } else if (e.target.name === "roadAddress") {
       setIsRoadAddressFocus(true);
-      setIsNicknameFocus(false);
-      setIsUsernameFocus(false);
-      setIsPasswordFocus(false);
-      setIsRealnameFocus(false);
-      setIsBirthdayFocus(false);
-      setIsPhoneFocus(false);
-      setIsProfileImgFocus(false);
-      setIsDetailAdFocus(false);
-    } else if (e.target.name === "detailAd") {
-      setIsDetailAdFocus(true);
       setIsNicknameFocus(false);
       setIsUsernameFocus(false);
       setIsPasswordFocus(false);
@@ -245,7 +223,6 @@ const Join = () => {
     setIsBirthdayFocus(false);
     setIsPhoneFocus(false);
     setIsNicknameFocus(false);
-    setIsDetailAdFocus(false);
   };
 
   const onProfileImageChange = async (
@@ -357,24 +334,7 @@ const Join = () => {
           </button>
         </div>
         {isOpen && <Modal setIsOpen={setIsOpen} getAddress={getAddress} />}
-        <div
-          className={classnames(
-            style.wrapper_detailAd,
-            { [style.is_error]: !isDetailAdValid },
-            { [style.is_focus]: isDetailAdFocus }
-          )}
-        >
-          <input
-            onChange={onChange}
-            onFocus={onFocus}
-            id="detailAd"
-            name="detailAd"
-            type="text"
-            placeholder="상세 주소"
-            className={style.input}
-            value={detailAd}
-          />
-        </div>
+
         <div
           className={classnames(
             style.wrapper_realname,
