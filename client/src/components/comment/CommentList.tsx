@@ -47,12 +47,8 @@ const CommentList = ({ setCommentCount }: TProps) => {
 
   const handleScroll = () => {
     if(window.pageYOffset >= commentListTop.current && window.pageYOffset <= commentListTop.current+commentListHeight.current) {
-      console.log(commentListTop.current+commentListHeight.current);
-      console.log(window.pageYOffset);
       setIsScrollOver(true);
     }else {
-      console.log(commentListTop.current+commentListHeight.current);
-      console.log(window.pageYOffset);
       setIsScrollOver(false);
     }
   }

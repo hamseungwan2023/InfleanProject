@@ -61,9 +61,9 @@ const CommentItem = ({ comment, clickReplyBtnParentId, setClickReplyBtnParentId,
     }
   }
 
-  const onClickLike = async () => {
+  const onClickLike = (commentId: number) => async () => {
     try {
-      const res = await axios.post(`/api/increaseCommentLike/${postId}`,{},{
+      const res = await axios.post(`/api/increaseCommentLike/${commentId}`,{},{
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`
         }
@@ -81,9 +81,9 @@ const CommentItem = ({ comment, clickReplyBtnParentId, setClickReplyBtnParentId,
     }
   }
 
-  const onClickDisLike = async () => {
+  const onClickDisLike = (commentId: number) => async () => {
     try {
-      const res = await axios.post(`/api/decreaseCommentLike/${postId}`,{},{
+      const res = await axios.post(`/api/decreaseCommentLike/${commentId}`,{},{
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`
         }
@@ -96,7 +96,7 @@ const CommentItem = ({ comment, clickReplyBtnParentId, setClickReplyBtnParentId,
       console.log(e.response.data.message);
       if(e.response.data.message === "이미 좋아요/싫어요한 댓글에 좋아요/싫어요를 할 수 없습니다.") {
         window.confirm("이미 추천/비추천한 댓글에 비추천을 할 수 없습니다.")
-      }else if(e.response.data.message === "자신이 작성한 댓글에는 싫어요를 할 수 없습니다.") {
+      }else if(e.response.data.message === "자신이 작성한 댓글에는 좋아요를 할 수 없습니다.") {
         window.confirm("자신이 작성한 댓글에는 비추천을 할 수 없습니다.")
       }
     }
@@ -106,12 +106,12 @@ const CommentItem = ({ comment, clickReplyBtnParentId, setClickReplyBtnParentId,
     <>
       <li className={style.comment_item}>
         <div className={style.recommend_wrap}>
-          <button type="button" className={style.btn_like} onClick={onClickLike}>
+          <button type="button" className={style.btn_like} onClick={onClickLike(comment.id)}>
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" data-type="default"><path d="M12.8215 10.4987L8.55564 4.31749C8.48688 4.21791 8.40159 4.13798 8.30561 4.08318C8.20963 4.02837 8.10524 4 7.9996 4C7.89396 4 7.78957 4.02837 7.69359 4.08318C7.59761 4.13798 7.51231 4.21791 7.44355 4.31749L3.17768 10.4987C2.77056 11.0887 3.1081 12 3.73373 12H12.2667C12.8923 12 13.2299 11.0887 12.8215 10.4987Z"></path></svg>
             <span className="blind">추천</span>
           </button>
           <span className={style.recommend_count}>{comment.like}</span>
-          <button type="button" className={style.btn_dislike} onClick={onClickDisLike}>
+          <button type="button" className={style.btn_dislike} onClick={onClickDisLike(comment.id)}>
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" data-type="default"><path d="M12.8215 10.4987L8.55564 4.31749C8.48688 4.21791 8.40159 4.13798 8.30561 4.08318C8.20963 4.02837 8.10524 4 7.9996 4C7.89396 4 7.78957 4.02837 7.69359 4.08318C7.59761 4.13798 7.51231 4.21791 7.44355 4.31749L3.17768 10.4987C2.77056 11.0887 3.1081 12 3.73373 12H12.2667C12.8923 12 13.2299 11.0887 12.8215 10.4987Z"></path></svg>
             <span className="blind">비추천</span>
           </button>

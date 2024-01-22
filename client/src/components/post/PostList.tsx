@@ -46,7 +46,6 @@ const PostList = ({isPostCorrect}:TProps) => {
   const getPostList = async() => {
     setIsLoading(true);
 
-    console.log(category);
     let api=`/api/postList/${category}?page=${pageInfo.currentPage}`;
 
     if(category==="전체") {

@@ -4,7 +4,7 @@ import style from "./Join.module.scss";
 import classnames from "classnames";
 import Modal from "../components/location/Modal";
 import { useDispatch } from "react-redux";
-import { login } from "../slices/login/reducer";
+import { login } from "../slices/reducers/auth";
 import { useNavigate } from "react-router-dom";
 import { AppDispatch } from "../slices/store";
 

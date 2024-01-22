@@ -46,11 +46,7 @@ const FindUserId = () => {
   const postEmail = async (e: any) => {
     e.preventDefault();
     try {
-<<<<<<< HEAD
       const response = await axios.post(`/user/findid`, {
-=======
-      const response = await axios.post(`/api/user/findid`, {
->>>>>>> feature/20240116
         username: email,
       });
       setUId(response.data.username);
