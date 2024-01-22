@@ -1,6 +1,11 @@
 import classNames from "classnames";
 import React, { useEffect, useRef, useState } from "react";
-import { commentListData, TComment } from "../../constants/comment";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { TComment } from "../../constants/comment";
+import { loadReduxCommentList } from "../../slices/reducers/commentList";
+import { AppDispatch } from "../../slices/store";
 import { countComment } from "../../utils/count";
 import { filterCommentByLikes, filterCommentByRecent } from "../../utils/filter";
 import style from "./Comment.module.scss";
@@ -12,10 +17,17 @@ enum ECommentTab {
   popular= 2,
 }
 
-const CommentList = () => {
-  const [commentList, setCommentList] = useState<TComment[]>(filterCommentByRecent(commentListData));
+type TProps = {
+  setCommentCount: React.Dispatch<React.SetStateAction<number>>
+}
+
+const CommentList = ({ setCommentCount }: TProps) => {
+  const postId = useParams().id;
+  const dispatch:AppDispatch = useDispatch();
+  const reduxCommentList = useSelector((state:any) => state.commentList.commentList);
+  const [commentList, setCommentList] = useState<TComment[]>([]);
   const [tab, setTab] = useState<number>(1);
-  const [clickReplyBtnParentNickname, setClickReplyBtnParentNickname] = useState<string | null>(null); 
+  const [clickReplyBtnParentId, setClickReplyBtnParentId] = useState<number | null>(null); 
   const commentListRef = useRef<HTMLDivElement>(null);
   const [isScrollOver, setIsScrollOver] = useState(false);
 
@@ -53,11 +65,17 @@ const CommentList = () => {
   });
 
   useEffect(()=> {
+    if(postId) dispatch(loadReduxCommentList(postId));
+    setCommentList(filterCommentByRecent(reduxCommentList));
     if(commentListRef.current) {
       commentListHeight.current = commentListRef.current.offsetHeight;
       commentListTop.current = commentListRef.current.offsetTop;
     }
   },[]);
+
+  useEffect(() => {
+    setCommentCount(countComment(commentList));
+  }, [commentList])
 
   return <div className="comment">
     <div className={classNames(style.title_wrap, {[style.is_fixed]:isScrollOver})}>
@@ -66,18 +84,22 @@ const CommentList = () => {
     </div>
     {/* [TODO] 로그인한 사용자 모두에게 댓글쓰기 노출 */}
     <div ref={commentListRef}>
-      <CommentWrite isReplyComment={false}/>
-      <ul className={style.tab_list} role="tablist">
-        <li className={style.tab_item} role="presentation">
-          <button type="button" className={style.btn_tab} aria-selected={tab === ECommentTab.recent} onClick={onClickTab(ECommentTab.recent)}>최신순</button>
-        </li>
-        <li className={style.tab_item} role="presentation">
-          <button type="button" className={style.btn_tab} aria-selected={tab === ECommentTab.popular} onClick={onClickTab(ECommentTab.popular)}>인기순</button>
-        </li>
-      </ul>
+      <CommentWrite setCommentList={setCommentList} isReplyComment={false}/>
+      {
+        commentList.length >=1 && (
+          <ul className={style.tab_list} role="tablist">
+            <li className={style.tab_item} role="presentation">
+              <button type="button" className={style.btn_tab} aria-selected={tab === ECommentTab.recent} onClick={onClickTab(ECommentTab.recent)}>최신순</button>
+            </li>
+            <li className={style.tab_item} role="presentation">
+              <button type="button" className={style.btn_tab} aria-selected={tab === ECommentTab.popular} onClick={onClickTab(ECommentTab.popular)}>인기순</button>
+            </li>
+          </ul>
+        )
+      }
       <ul role="tabpanel" className={style.comment_list}>
         {
-          commentList.map((item, index) => <CommentItem comment={item} key={index} clickReplyBtnParentNickname={clickReplyBtnParentNickname} setClickReplyBtnParentNickname={setClickReplyBtnParentNickname} />)
+          commentList.map((item, index) => <CommentItem setCommentList={setCommentList} comment={item} key={index} clickReplyBtnParentId={clickReplyBtnParentId} setClickReplyBtnParentId={setClickReplyBtnParentId} />)
         }
       </ul>
     </div>

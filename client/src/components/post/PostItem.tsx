@@ -10,7 +10,7 @@ type Tprops = {
   isPostCorrect: boolean
 };
 
-const PostItem = React.forwardRef<HTMLLIElement, Tprops>(({ postItem :{id, title, category, writer, rank, finalLike, thumbnailUrl, commentCount, createdAt, isNotification}, isPostCorrect }, ref) => {
+const PostItem = React.forwardRef<HTMLLIElement, Tprops>(({ postItem :{id, title, category, writer, rank, finalLike, thumbnailUrl, contentCount, createdAt, isNotification}, isPostCorrect }, ref) => {
   return <li className={classNames(style.item, {[style.is_notification] : isNotification})} ref={ref}>
     <Link to={`/postDetail/${id}`} className={style.link} />
     { isNotification ?     <div className={style.notice_icon}><img src="https://talk.op.gg/images/icon-notice@2x.png" alt="공지" width="24" /></div> :     
@@ -26,7 +26,7 @@ const PostItem = React.forwardRef<HTMLLIElement, Tprops>(({ postItem :{id, title
         <strong className={style.title} data-visited={false}>
           {title}
         </strong>
-        <em className={style.count}>[{commentCount}]</em>
+        <em className={style.count}>[{contentCount}]</em>
         {isPostCorrect && <Link to="/postCorrect/23" className={style.btn_correct}>수정하기</Link>}
       </div>
       <div className={style.info}>

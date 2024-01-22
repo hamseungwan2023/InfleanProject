@@ -1,7 +1,11 @@
 import classNames from "classnames";
 import React, { useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { bottomFilterList } from "../../constants/bottomFilterList";
 import { CategoryList } from "../../constants/categoryList";
+import { clickedCategory } from "../../slices/reducers/category";
+import { AppDispatch } from "../../slices/store";
 import style from "./Filter.module.scss";
 
 const Filter = () => {
@@ -9,9 +13,20 @@ const Filter = () => {
   const [bottomFilterClick, setBottomFilterClick] = useState(0);
   const [isClickSearch, setIsClickSearch] = useState(false);
   const [dropdownOption, setDropdownOption] = useState(0);
+  const [category, setCategory] = useState(CategoryList[0].category[0]);
   const [search, setSearch] = useState("");
   const filterTop = useRef(0);
   const [isScrollOver, setIsScrollOver] = useState(false);
+
+  const dispatch:AppDispatch = useDispatch();
+
+  useEffect(()=>{dispatch(clickedCategory(category))},[category]); // 셀렉트 변경시 리덕스 카테고리 값 같이변경
+
+  const reduxCategory = useSelector((state:any) => state.category.category); //리덕스 카테고리값
+
+  useEffect(()=> {
+    setCategory(reduxCategory);
+  },[reduxCategory]);
 
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -25,6 +40,12 @@ const Filter = () => {
     e.preventDefault();
     // 글, 글+내용, 작성자에 따라 검색 ex) state=0(글), 1(글+내용), 2(작성자) ,search="김철수"
   }
+
+  const onChangeSelect = (e:React.ChangeEvent<HTMLSelectElement>) => {
+    setCategory(e.target.value);
+  }
+
+
 
   const handleScroll = () => {
     if(window.pageYOffset >= filterTop.current) {
@@ -51,11 +72,11 @@ const Filter = () => {
       <div className={style.category_area}>
         <div>
           <button type="button" className={style.category_wrap}>
-            <div className={style.title}>전체</div>
+            <div className={style.title}>{category}</div>
           </button>
         </div>
-        <select className={style.select}>
-          {CategoryList.map((item) => item.category.map((subItem) => <option key="subItem">{subItem}</option>)) }
+        <select className={style.select} onChange={onChangeSelect} value={category}>
+          {CategoryList.map((item) => item.category.map((subItem) => <option key="subItem" value={subItem}>{subItem}</option>)) }
         </select>
       </div>
     </div>

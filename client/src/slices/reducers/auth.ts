@@ -1,7 +1,6 @@
-import { createSlice, Action } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { AppDispatch, RootState } from "../store";
-import { PURGE } from "redux-persist";
 
 const authSlice = createSlice({
   name: "auth",
@@ -41,6 +40,9 @@ export const login =
         username: username,
         password: password,
       });
+      localStorage.setItem("accessToken", response.data.accessToken);
+      localStorage.setItem("refreshToken", response.data.refreshToken);
+
       dispatch(loginSuccess(response.data));
       console.log("로그인 성공");
       console.log("사용자 정보", response.data);

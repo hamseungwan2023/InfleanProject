@@ -1,11 +1,16 @@
 import { useCallback, useEffect, useState } from "react"
 
-const useInfiniteScroll = (onIntersect: () => void, target: Element | null, options?: IntersectionObserverInit) => {
+export type IntersectionHandler = (
+  entry: IntersectionObserverEntry,
+  observer: IntersectionObserver
+) => void;
 
+const useInfiniteScroll = (onIntersect: IntersectionHandler, target: Element | null, options?: IntersectionObserverInit) => {
+  
   const handleIntersect = useCallback(
-    ([entry]: IntersectionObserverEntry[]) => {
+    ([entry]: IntersectionObserverEntry[], observer: IntersectionObserver) => {
       if (entry.isIntersecting) {
-        onIntersect();
+        onIntersect(entry, observer);
       }
     }, [onIntersect]
   )
@@ -13,6 +18,7 @@ const useInfiniteScroll = (onIntersect: () => void, target: Element | null, opti
   useEffect(
     () => {
       const observer = new IntersectionObserver(handleIntersect, options);
+      console.log("@");
       target && observer.observe(target);
       return () => {
         observer.disconnect();

@@ -2,16 +2,18 @@ import axios from "axios";
 import { ContentBlock, convertToRaw, EditorState } from "draft-js";
 import draftToHtml from "draftjs-to-html";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import PostWrite from "../components/post/PostWrite";
 
 const PostWriteRoute = () => {
-
+  const navigate = useNavigate();
   const [convertHTML, setConvertHTML] = useState("");
   const [category, setCategory] = useState("");
   const [title, setTitle] = useState("");
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
 
   const onClickPostWriteBtn = async () => {
+
     if(title.length <= 1 ) {
       window.confirm("제목은 2자 이상으로 입력해주세요.")
       return;
@@ -19,9 +21,12 @@ const PostWriteRoute = () => {
     try {
       const res = await axios.post("/api/postWrite" , {
         title, category, content: convertHTML
+      }, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+        }
       });
       if(res.status === 200) {
-        window.confirm("게시글이 등록되었습니다.");
       }
     } catch(e) {
       console.log(e);

@@ -2,7 +2,7 @@ import axios from "axios";
 import { ContentBlock, convertToRaw, EditorState } from "draft-js";
 import draftToHtml from "draftjs-to-html";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import PostWrite from "../components/post/PostWrite";
 
 const PostCorrectRoute = () => {
@@ -13,8 +13,10 @@ const PostCorrectRoute = () => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const postId = useParams().id;
 
+  const navigate = useNavigate();
+
   const onClickPostCorrectBtn = async () => {
-    console.log(postId);
+
     if(title.length <= 1 ) {
       window.confirm("제목은 2자 이상으로 입력해주세요.")
       return;
@@ -22,9 +24,14 @@ const PostCorrectRoute = () => {
     try {
       const res = await axios.patch(`/api/postCorrect/${postId}` , {
         title, category, content: convertHTML
+      }, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+        }
       });
       if(res.status === 200) {
         window.confirm("게시글이 수정되었습니다.");
+        navigate(`/postDetail/${postId}`);
       }
     } catch(e) {
       console.log(e);
@@ -36,7 +43,7 @@ const PostCorrectRoute = () => {
   }, [editorState]);
 
   return (
-    <section className="PostCorrectRoute">
+    <section className="postCorrectRoute">
       <PostWrite postId={postId} isPostCorrect editorState={editorState} setEditorState={setEditorState} title={title} setTitle={setTitle} category = {category} setCategory={setCategory}/>
       <div className="postWrite_warn">
         <img src="https://talk.op.gg/images/icon-adult@2x.png" alt="경고" width={24} height={24} style={{marginRight: "8px"}} />

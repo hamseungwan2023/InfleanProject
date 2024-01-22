@@ -1,10 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { CategoryList } from "../../constants/categoryList";
+import { clickedCategory } from "../../slices/reducers/category";
+import { AppDispatch } from "../../slices/store";
 import style from "./Category.module.scss";
 
 const Category = () => {
   const [click, setClick] = useState("전체");
+  const dispatch:any = useDispatch();
+
+  useEffect(()=>{dispatch(clickedCategory(click))},[click]);
+
+  const reduxCategory = useSelector((state:any) => state.category.category); //리덕스 카테고리값
+
+  useEffect(()=> {
+    setClick(reduxCategory);
+  },[reduxCategory]);
+//필터에서 값 변경시 category도 변경
 
   return (
     <ul className={style.list} role="menu">
@@ -18,15 +32,15 @@ const Category = () => {
                 role="menuitem"
                 aria-current={click === subItem ? true : false}
               >
-                <Link
-                  to=""
+                <button
+                  type="button"
                   className={style.link}
                   onClick={() => {
                     setClick(subItem);
                   }}
                 >
                   {subItem}
-                </Link>
+                </button>
               </strong>
             ) : (
               <div

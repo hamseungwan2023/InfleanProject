@@ -1,8 +1,9 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../slices/login/reducer";
+import { useDispatch } from "react-redux";
+import { logout } from "../slices/reducers/auth";
 import style from "../components/layout/Header.module.scss";
 import axios from "axios";
+import { useSelector } from "react-redux";
 // import { persistor } from "../slices/store";
 
 function Logout() {

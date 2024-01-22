@@ -2,6 +2,7 @@ import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Profile from "./routes/Profile";
 import DeleteAccount from "./routes/DeleteAccount";
+import ProtectedRoute from "./routes/ProtectedRoute";
 import Logout from "./routes/Logout";
 import "./global.scss";
 import Layout from "./components/layout/Layout";
@@ -52,10 +53,10 @@ const router = createBrowserRouter([
       {
         path: "/postWrite",
         element: (
-          <>
+          <ProtectedRoute>
             <Aside />
             <PostWriteRoute />
-          </>
+          </ProtectedRoute>
         ),
       },
       {

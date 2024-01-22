@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { CategoryList } from "../../constants/categoryList";
 import { Editor } from 'react-draft-wysiwyg';
 import { ContentState, convertToRaw, EditorState } from 'draft-js';
@@ -19,17 +19,21 @@ type TProps = {
 }
 
 const PostWrite = ({postId, isPostCorrect, editorState, setEditorState, category, setCategory, title, setTitle}:TProps) => {
+  let contentBlock = htmlToDraft("");
+  const [html, setHtml] = useState("");
 
   useEffect(() => {
-    let html="";
-
     if(isPostCorrect) {
       const getPostDetail = async () => {
-        const res = await axios.get(`/api/postDetail/${postId}`);
+        const res = await axios.get(`/api/postDetail/${postId}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+          }
+        });
         try {
           if(res.status === 200) {
             const {data: { content, category, title}} = res ;
-            html = content;
+            setHtml(content);
             setCategory(category);
             setTitle(title);
           }
@@ -39,14 +43,14 @@ const PostWrite = ({postId, isPostCorrect, editorState, setEditorState, category
       }
       getPostDetail();
     }
-
-;   const contentBlock = htmlToDraft(html);
-    if (contentBlock) {
-      const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
-      const tempEditorState = EditorState.createWithContent(contentState);
-      setEditorState(tempEditorState);
-    }
   }, []);
+
+  useEffect(()=> {
+    contentBlock = htmlToDraft(html);
+    const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
+    const tempEditorState = EditorState.createWithContent(contentState);
+    setEditorState(tempEditorState);
+  }, [html]);
 
   const onEditorStateChange = (editorState: EditorState) => {
     // editorState에 값 설정

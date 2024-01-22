@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import classnames from "classnames";
 
 import { useSelector, useDispatch } from "react-redux";
-import { login } from "../../slices/login/reducer";
+import { login } from "../../slices/reducers/auth";
 import { AppDispatch, RootState } from "../../slices/store";
 import Profile from "../profile/Profile";
 
@@ -50,8 +50,6 @@ const Login = () => {
   const handleLogin = (e: any) => {
     e.preventDefault();
     dispatch(login(username, password));
-    // localStorage.setItem("accessToken ", "fdsafd");
-    // localStorage.setItem("refreshToken ", "asdfsafsdfd");
     setIsBtnClick(false);
   };
 
@@ -142,9 +140,7 @@ const Login = () => {
             </div>
           </div>
         </div>
-      ) : (
-        <Profile />
-      )}
+      ): <Profile />}
     </div>
   );
 };
