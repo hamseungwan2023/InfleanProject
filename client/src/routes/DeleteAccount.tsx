@@ -54,11 +54,10 @@ const DeleteAccount = () => {
           },
         });
         console.log(response);
-
-        // dispatch(logout());
-        // localStorage.clear();
+        dispatch(logout());
+        localStorage.clear();
+        navigate("/");
         console.log("삭제성공");
-        // navigate("/logout");
       } catch (err) {
         console.error("삭제 실패", err);
       }

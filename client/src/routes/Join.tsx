@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import style from "./Join.module.scss";
 import classnames from "classnames";
 import Modal from "../components/location/Modal";
@@ -7,7 +7,6 @@ import { useDispatch } from "react-redux";
 import { login } from "../slices/login/reducer";
 import { useNavigate } from "react-router-dom";
 import { AppDispatch } from "../slices/store";
-import { regionList } from "../constants/regionList";
 
 const Join = () => {
   const [username, setUsername] = useState<string>("");
@@ -56,11 +55,12 @@ const Join = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  useEffect(() => {}, []);
+
+  const location = roadAddress.substring(0, 2);
+  console.log("location", location);
+
   const onSubmit = async (e: any, dispatch: AppDispatch): Promise<void> => {
     e.preventDefault();
-    const userAddress = roadAddress.substring(0, 2);
-    console.log("userAddress", userAddress);
 
     try {
       const formData = new FormData();
@@ -73,7 +73,7 @@ const Join = () => {
           nickname: nickname,
           password: password,
           email: email,
-          //roadAddress: userAddress,
+          location: location,
           //phone: phone,
           //realname: realname,
           //birthday: birthday,
