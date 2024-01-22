@@ -3,13 +3,10 @@ import React, { useState } from "react";
 import style from "./Join.module.scss";
 import classnames from "classnames";
 import Modal from "../components/location/Modal";
-
-interface objectUser {
-  username: string;
-  nickname: string;
-  password: string;
-  email: string;
-}
+import { useDispatch } from "react-redux";
+import { login } from "../slices/login/reducer";
+import { useNavigate } from "react-router-dom";
+import { AppDispatch } from "../slices/store";
 
 const Join = () => {
   const [username, setUsername] = useState<string>("");
@@ -18,11 +15,12 @@ const Join = () => {
   const [birthday, setBirthday] = useState("");
   const [phone, setPhone] = useState("");
   const [nickname, setNickname] = useState<string>("");
-  const [detailAd, setDetailAd] = useState<string>("");
   const [roadAddress, setRoadAddress] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
 
   const [profileImg, setProfileImg] = useState<Blob | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [findUser, setFindUser] = useState(false);
 
   // 오류메세지, 유효여부 상태 저장
   const [requiredMessage, setRequiredMessage] = useState("");
@@ -30,23 +28,24 @@ const Join = () => {
 
   const [isUsernameValid, setIsUsernameValid] = useState(true);
   const [isPasswordValid, setIsPasswordValid] = useState(true);
+  const [isEmailValid, setIsEmailValid] = useState(true);
   const [isRealnameValid, setIsRealnameValid] = useState(true);
   const [isBirthdayValid, setIsBirthdayValid] = useState(true);
   const [isNicknameValid, setIsNicknameValid] = useState(true);
   const [isPhoneValid, setIsPhoneValid] = useState(true);
   const [isProfileImgValid, setIsProfileImgValid] = useState(true);
   const [isRoadAddressValid, setisRoadAddressValid] = useState();
-  const [isDetailAdValid, setIsDetailAdValid] = useState(true);
 
   const [isUsernameFocus, setIsUsernameFocus] = useState(false);
   const [isPasswordFocus, setIsPasswordFocus] = useState(false);
   const [isRealnameFocus, setIsRealnameFocus] = useState(false);
+  const [isEmailFocus, setIsEmailFocus] = useState(false);
+
   const [isBirthdayFocus, setIsBirthdayFocus] = useState(false);
   const [isNicknameFocus, setIsNicknameFocus] = useState(false);
   const [isPhoneFocus, setIsPhoneFocus] = useState(false);
   const [isProfileImgFocus, setIsProfileImgFocus] = useState(false);
   const [isRoadAddressFocus, setIsRoadAddressFocus] = useState(false);
-  const [isDetailAdFocus, setIsDetailAdFocus] = useState(false);
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -54,75 +53,52 @@ const Join = () => {
 
   const [isSecretPassword, setIsSecretPassword] = useState(true);
 
-  // const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   setIsLoading(true);
-  //   try {
-  //     const formData = new FormData();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  //     if (profileImg) {
-  //       formData.append("profileImg", profileImg);
-  //       const jsonData = {
-  //         username,
-  //         nickname,
-  //         password,
-  //         email: "awdad@naver.com",
-  //       };
+  const location = roadAddress.substring(0, 2);
+  console.log("location", location);
 
-  //       formData.append(
-  //         "jsonData",
-  //         new Blob([JSON.stringify(jsonData)], { type: "application/json" })
-  //       );
-  //       await axios.post("/user/signup", formData, {
-  //         headers: { "Content-Type": "multipart/form-data", charset: "utf-8" },
-  //       });
-  //     }
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  //   setIsLoading(false);
-  // };
-
-  const onSubmit = async (e: any) => {
+  const onSubmit = async (e: any, dispatch: AppDispatch): Promise<void> => {
     e.preventDefault();
-    // const data = Object.fromEntries(formData);
 
     try {
       const formData = new FormData();
 
-      let reqUserJoinFormDto = {
-        username: username,
-        nickname: nickname,
-        password: password,
-      };
-      // let reqUserJoinFormDto: objectUser = {
-      //   username: "e123rn1ame",
-      //   nickname: "nick12name",
-      //   password: "pas1sw5ord",
-      //   email: "a123ds2@email.com",
-      // };
-      formData.append(
-        "reqUserJoinFormDto",
-        new Blob([JSON.stringify(reqUserJoinFormDto)], {
-          type: "application/json",
-        })
-      );
-      console.log(formData);
-      const response = await axios.post("/user/signup", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      console.log(formData);
-      console.log(response.data, 1);
-    } catch (err) {
-      console.error(err);
+      //프로필 이미지 결정나면 느낌표 지울 예정
+      if (!profileImg) {
+        // formData.append("profileImg", profileImg);
+        const jsonData = {
+          username: username,
+          nickname: nickname,
+          password: password,
+          email: email,
+          location: location,
+          //phone: phone,
+          //realname: realname,
+          //birthday: birthday,
+          //서버 업데이트 되면 주석풀기
+        };
+        formData.append(
+          "reqUserJoinFormDto",
+          new Blob([JSON.stringify(jsonData)], { type: "application/json" })
+        );
+        const response = await axios.post("/user/signup", formData, {
+          headers: { "Content-Type": "multipart/form-data", charset: "utf-8" },
+        });
+        dispatch(login(username, password));
+        navigate("/");
+        console.log("success");
+      }
+    } catch (e) {
+      console.log(e);
     }
   };
 
   const getAddress = (e: string) => {
     setRoadAddress(e);
   };
+
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value;
     if (e.target.name === "username") {
@@ -151,6 +127,8 @@ const Join = () => {
         setRequiredMessage("");
         setIsPasswordValid(true);
       }
+    } else if (e.target.name === "email") {
+      setEmail(value);
     } else if (e.target.name === "realname") {
       setRealname(value);
     } else if (e.target.name === "birthday") {
@@ -159,8 +137,6 @@ const Join = () => {
       setPhone(value);
     } else if (e.target.name === "nickname") {
       setNickname(value);
-    } else if (e.target.name === "detailAd") {
-      setDetailAd(value);
     } else {
       return;
     }
@@ -175,7 +151,15 @@ const Join = () => {
       setIsPhoneFocus(false);
       setIsNicknameFocus(false);
       setIsProfileImgFocus(false);
-      setIsDetailAdFocus(false);
+    } else if (e.target.name === "email") {
+      setIsEmailFocus(false);
+      setIsRealnameFocus(false);
+      setIsUsernameFocus(false);
+      setIsPasswordFocus(false);
+      setIsBirthdayFocus(false);
+      setIsPhoneFocus(false);
+      setIsNicknameFocus(false);
+      setIsProfileImgFocus(false);
     } else if (e.target.name === "password") {
       setIsPasswordFocus(true);
       setIsUsernameFocus(false);
@@ -184,7 +168,6 @@ const Join = () => {
       setIsPhoneFocus(false);
       setIsNicknameFocus(false);
       setIsProfileImgFocus(false);
-      setIsDetailAdFocus(false);
     } else if (e.target.name === "realname") {
       setIsRealnameFocus(true);
       setIsUsernameFocus(false);
@@ -193,7 +176,6 @@ const Join = () => {
       setIsPhoneFocus(false);
       setIsNicknameFocus(false);
       setIsProfileImgFocus(false);
-      setIsDetailAdFocus(false);
     } else if (e.target.name === "birthday") {
       setIsBirthdayFocus(true);
       setIsUsernameFocus(false);
@@ -202,7 +184,6 @@ const Join = () => {
       setIsPhoneFocus(false);
       setIsNicknameFocus(false);
       setIsProfileImgFocus(false);
-      setIsDetailAdFocus(false);
     } else if (e.target.name === "phone") {
       setIsPhoneFocus(true);
       setIsUsernameFocus(false);
@@ -211,7 +192,6 @@ const Join = () => {
       setIsBirthdayFocus(false);
       setIsNicknameFocus(false);
       setIsProfileImgFocus(false);
-      setIsDetailAdFocus(false);
     } else if (e.target.name === "nickname") {
       setIsNicknameFocus(true);
       setIsUsernameFocus(false);
@@ -220,19 +200,8 @@ const Join = () => {
       setIsBirthdayFocus(false);
       setIsPhoneFocus(false);
       setIsProfileImgFocus(false);
-      setIsDetailAdFocus(false);
     } else if (e.target.name === "roadAddress") {
       setIsRoadAddressFocus(true);
-      setIsNicknameFocus(false);
-      setIsUsernameFocus(false);
-      setIsPasswordFocus(false);
-      setIsRealnameFocus(false);
-      setIsBirthdayFocus(false);
-      setIsPhoneFocus(false);
-      setIsProfileImgFocus(false);
-      setIsDetailAdFocus(false);
-    } else if (e.target.name === "detailAd") {
-      setIsDetailAdFocus(true);
       setIsNicknameFocus(false);
       setIsUsernameFocus(false);
       setIsPasswordFocus(false);
@@ -247,13 +216,13 @@ const Join = () => {
 
   const onClickProfileImg = (e: React.MouseEvent) => {
     setIsProfileImgFocus(true);
+    setIsEmailFocus(false);
     setIsUsernameFocus(false);
     setIsPasswordFocus(false);
     setIsRealnameFocus(false);
     setIsBirthdayFocus(false);
     setIsPhoneFocus(false);
     setIsNicknameFocus(false);
-    setIsDetailAdFocus(false);
   };
 
   const onProfileImageChange = async (
@@ -285,7 +254,7 @@ const Join = () => {
   };
 
   return (
-    <form onSubmit={(e) => onSubmit(e)} className={style.form}>
+    <form onSubmit={(e) => onSubmit(e, dispatch)} className={style.form}>
       <div className={style.input_wrapper}>
         <div
           className={classnames(
@@ -303,6 +272,25 @@ const Join = () => {
             value={username}
             className={style.input}
             maxLength={20}
+            required
+          />
+        </div>
+        <div
+          className={classnames(
+            style.wrapper_email,
+            { [style.is_error]: !isEmailValid },
+            { [style.is_focus]: isEmailFocus }
+          )}
+        >
+          <input
+            onChange={onChange}
+            onFocus={onFocus}
+            name="email"
+            type="text"
+            placeholder="이메일"
+            value={email}
+            className={style.input}
+            maxLength={30}
             required
           />
         </div>
@@ -346,24 +334,7 @@ const Join = () => {
           </button>
         </div>
         {isOpen && <Modal setIsOpen={setIsOpen} getAddress={getAddress} />}
-        <div
-          className={classnames(
-            style.wrapper_detailAd,
-            { [style.is_error]: !isDetailAdValid },
-            { [style.is_focus]: isDetailAdFocus }
-          )}
-        >
-          <input
-            onChange={onChange}
-            onFocus={onFocus}
-            id="detailAd"
-            name="detailAd"
-            type="text"
-            placeholder="상세 주소"
-            className={style.input}
-            value={detailAd}
-          />
-        </div>
+
         <div
           className={classnames(
             style.wrapper_realname,
@@ -400,13 +371,6 @@ const Join = () => {
             value={birthday}
           />
         </div>
-      </div>
-      {requiredMessage !== "" ? (
-        <strong className={style.error_text} role="alert">
-          {requiredMessage}
-        </strong>
-      ) : null}
-      <div className={style.input_wrapper}>
         <div
           className={classnames(style.wrapper_nickname, {
             [style.is_focus]: isNicknameFocus,
@@ -439,6 +403,13 @@ const Join = () => {
             value={phone}
           />
         </div>
+      </div>
+      {requiredMessage !== "" ? (
+        <strong className={style.error_text} role="alert">
+          {requiredMessage}
+        </strong>
+      ) : null}
+      <div className={style.input_wrapper}>
         <div
           className={classnames(
             style.wrapper_profileImg,

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Style from "./Modal.module.scss";
 import DaumPostcodeEmbed from "react-daum-postcode";
 const postCodeStyle = {
@@ -13,10 +13,9 @@ type Props = {
 
 const Modal: React.FC<Props> = ({ setIsOpen, getAddress }) => {
   const handleComplete = (data: any) => {
-    getAddress(data.roadAddress);
+    getAddress(data.sido);
     setIsOpen(false);
   };
-
   return (
     <div>
       <div>

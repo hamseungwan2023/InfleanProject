@@ -22,13 +22,21 @@ const Profile = () => {
 
   const navigate = useNavigate();
 
-  //userData를 가져오는 함수 useEffect에 주석 취소
-
-  //비밀번호 길이만큼 *을 추가해주는 로직
-  // let hidePassword = "";
-  // for (let i = 0; i < user.password.length; i++) {
-  //   hidePassword += "*";
-  // }
+  useEffect(() => {
+    getUserData();
+  }, []);
+  const getUserData = async () => {
+    try {
+      const response = await axios.get(`/user/load-profile/${user?.memberId}`, {
+        headers: {
+          Authorization: `${localStorage.getItem("accessToken")}`,
+        },
+      });
+      console.log(response.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   //image 유형 걸러주는 함수
   const isValidImageExtension = (filename: any) => {
@@ -94,10 +102,10 @@ const Profile = () => {
                   <h5>{user.nickname}</h5>
                 </div>
                 <div className={Style.email_wrapper}>
-                  <h5>{user.email}</h5>
+                  <h5>랭크 들어갈 곳</h5>
                 </div>
                 <div className={Style.password_wrapper}>
-                  <h5>{}</h5>
+                  <h5>도로명 주소 들어갈 곳</h5>
                 </div>
                 <button
                   className={Style.retouchBtn}
@@ -107,7 +115,7 @@ const Profile = () => {
                 </button>
                 <button
                   className={Style.retouchBtn}
-                  onClick={() => navigate(`/deleteAccount/${user?.id}`)}
+                  onClick={() => navigate(`/deleteAccount/${user?.memberId}`)}
                 >
                   계정 삭제
                 </button>

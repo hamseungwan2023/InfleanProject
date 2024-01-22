@@ -18,7 +18,7 @@ const Profile = () => {
               쪽지<span className={style.unread_note_count}>23</span>
             </Link>
           </div>
-          <span className={style.level}>레벨1</span>
+          <span className={style.level}>{user?.rank}레벨</span>
           <div className={style.bar}>
             <span className={style.gage}>
               <span className="blind">0%</span>
