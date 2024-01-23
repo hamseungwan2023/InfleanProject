@@ -45,16 +45,18 @@ const FindUserId = () => {
   //이메일로 인증번호 수신
   const postEmail = async (e: any) => {
     e.preventDefault();
+    // try {
+    //   const response = await axios.post(`/user/findid`, {
+
+    //   setUId(response.data.username);
+
+    //   setSecondClick(true);
+    //   }}
     try {
-<<<<<<< HEAD
-      const response = await axios.post(`/user/findid`, {
-=======
-      const response = await axios.post(`/api/user/findid`, {
->>>>>>> feature/20240116
-        username: email,
+      const response = await axios.post("/user/findid", {
+        accessCode,
       });
       setUId(response.data.username);
-
       setSecondClick(true);
     } catch (err) {
       console.error(err);

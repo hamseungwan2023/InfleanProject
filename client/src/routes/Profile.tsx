@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import classnames from "classnames";
 import Style from "./Profile.module.scss";
 import { useSelector } from "react-redux";
+import Modal from "../components/location/Modal";
 
 export const srcUrl =
   "https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg";
@@ -11,8 +13,13 @@ const Profile = () => {
   const [userReTouch, setUserReTouch] = useState<boolean>(true);
 
   const [showPass, setShowPass] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isPwOpen, setIsPwOpen] = useState<boolean>(false);
+
+  const [location, setLocation] = useState<string>("");
   const [nickName, setNickName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [confirmPw, setConfirmPw] = useState<string>("");
   const [image, setImage] = useState<string>("");
 
   const user = useSelector((state: any) => state.auth.user);
@@ -66,28 +73,52 @@ const Profile = () => {
   };
 
   //백엔드 명세서 나오면 사용
+
   const onSubmit = async (e: any) => {
-    const passwordRegExp =
-      /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
-    if (!passwordRegExp.test(password)) {
-      alert("비밀번호: 숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요.");
-    }
     e.preventDefault();
-    try {
-      await axios.patch(`/profile/update`, {
-        //추후에 백엔드 api명세서 나오면 수정
-        nickname: nickName,
-        password: password,
-        profileImg: image,
-      });
-      setUserReTouch(false);
-    } catch (e) {
-      console.log(e);
+
+    if (isPwOpen == false) {
+      try {
+        await axios.patch(`/profile/update`, {
+          //추후에 백엔드 api명세서 나오면 수정
+          nickname: nickName,
+          loaction: location,
+          // profileImg: image,
+        });
+        setUserReTouch(false);
+      } catch (e) {
+        console.log(e);
+      }
+    } else {
+      const passwordRegExp =
+        /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
+      if (!passwordRegExp.test(password)) {
+        alert(
+          "비밀번호: 숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요."
+        );
+      }
+
+      try {
+        await axios.patch(`/profile/update`, {
+          //추후에 백엔드 api명세서 나오면 수정
+          nickname: nickName,
+          loaction: location,
+          password: password,
+          // profileImg: image,
+        });
+        setUserReTouch(false);
+      } catch (e) {
+        console.log(e);
+      }
     }
   };
 
+  const getAddress = (e: string) => {
+    setLocation(e);
+  };
+
   return (
-    <div>
+    <div className={Style.form}>
       {isLoggedIn === true ? (
         <div>
           {userReTouch === true ? (
@@ -96,39 +127,41 @@ const Profile = () => {
               {/* <img src={profileImg} style={{ width: "100px" }}></img> //db 활성화 되면 사용 */}
               <div className={Style.userInfo_wrapper}>
                 <div>
-                  <img src={srcUrl} style={{ width: "100px" }}></img>
+                  <img src={srcUrl} style={{ width: "150px" }}></img>
                 </div>
-                <div className={Style.nickname_wrapper}>
+                <div className={Style.wrapper_nickname}>
                   <h5>{user.nickname}</h5>
                 </div>
-                <div className={Style.email_wrapper}>
-                  <h5>랭크 들어갈 곳</h5>
+                <div className={Style.wrapper_rank}>
+                  <h5>{user.rank}레벨</h5>
                 </div>
-                <div className={Style.password_wrapper}>
-                  <h5>도로명 주소 들어갈 곳</h5>
+                <div className={Style.wrapper_location}>
+                  <h5>{user.loaction}</h5>
                 </div>
-                <button
-                  className={Style.retouchBtn}
-                  onClick={() => setUserReTouch(false)}
-                >
-                  프로필 수정
-                </button>
-                <button
-                  className={Style.retouchBtn}
-                  onClick={() => navigate(`/deleteAccount/${user?.memberId}`)}
-                >
-                  계정 삭제
-                </button>
+                <div className={Style.wrapper_btn}>
+                  <button
+                    className={Style.retouchBtn}
+                    onClick={() => setUserReTouch(false)}
+                  >
+                    프로필 수정
+                  </button>
+                  <button
+                    className={Style.toDelete}
+                    onClick={() => navigate(`/deleteAccount/${user?.memberId}`)}
+                  >
+                    계정 삭제
+                  </button>
+                </div>
               </div>
             </div>
           ) : (
             <div>
-              <div className={Style.retouch_wrapper}>
+              <div className={Style.info_wrapper}>
                 <h1>프로필 수정</h1>
                 {/* <img src={profileImg} style={{ width: "100px" }}></img> //db 활성화 되면 사용 */}
-                <div className={Style.userInfo_wrapper}>
-                  <div className={Style.imageUpload_wrapper}>
-                    <label className={Style.file_input}>
+                <div>
+                  <div>
+                    <label className={Style.imgInput}>
                       <input
                         id="profileImg"
                         type="file"
@@ -138,11 +171,7 @@ const Profile = () => {
                       <img src={srcUrl} style={{ width: "100px" }}></img>
                     </label>
                   </div>
-                  <div className={Style.nickname_wrapper}>
-                    <img
-                      src="https://icons.veryicon.com/png/o/internet--web/prejudice/user-128.png"
-                      width={"21px"}
-                    ></img>
+                  <div className={Style.wrapper_nickname}>
                     <input
                       name="nickname"
                       type="text"
@@ -150,68 +179,102 @@ const Profile = () => {
                       onChange={onChange}
                     ></input>
                   </div>
-                  <div className={Style.email_wrapper}>
+                  <div className={Style.wrapper_location}>
                     <h5>
-                      <img
-                        src="https://t4.ftcdn.net/jpg/05/25/22/63/360_F_525226337_x7lLRcnU08vDLkijRwgcbaIs8zCfDktC.jpg"
-                        width={"21px"}
-                      ></img>
-                      {user.username}
+                      <button onClick={(e) => setIsOpen(true)}>
+                        {location.length > 0
+                          ? location
+                          : `${user.location} 주소를 변경하시겠습니까?`}
+                      </button>
+                      {isOpen && (
+                        <Modal getAddress={getAddress} setIsOpen={setIsOpen} />
+                      )}
+                      {user.location}
                     </h5>
                   </div>
+                  {isPwOpen && (
+                    <div>
+                      {showPass === false ? (
+                        <div>
+                          <div className={Style.wrapper_password}>
+                            <input
+                              name="password"
+                              type="password"
+                              placeholder="변경하실 비밀번호를 입력하세요"
+                            />
+                            <button
+                              className={Style.btn_show}
+                              onClick={() => setShowPass(true)}
+                            ></button>
+                          </div>
+                          <div className={Style.wrapper_password}>
+                            <input
+                              name="confirmPw"
+                              type="password"
+                              placeholder="비밀번호 확인"
+                            />
+                            <button
+                              className={Style.btn_show}
+                              onClick={() => setShowPass(true)}
+                            ></button>
+                          </div>
+                        </div>
+                      ) : (
+                        <div>
+                          <div className={Style.wrapper_password}>
+                            <input
+                              name="password"
+                              type="text"
+                              onChange={onChange}
+                            ></input>
+                            <button
+                              className={Style.btn_noShow}
+                              onClick={() => setShowPass(false)}
+                            ></button>
+                          </div>
 
-                  {showPass === false ? (
-                    <div className={Style.password_wrapper}>
-                      <img
-                        src="https://png.pngtree.com/png-clipart/20191120/original/pngtree-circle-password-icon-vectors-png-image_5053796.jpg"
-                        width={"21px"}
-                      ></img>
-                      <input
-                        name="password"
-                        type="password"
-                        defaultValue={user.password}
-                        onChange={onChange}
-                      ></input>
-                      <button onClick={() => setShowPass(true)}>
-                        <img
-                          src="https://static.thenounproject.com/png/777497-200.png"
-                          width={"21px"}
-                        ></img>
-                      </button>
-                    </div>
-                  ) : (
-                    <div className={Style.password_wrapper}>
-                      <img
-                        src="https://png.pngtree.com/png-clipart/20191120/original/pngtree-circle-password-icon-vectors-png-image_5053796.jpg"
-                        width={"21px"}
-                      ></img>
-                      <input
-                        name="password"
-                        type="text"
-                        defaultValue={user.password}
-                        onChange={onChange}
-                      ></input>
-                      <button onClick={() => setShowPass(false)}>
-                        <img
-                          src="https://www.svgrepo.com/show/390427/eye-password-see-view.svg"
-                          width={"21px"}
-                        ></img>
-                      </button>
+                          <div className={Style.wrapper_password}>
+                            <input
+                              name="confirmPw"
+                              onChange={onChange}
+                              placeholder="비밀번호 확인"
+                            />
+                            <button
+                              className={Style.btn_noShow}
+                              onClick={() => setShowPass(false)}
+                            ></button>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   )}
+                  {isPwOpen === false ? (
+                    <button
+                      className={Style.mainBtn}
+                      onClick={() => setIsPwOpen(true)}
+                    >
+                      비밀번호 변경
+                    </button>
+                  ) : (
+                    <button
+                      className={Style.mainBtn}
+                      onClick={() => setIsPwOpen(false)}
+                    >
+                      비밀번호 변경 취소
+                    </button>
+                  )}
+
+                  <button
+                    className={Style.subBtn}
+                    onClick={() => setUserReTouch(true)}
+                  >
+                    수정 취소
+                  </button>
+                  <button className={Style.subBtn} onClick={(e) => onSubmit(e)}>
+                    수정 완료
+                  </button>
                 </div>
-                <button
-                  className={Style.retouchBtn}
-                  onClick={() => setUserReTouch(true)}
-                >
-                  수정 취소
-                </button>
-                <button
-                  className={Style.retouchBtn}
-                  onClick={(e) => onSubmit(e)}
-                >
-                  수정 완료
-                </button>
+
                 {/* api 명세 나오면 buttom onClick에  onSubmit함수 넣을 예정 */}
               </div>
             </div>

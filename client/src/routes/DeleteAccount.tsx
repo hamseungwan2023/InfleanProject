@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Style from "./DeleteAccount.module.scss";
 import { useSelector, useDispatch } from "react-redux";
-import { logout } from "../slices/login/reducer";
+import { logout } from "../slices/reducers/auth";
 
 interface deleteUser {
   username: string;

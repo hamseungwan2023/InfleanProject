@@ -1,124 +1,216 @@
 @charset "utf-8";
 @import "../scss/variables.scss";
 
-.profile_wrapper {
-  width: 500px;
-  height: 500px;
-  border: 1px solid #dfdfdf;
-  margin-top: 11%;
-  margin-left: 10%;
-  margin-bottom: 11%;
-
+.form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 50px;
+  margin-bottom: 50px;
   h1 {
+    margin-top: 10px;
     margin-left: 40%;
-    margin-top: 10%;
   }
-  .userInfo_wrapper {
-    margin-left: 15%;
 
-    .nickname_wrapper {
-      text-align: center;
-      height: 50px;
-      width: 350px;
-      border: 1px solid #dfdfdf;
-    }
-    .email_wrapper {
-      text-align: center;
-      height: 50px;
-      width: 350px;
-      border: 1px solid #dfdfdf;
-    }
-    .password_wrapper {
-      text-align: center;
-      height: 50px;
-      width: 350px;
-      border: 1px solid #dfdfdf;
-    }
+  img {
+    margin-left: 35%;
+  }
 
-    img {
-      border: 1px solid #dfdfdf;
-      border-radius: 100%;
-      margin-left: 30%;
-    }
+  & > div {
+    box-sizing: border-box;
+    width: 460px;
+  }
+}
 
-    button {
-      cursor: pointer;
-      background-color: #81acff;
-      border: solid 0px;
-      margin-top: 10px;
-      width: 353px;
-      height: 30px;
+.profile_wrapper {
+  border: $mainBorder 1px solid;
+  height: 400px;
+  width: 500px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+
+  &::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    border-radius: inherit;
+    border: 1px solid #c6c6c6;
+    pointer-events: none;
+    content: "";
+  }
+  input {
+    flex: 1 1 auto;
+    font-size: 15px;
+    line-height: 22px;
+    color: #222;
+  }
+
+  h5 {
+    flex: 1 1 auto;
+    font-size: 15px;
+    line-height: 22px;
+    color: #222;
+  }
+}
+[class*="Profile_wrapper"] {
+  display: flex;
+  align-items: center;
+  position: relative;
+  min-height: 50px;
+  padding: 0 10px 0 45px;
+
+  & + [class*="wrapper"] {
+    margin-top: -1px;
+  }
+
+  &:first-child {
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+  }
+
+  &:last-child {
+    border-bottom-right-radius: 6px;
+    border-bottom-left-radius: 6px;
+  }
+
+  &::before {
+    position: absolute;
+    top: 10px;
+    left: 9px;
+    background-repeat: no-repeat;
+    width: 30px;
+    height: 30px;
+    background-image: url(https://ssl.pstatic.net/static/nid/join/m_sp_06_realname_48b1e603.png);
+    background-size: 372px 326px;
+    background-repeat: no-repeat;
+
+    content: "";
+  }
+
+  &::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    border-radius: inherit;
+    border: 1px solid #dfdfdf;
+    pointer-events: none;
+    content: "";
+  }
+
+  &.is_focus {
+    z-index: 10;
+
+    &::after {
+      border: 1px solid $main400;
+    }
+  }
+
+  &.is_error {
+    z-index: 20;
+
+    &::after {
+      border: 2px solid #ff3f3f;
     }
   }
 }
 
-.retouch_wrapper {
+.info_wrapper {
   width: 500px;
-  height: 500px;
-  border: 1px solid #dfdfdf;
-  margin-top: 11%;
-  margin-left: 10%;
-  margin-bottom: 11%;
-  h1 {
-    margin-top: 10%;
-    margin-left: 40%;
+  border: 1px $mainBorder solid;
+  input {
+    width: 1000px;
   }
+}
 
-  .userInfo_wrapper {
-    margin-top: 20px;
-    margin-left: 15%;
-    width: 350px;
-    border: 1px solid #dfdfdf;
-
-    .nickname_wrapper {
-      height: 30px;
-      border: 1px solid #dfdfdf;
-      input {
-        // background: #81acff;
-        width: 290px;
-        border: 0px;
-      }
-    }
-    .email_wrapper {
-      height: 30px;
-    }
-    .password_wrapper {
-      height: 30px;
-      border: 1px solid #dfdfdf;
-      input {
-        width: 300px;
-        border: 0px;
-      }
-      button {
-        margin-left: 1px;
-        cursor: pointer;
-        height: 30px;
-        border: none;
-        background-color: white;
-      }
-    }
-    .imageUpload_wrapper {
-      margin-top: 10%;
-      margin-left: 8%;
-      img {
-        margin-bottom: 30px;
-        border: 1px solid #dfdfdf;
-        border-radius: 100%;
-        margin-left: 30%;
-        cursor: pointer;
-        input {
-          display: none;
-        }
-      }
-    }
+.wrapper_nickname {
+  &::before {
+    background-position: -342px -64px;
   }
-  .retouchBtn {
-    cursor: pointer;
-    background-color: #81acff;
-    border: solid 0px;
-    margin-top: 10px;
-    margin-left: 15%;
-    width: 353px;
+}
+
+.wrapper_rank {
+  &::before {
+    background-position: -223px -300px;
+  }
+}
+
+.wrapper_location {
+  &::before {
+    background-position: -288px -296px;
+  }
+}
+
+.wrapper_password {
+  &::before {
+    background-position: -310px 0;
+  }
+}
+.imgInput {
+  cursor: pointer;
+  margin-left: 3%;
+}
+
+.retouchBtn {
+  width: 500px;
+  height: 50px;
+  font-size: 15px;
+  background-color: $main400;
+}
+.toDelete {
+  margin-top: 5px;
+  width: 500px;
+  height: 50px;
+  font-size: 15px;
+  color: rgb(151, 66, 66);
+  background-color: $main400;
+}
+
+.mainBtn {
+  margin-left: 1px;
+  background-color: $main400;
+  width: 499px;
+  height: 40px;
+}
+.subBtn {
+  margin-top: 5px;
+  margin-left: 1px;
+  background-color: $main400;
+  width: 499px;
+  height: 40px;
+}
+.btn_show {
+  margin-left: 4px;
+
+  &::before {
+    background-position: -256px -296px;
+    background-repeat: no-repeat;
+    background-image: url(https://ssl.pstatic.net/static/nid/join/m_sp_06_realname_48b1e603.png);
+    background-size: 372px 326px;
+    width: 30px;
     height: 30px;
+    display: inline-block;
+    vertical-align: top;
+    content: "";
+  }
+}
+
+.btn_noShow {
+  margin-left: 4px;
+
+  &::before {
+    background-position: -256px -296px;
+    background-repeat: no-repeat;
+    background-image: url(https://ssl.pstatic.net/static/nid/join/m_sp_06_realname_48b1e603.png);
+    background-size: 372px 363px;
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    vertical-align: top;
+    content: "";
   }
 }
