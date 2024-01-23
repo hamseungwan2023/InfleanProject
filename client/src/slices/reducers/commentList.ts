@@ -26,11 +26,7 @@ export const loadReduxCommentList =
   (postId: string) =>
   async (dispatch: AppDispatch): Promise<void> => {
     try {
-      const response = await axios.get(`/api/commentList/${postId}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-        }
-      });
+      const response = await axios.get(`/api/commentList/${postId}`);
       dispatch(loadSuccess(response.data));
     } catch (error) {
       dispatch(loadFailure(error));

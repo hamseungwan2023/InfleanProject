@@ -1,9 +1,8 @@
 import axios from "axios";
 import moment from "moment";
 import React, { useCallback, useEffect, useState } from "react";
-import { postListData, realPostListData, TPostItem, TPostList } from "../../constants/postList";
+import { TPostList } from "../../constants/postList";
 import useInfiniteScroll, { IntersectionHandler } from "../../hooks/useInfiniteScroll";
-import { sortArrByDate } from "../../utils/filter";
 import PostItem from "./PostItem";
 import LoadingSvg from "../../svg/Loading.svg";
 import { useSelector } from "react-redux";
@@ -14,6 +13,7 @@ type TProps = {
 
 const PostList = ({isPostCorrect}:TProps) => {
   const category = useSelector((state:any) => state.category.category);
+  const location = useSelector((state:any) => state.location.location);
 
   const [pageInfo, setPageInfo] = useState({
     currentPage: 0,
@@ -46,18 +46,15 @@ const PostList = ({isPostCorrect}:TProps) => {
   const getPostList = async() => {
     setIsLoading(true);
 
-    let api=`/api/postList/${category}?page=${pageInfo.currentPage}`;
+    let api="";
 
-    if(category==="전체") {
-      api=`/api/postList?page=${pageInfo.currentPage}`;
+    if(category==="전체") api=`/api/postList?location=${location}&page=${pageInfo.currentPage}&orderBy=createdDate`;
+    else {
+      api=`/api/postList?category=${category}&location=${location}&page=${pageInfo.currentPage}&orderBy=createdDate`;
     }
 
     const res = await axios.get(
-    api, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-      }
-    });
+    api);
 
     try {
       if (res.status === 200) {
@@ -83,29 +80,6 @@ const PostList = ({isPostCorrect}:TProps) => {
     }
   }
 
-  useEffect(() => {
-    /*
-    if(pageInfo.page <= realPostListData.length) {
-       const res = realPostListData[pageInfo.page-1];
-      
-      setPostList((prev) => {
-        if(prev && prev.data.length > 0) {
-          return {
-            ...res,
-            data: [...prev.data, ...res.data]
-          }
-        }
-        return res;
-      })
-
-      setPageInfo((prev) => ({
-        ...prev,
-        totalPage: res.totalPage
-      }))
-    }*/
-    getPostList();
-  }, [pageInfo.currentPage])
-
   useEffect(()=> {
     setPageInfo({currentPage: 0, totalPage: 1});
     setPostList({
@@ -115,7 +89,7 @@ const PostList = ({isPostCorrect}:TProps) => {
     });
 
     getPostList();
-  },[category]);
+  },[category,location,pageInfo.currentPage]);
 
   return <div className="postlist" role="tabpanel">
     <ul>

@@ -55,11 +55,7 @@ const PostDetail = ({commentCount}:TProps) => {
   }
 
   const getPostDetail = async () => {
-    const res = await axios.get(`/api/postDetail/${postId}`,{
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-      }
-    });
+    const res = await axios.get(`/api/postDetail/${postId}`);
   
     try {
       if(res.status===200) {
@@ -80,6 +76,7 @@ const PostDetail = ({commentCount}:TProps) => {
         <h1 className={style.title}>{postDetail?.title}</h1>
         <div className={style.title_info}>
           <div className={style.info_wrap}>
+            <span className={style.category}>{postDetail?.location}</span>
             <span className={style.category}>{postDetail?.category}</span>
             <span className={style.last_update}>
               {postDetail && getDayMinuteCounter(postDetail.createdAt)}

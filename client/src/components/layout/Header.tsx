@@ -1,10 +1,25 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { regionList } from "../../constants/regionList";
 import style from "./Header.module.scss";
 import { useSelector } from "react-redux";
 import Logout from "../../routes/Logout";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../slices/store";
+import { clickedLocation } from "../../slices/reducers/location";
+
 const Header = () => {
+  const dispatch:AppDispatch = useDispatch();
+  const [location ,setLocation] = useState("서울");
+
+  const onClickLocation = (location: string) => () => {
+    setLocation(location);
+  }
+
+  useEffect(()=> {
+    dispatch(clickedLocation(location));
+  },[location]);
+
   return (
     <header>
       <div className={style.header_common}>
@@ -18,15 +33,16 @@ const Header = () => {
           {regionList.map((item, index) => {
             return (
               <li role="presentation" key={index} className={style.item}>
-                <a
+                <button
                   role="menuitem"
-                  aria-current={false}
+                  aria-current={location===item}
                   data-key={item}
-                  href="#"
+                  type="button"
                   className={style.link}
+                  onClick={onClickLocation(item)}
                 >
                   {item}
-                </a>
+                </button>
               </li>
             );
           })}

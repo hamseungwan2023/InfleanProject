@@ -4,11 +4,13 @@ import loginReducer from "./reducers/auth";
 import commentListReducer from "./reducers/commentList";
 import { persistReducer } from "redux-persist";
 import categoryReducer from "./reducers/category";
+import locationReducer from "./reducers/location";
 
 const reducers = combineReducers({
   auth: loginReducer,
   commentList: commentListReducer,
-  category: categoryReducer
+  category: categoryReducer,
+  location: locationReducer,
 });
 
 const persistConfig = {
