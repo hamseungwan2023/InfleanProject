@@ -16,7 +16,6 @@ const Profile = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isPwOpen, setIsPwOpen] = useState<boolean>(false);
 
-  const [location, setLocation] = useState<string>("");
   const [nickName, setNickName] = useState<string>("");
   const [currentPw, setCurrentPw] = useState<string>("");
   const [newPw, setNewPw] = useState<string>("");
@@ -69,15 +68,13 @@ const Profile = () => {
 
   const onSubmit = async (e: any) => {
     e.preventDefault();
-
     if (isPwOpen == false) {
       try {
         await axios.patch(
-          `/profile/update`,
+          `/user/update`,
           {
             //추후에 백엔드 api명세서 나오면 수정
             nickname: nickName,
-            loaction: location,
             // profileImg: image,
           },
           {
@@ -91,13 +88,13 @@ const Profile = () => {
         console.log(e);
       }
     } else {
-      const passwordRegExp =
-        /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
-      if (!passwordRegExp.test(newPw)) {
-        alert(
-          "비밀번호: 숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요."
-        );
-      }
+      // const passwordRegExp =
+      //   /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
+      // if (!passwordRegExp.test(newPw)) {
+      //   alert(
+      //     "비밀번호: 숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요."
+      //   );
+      // }
       if (newPw === confirmPw) {
         try {
           await axios.patch(
@@ -106,7 +103,6 @@ const Profile = () => {
             {
               //추후에 백엔드 api명세서 나오면 수정
               nickname: nickName,
-              loaction: location,
               password: currentPw,
               newPassword: newPw,
               // profileImg: image,
@@ -125,10 +121,6 @@ const Profile = () => {
         alert("변경할 비밀번호가 일치하지 않습니다.");
       }
     }
-  };
-
-  const getAddress = (e: string) => {
-    setLocation(e);
   };
 
   return (
@@ -193,19 +185,7 @@ const Profile = () => {
                       onChange={(e) => setNickName(e.target.value)}
                     ></input>
                   </div>
-                  <div className={Style.wrapper_location}>
-                    <h5>
-                      <button onClick={(e) => setIsOpen(true)}>
-                        {location.length > 0
-                          ? location
-                          : `${user.location} 주소를 변경하시겠습니까?`}
-                      </button>
-                      {isOpen && (
-                        <Modal getAddress={getAddress} setIsOpen={setIsOpen} />
-                      )}
-                      {user.location}
-                    </h5>
-                  </div>
+
                   {isPwOpen && (
                     <div>
                       {showPass === false ? (
