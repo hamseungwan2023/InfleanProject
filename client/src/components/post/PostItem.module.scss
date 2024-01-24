@@ -278,3 +278,11 @@
   width: 48px;
   height: 24px;
 }
+
+.no_result_wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 1000px;
+  font-size: 20px;
+}
