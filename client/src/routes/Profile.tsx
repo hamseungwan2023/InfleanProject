@@ -18,7 +18,8 @@ const Profile = () => {
 
   const [location, setLocation] = useState<string>("");
   const [nickName, setNickName] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [currentPw, setCurrentPw] = useState<string>("");
+  const [newPw, setNewPw] = useState<string>("");
   const [confirmPw, setConfirmPw] = useState<string>("");
   const [image, setImage] = useState<string>("");
 
@@ -64,14 +65,6 @@ const Profile = () => {
     }
   };
 
-  const onChange = (e: any) => {
-    if (e.target.nickName) {
-      setNickName(e.target.value);
-    } else {
-      setPassword(e.target.value);
-    }
-  };
-
   //백엔드 명세서 나오면 사용
 
   const onSubmit = async (e: any) => {
@@ -79,12 +72,20 @@ const Profile = () => {
 
     if (isPwOpen == false) {
       try {
-        await axios.patch(`/profile/update`, {
-          //추후에 백엔드 api명세서 나오면 수정
-          nickname: nickName,
-          loaction: location,
-          // profileImg: image,
-        });
+        await axios.patch(
+          `/profile/update`,
+          {
+            //추후에 백엔드 api명세서 나오면 수정
+            nickname: nickName,
+            loaction: location,
+            // profileImg: image,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+          }
+        );
         setUserReTouch(false);
       } catch (e) {
         console.log(e);
@@ -92,23 +93,36 @@ const Profile = () => {
     } else {
       const passwordRegExp =
         /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
-      if (!passwordRegExp.test(password)) {
+      if (!passwordRegExp.test(newPw)) {
         alert(
           "비밀번호: 숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요."
         );
       }
+      if (newPw === confirmPw) {
+        try {
+          await axios.patch(
+            `/user/update`,
 
-      try {
-        await axios.patch(`/profile/update`, {
-          //추후에 백엔드 api명세서 나오면 수정
-          nickname: nickName,
-          loaction: location,
-          password: password,
-          // profileImg: image,
-        });
-        setUserReTouch(false);
-      } catch (e) {
-        console.log(e);
+            {
+              //추후에 백엔드 api명세서 나오면 수정
+              nickname: nickName,
+              loaction: location,
+              password: currentPw,
+              newPassword: newPw,
+              // profileImg: image,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+              },
+            }
+          );
+          setUserReTouch(false);
+        } catch (e) {
+          console.log(e);
+        }
+      } else {
+        alert("변경할 비밀번호가 일치하지 않습니다.");
       }
     }
   };
@@ -176,7 +190,7 @@ const Profile = () => {
                       name="nickname"
                       type="text"
                       defaultValue={user.nickname}
-                      onChange={onChange}
+                      onChange={(e) => setNickName(e.target.value)}
                     ></input>
                   </div>
                   <div className={Style.wrapper_location}>
@@ -198,9 +212,22 @@ const Profile = () => {
                         <div>
                           <div className={Style.wrapper_password}>
                             <input
+                              name="currentPw"
+                              type="password"
+                              placeholder="기존 비밀번호"
+                              onChange={(e) => setCurrentPw(e.target.value)}
+                            />
+                            <button
+                              className={Style.btn_show}
+                              onClick={() => setShowPass(true)}
+                            ></button>
+                          </div>
+                          <div className={Style.wrapper_password}>
+                            <input
                               name="password"
                               type="password"
-                              placeholder="변경하실 비밀번호를 입력하세요"
+                              onChange={(e) => setNewPw(e.target.value)}
+                              placeholder="변경할 비밀번호"
                             />
                             <button
                               className={Style.btn_show}
@@ -212,6 +239,7 @@ const Profile = () => {
                               name="confirmPw"
                               type="password"
                               placeholder="비밀번호 확인"
+                              onChange={(e) => setConfirmPw(e.target.value)}
                             />
                             <button
                               className={Style.btn_show}
@@ -223,9 +251,22 @@ const Profile = () => {
                         <div>
                           <div className={Style.wrapper_password}>
                             <input
+                              name="currentPw"
+                              type="text"
+                              placeholder="기존 비밀번호"
+                              onChange={(e) => setCurrentPw(e.target.value)}
+                            />
+                            <button
+                              className={Style.btn_noShow}
+                              onClick={() => setShowPass(false)}
+                            ></button>
+                          </div>
+                          <div className={Style.wrapper_password}>
+                            <input
                               name="password"
                               type="text"
-                              onChange={onChange}
+                              placeholder="변경할 비밀번호"
+                              onChange={(e) => setNewPw(e.target.value)}
                             ></input>
                             <button
                               className={Style.btn_noShow}
@@ -236,8 +277,9 @@ const Profile = () => {
                           <div className={Style.wrapper_password}>
                             <input
                               name="confirmPw"
-                              onChange={onChange}
+                              type="text"
                               placeholder="비밀번호 확인"
+                              onChange={(e) => setConfirmPw(e.target.value)}
                             />
                             <button
                               className={Style.btn_noShow}
@@ -270,6 +312,7 @@ const Profile = () => {
                   >
                     수정 취소
                   </button>
+
                   <button className={Style.subBtn} onClick={(e) => onSubmit(e)}>
                     수정 완료
                   </button>
