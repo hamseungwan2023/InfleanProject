@@ -13,7 +13,6 @@ const Profile = () => {
   const [userReTouch, setUserReTouch] = useState<boolean>(true);
 
   const [showPass, setShowPass] = useState<boolean>(false);
-  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isPwOpen, setIsPwOpen] = useState<boolean>(false);
 
   const [nickName, setNickName] = useState<string>("");
@@ -83,7 +82,7 @@ const Profile = () => {
             },
           }
         );
-        setUserReTouch(false);
+        setUserReTouch(true);
       } catch (e) {
         console.log(e);
       }
@@ -113,7 +112,7 @@ const Profile = () => {
               },
             }
           );
-          setUserReTouch(false);
+          setUserReTouch(true);
         } catch (e) {
           console.log(e);
         }
@@ -122,7 +121,6 @@ const Profile = () => {
       }
     }
   };
-
   return (
     <div className={Style.form}>
       {isLoggedIn === true ? (
