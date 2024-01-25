@@ -89,8 +89,8 @@ const Join = () => {
         navigate("/");
         console.log("success");
       }
-    } catch (e) {
-      console.log(e);
+    } catch (err: any) {
+      alert(err.response.data.message);
     }
   };
 

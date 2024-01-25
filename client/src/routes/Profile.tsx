@@ -29,8 +29,12 @@ const Profile = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (isLoggedIn === false) {
+      navigate("/");
+    }
     getUserData();
-  }, []);
+  }, [isLoggedIn]);
+
   const getUserData = async () => {
     try {
       const response = await axios.get(`/user/load-profile/${user?.memberId}`, {
@@ -38,9 +42,9 @@ const Profile = () => {
           Authorization: `${localStorage.getItem("accessToken")}`,
         },
       });
-      console.log(response.data);
-    } catch (err) {
-      console.error(err);
+      console.log(response);
+    } catch (err: any) {
+      console.log(err.response.data.message);
     }
   };
 
@@ -209,7 +213,7 @@ const Profile = () => {
                             />
                             <button
                               className={Style.btn_show}
-                              onClick={() => setShowPass(true)}
+                              onClick={() => setShowPass(false)}
                             ></button>
                           </div>
                           <div className={Style.wrapper_password}>
@@ -221,7 +225,7 @@ const Profile = () => {
                             />
                             <button
                               className={Style.btn_show}
-                              onClick={() => setShowPass(true)}
+                              onClick={() => setShowPass(false)}
                             ></button>
                           </div>
                         </div>
@@ -301,9 +305,7 @@ const Profile = () => {
             </div>
           )}
         </div>
-      ) : (
-        <div>로그인이 안되면 못 보는 페이지</div>
-      )}
+      ) : null}
     </div>
   );
 };

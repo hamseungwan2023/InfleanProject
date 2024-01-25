@@ -17,8 +17,9 @@ const DeleteAccount = () => {
   const dispatch = useDispatch();
 
   const [deleteBtn, setDeleteBtn] = useState<boolean>(false);
-  const [username, setUsernam] = useState<string>("");
+  const [showPass, setShowPass] = useState<boolean>(false);
 
+  const [username, setUsernam] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPw, setConfirmPw] = useState<string>("");
 
@@ -58,8 +59,8 @@ const DeleteAccount = () => {
         localStorage.clear();
         navigate("/");
         console.log("삭제성공");
-      } catch (err) {
-        console.error("삭제 실패", err);
+      } catch (err: any) {
+        console.log(err.response.data.message);
       }
     } else {
       alert("비밀번호가 같지 않습니다.");
@@ -102,20 +103,57 @@ const DeleteAccount = () => {
                   onChange={onChange}
                 ></input>
               </div>
-              <div className={Style.input_wrapper}>
-                <input
-                  placeholder="비밀번호"
-                  name="password"
-                  onChange={onChange}
-                ></input>
-              </div>
-              <div className={Style.input_wrapper}>
-                <input
-                  placeholder="비밀번호 확인"
-                  name="confirmPw"
-                  onChange={onChange}
-                ></input>
-              </div>
+              {showPass === false ? (
+                <div className={Style.input_wrapper}>
+                  <input
+                    placeholder="비밀번호"
+                    name="password"
+                    type="password"
+                    onChange={onChange}
+                  />
+                  <button
+                    className={Style.btn_show}
+                    onClick={() => setShowPass(true)}
+                  ></button>
+                  <div className={Style.input_wrapper}>
+                    <input
+                      placeholder="비밀번호 확인"
+                      type="password"
+                      name="confirmPw"
+                      onChange={onChange}
+                    />
+                    <button
+                      className={Style.btn_show}
+                      onClick={() => setShowPass(true)}
+                    ></button>
+                  </div>
+                </div>
+              ) : (
+                <div className={Style.input_wrapper}>
+                  <input
+                    placeholder="비밀번호"
+                    type="text"
+                    name="password"
+                    onChange={onChange}
+                  />
+                  <button
+                    className={Style.btn_noShow}
+                    onClick={() => setShowPass(true)}
+                  ></button>
+                  <div className={Style.input_wrapper}>
+                    <input
+                      placeholder="비밀번호 확인"
+                      type="text"
+                      name="confirmPw"
+                      onChange={onChange}
+                    />
+                    <button
+                      className={Style.btn_noShow}
+                      onClick={() => setShowPass(true)}
+                    ></button>
+                  </div>
+                </div>
+              )}
             </div>
             <div className={Style.button_wrapper}>
               <div className={Style.normal_btn}>
@@ -146,7 +184,7 @@ const DeleteAccount = () => {
               ></img>
               <span className={Style.text_red}>
                 탈퇴 후에는
-                <span className={Style.text_default}>{user.email}</span>로
+                <span className={Style.text_default}>{user.nickname}</span>으로
                 생성된 아이디와 데이터는 모두 복구 할 수 없습니다
               </span>
             </div>
