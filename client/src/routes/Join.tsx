@@ -56,17 +56,17 @@ const Join = () => {
   const navigate = useNavigate();
 
   const address = location.substring(0, 2);
-  console.log("location", location);
+  // console.log("location", location);
 
   const onSubmit = async (e: any, dispatch: AppDispatch): Promise<void> => {
     e.preventDefault();
 
+    console.log(profileImg);
+
     try {
       const formData = new FormData();
-
-      //프로필 이미지 결정나면 느낌표 지울 예정
-      if (!profileImg) {
-        // formData.append("profileImg", profileImg);
+      if (profileImg) {
+        formData.append("profileImg", profileImg);
         const jsonData = {
           username: username,
           nickname: nickname,
@@ -90,7 +90,7 @@ const Join = () => {
         console.log("success");
       }
     } catch (err: any) {
-      alert(err.response.data.message);
+      console.log(err.response.data.message);
     }
   };
 

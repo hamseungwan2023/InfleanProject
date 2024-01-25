@@ -37,14 +37,14 @@ const Profile = () => {
 
   const getUserData = async () => {
     try {
-      const response = await axios.get(`/user/load-profile/${user?.memberId}`, {
+      const response = await axios.get(`/user/load-profile`, {
         headers: {
           Authorization: `${localStorage.getItem("accessToken")}`,
         },
       });
       console.log(response);
     } catch (err: any) {
-      console.log(err.response.data.message);
+      console.log(err);
     }
   };
 

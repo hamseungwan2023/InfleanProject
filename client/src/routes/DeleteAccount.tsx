@@ -27,7 +27,7 @@ const DeleteAccount = () => {
     if (isLoggedIn === false) {
       navigate("/");
     }
-  }, []);
+  }, [isLoggedIn]);
 
   const onChange = (e: any) => {
     if (e.target.name === "password") {
@@ -60,7 +60,7 @@ const DeleteAccount = () => {
         navigate("/");
         console.log("삭제성공");
       } catch (err: any) {
-        console.log(err.response.data.message);
+        alert(err.response.data.message);
       }
     } else {
       alert("비밀번호가 같지 않습니다.");
@@ -138,7 +138,7 @@ const DeleteAccount = () => {
                   />
                   <button
                     className={Style.btn_noShow}
-                    onClick={() => setShowPass(true)}
+                    onClick={() => setShowPass(false)}
                   ></button>
                   <div className={Style.input_wrapper}>
                     <input
@@ -149,7 +149,7 @@ const DeleteAccount = () => {
                     />
                     <button
                       className={Style.btn_noShow}
-                      onClick={() => setShowPass(true)}
+                      onClick={() => setShowPass(false)}
                     ></button>
                   </div>
                 </div>
@@ -184,7 +184,7 @@ const DeleteAccount = () => {
               ></img>
               <span className={Style.text_red}>
                 탈퇴 후에는
-                <span className={Style.text_default}>{user.nickname}</span>으로
+                <span className={Style.text_default}> {user.nickname}</span>으로
                 생성된 아이디와 데이터는 모두 복구 할 수 없습니다
               </span>
             </div>
