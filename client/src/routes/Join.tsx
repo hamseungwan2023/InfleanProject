@@ -334,7 +334,7 @@ const Join = () => {
           <button onClick={(e) => mailConfirm(e)}>인증번호 받기</button>
         </div>
         {confirmEmail && (
-          <div className={style.wrapper_email}>
+          <div className={style.wrapper_confirmEmail}>
             <input
               name="confirmCode"
               type="text"

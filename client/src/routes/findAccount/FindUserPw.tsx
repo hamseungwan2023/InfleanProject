@@ -5,13 +5,10 @@ import axios from "axios";
 import Timer from "./Timer";
 
 const FindUserPw = () => {
-  const [next, setNext] = useState<boolean>(false);
   const [secondClick, setSecondClick] = useState<boolean>(false);
 
   const [email, setEmail] = useState<string>("");
-  const [number, setNumber] = useState<string>("");
-  const [userPhone, setUserPhone] = useState<string>("");
-  const [accessCode, setAccessCode] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
   const [uAccessCode, setUAccessCode] = useState<string>("");
   const [uPw, setUPw] = useState<string>("");
 
@@ -25,70 +22,46 @@ const FindUserPw = () => {
       localStorage.clear();
       navigate("/");
     }
-    getNumber();
-  });
+  }, []);
 
   const onChange = (e: any) => {
     if (e.target.name === "email") {
       setEmail(e.target.value);
-    } else if (e.target.name === "number") {
-      setNumber(e.target.value);
     } else if (e.target.name === "uAccessCode") {
       setUAccessCode(e.target.value);
     }
   };
 
-  //이메일의 휴대폰 번호 가져오기
-  const getUserData = async (e: any) => {
+  //인증번호 가져오기
+  const findPassword = async (e: any) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`/user/findpw`, {
-        username: email,
+      const response = await axios.post(`/email/mailConfirm`, {
+        email: email,
       });
-      setUserPhone(response.data.phoneNumber);
-      setNext(true);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  //폰번호에 인증번호 보내기
-  const postPhone = async (e: any) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post(`/user/findid`, {
-        phoneNumber: number,
-      });
-      setAccessCode(response.data.certNumber);
       setSecondClick(true);
     } catch (err) {
       console.error(err);
     }
   };
 
-  //인증번호 가져오기
-  const getNumber = async () => {
+  //유저가 넣은 인증번호랑 get으로 가져온 인증번호 비교하기
+  const compareNumber = async (e: any) => {
+    e.preventDefault();
     try {
-      const response = await axios.get(`/user/certNumber
-      `);
-      setUPw(response.data.password);
+      const response = await axios.post("/email/resetPassword", {
+        email: email,
+        username: username,
+        code: uAccessCode,
+      });
+      setUPw(response.data);
     } catch (err) {
       console.error(err);
     }
   };
 
-  //유저가 넣은 인증번호랑 get으로 가져온 인증번호 비교하기
-  const compareNumber = (e: any) => {
-    e.preventDefault();
-    if (accessCode === uAccessCode) {
-      alert(`비밀번호는 ${uPw} 입니다.`);
-    } else {
-      alert("인증번호가 다릅니다");
-    }
-  };
-
   return (
-    <div className={Style.find_wrap}>
+    <div className={Style.form}>
       <div>
         <button
           className={Style.FindAccount_Btn}
@@ -96,43 +69,42 @@ const FindUserPw = () => {
         >
           아이디 찾기
         </button>
-        {next === false ? (
-          <div className={Style.confirm_wrap}>
+
+        <div className={Style.confirm_wrap}>
+          <div className={Style.box}>
+            <input
+              name="username"
+              placeholder="아이디를 입력하세요"
+              onChange={(e) => setUsername(e.target.value)}
+            ></input>
             <input
               name="email"
               placeholder="비밆번호를 찾을 이메일을 입력하세요"
               onChange={onChange}
             ></input>
-            <button onClick={(e) => getUserData(e)}>다음</button>
-          </div>
-        ) : (
-          <div>
-            <div>
-              <div className={Style.confirm_wrap}>
-                <input
-                  name="phone"
-                  // defaultValue={userPhone} 이메일의 휴대폰 번호
 
-                  placeholder="인증번호 받으실 전화번호 입력하세요"
+            {secondClick === false ? (
+              <button onClick={(e) => findPassword(e)}>인증번호 받기</button>
+            ) : (
+              <div>
+                <input
+                  placeholder="인증번호를 입력하세요"
+                  name="uAccessCode"
                   onChange={onChange}
                 ></input>
-                <button onClick={(e) => postPhone(e)}>인증번호 받기</button>
-              </div>
+                {uPw.length === 0 && <Timer />}
+                <button onClick={(e) => compareNumber(e)}>인증</button>
 
-              {secondClick === true ? (
-                <div className={Style.confirm_wrap}>
-                  <input
-                    placeholder="인증번호를 입력하세요"
-                    name="uAccessCode"
-                    onChange={onChange}
-                  ></input>
-                  <button onClick={(e) => compareNumber(e)}>인증하기</button>
-                  <Timer />
-                </div>
-              ) : null}
-            </div>
+                {uPw.length > 1 ? (
+                  <h2>
+                    귀하의 임시 비밀번호는
+                    <span className={Style.userInfo}>{uPw}</span>입니다.
+                  </h2>
+                ) : null}
+              </div>
+            )}
           </div>
-        )}
+        </div>
       </div>
     </div>
   );
