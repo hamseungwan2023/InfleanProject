@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { login } from "../slices/reducers/auth";
 import { useNavigate } from "react-router-dom";
 import { AppDispatch } from "../slices/store";
+import Timer from "./findAccount/Timer";
 
 const Join = () => {
   const [username, setUsername] = useState<string>("");
@@ -17,10 +18,12 @@ const Join = () => {
   const [nickname, setNickname] = useState<string>("");
   const [location, setLocation] = useState<string>("");
   const [email, setEmail] = useState<string>("");
+  const [confirmCode, setConfirmCode] = useState<string>("");
 
   const [profileImg, setProfileImg] = useState<Blob | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [findUser, setFindUser] = useState(false);
+  const [confirmEmail, setConfirmEmail] = useState<boolean>(false);
+  const [signUp, setSignup] = useState<boolean>(false);
 
   // 오류메세지, 유효여부 상태 저장
   const [requiredMessage, setRequiredMessage] = useState("");
@@ -55,42 +58,47 @@ const Join = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const address = location.substring(0, 2);
   // console.log("location", location);
 
   const onSubmit = async (e: any, dispatch: AppDispatch): Promise<void> => {
     e.preventDefault();
 
+    const address = location.substring(0, 2);
     console.log(profileImg);
-
-    try {
-      const formData = new FormData();
-      if (profileImg) {
-        formData.append("profileImg", profileImg);
-        const jsonData = {
-          username: username,
-          nickname: nickname,
-          password: password,
-          email: email,
-          location: address,
-          //phone: phone,
-          //realname: realname,
-          //birthday: birthday,
-          //서버 업데이트 되면 주석풀기
-        };
-        formData.append(
-          "reqUserJoinFormDto",
-          new Blob([JSON.stringify(jsonData)], { type: "application/json" })
-        );
-        const response = await axios.post("/user/signup", formData, {
-          headers: { "Content-Type": "multipart/form-data", charset: "utf-8" },
-        });
-        dispatch(login(username, password));
-        navigate("/");
-        console.log("success");
+    if (signUp) {
+      try {
+        const formData = new FormData();
+        if (profileImg) {
+          formData.append("profileImg", profileImg);
+          const jsonData = {
+            username: username,
+            nickname: nickname,
+            password: password,
+            email: email,
+            location: address,
+            //phone: phone,
+            //realname: realname,
+            //birthday: birthday,
+            //서버 업데이트 되면 주석풀기
+          };
+          formData.append(
+            "reqUserJoinFormDto",
+            new Blob([JSON.stringify(jsonData)], { type: "application/json" })
+          );
+          const response = await axios.post("/user/signup", formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              charset: "utf-8",
+            },
+          });
+          dispatch(login(username, password));
+          navigate("/");
+          console.log("success");
+        }
+      } catch (err: any) {
+        console.log(err.response.data.message);
+        console.log(err);
       }
-    } catch (err: any) {
-      console.log(err.response.data.message);
     }
   };
 
@@ -248,6 +256,37 @@ const Join = () => {
     }
   };
 
+  //이메일 인증
+  const mailConfirm = async (e: any) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post("/login/mailConfirm", {
+        email: email,
+      });
+      setConfirmEmail(true);
+      console.log(response.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  //인증번호
+  const verificationCode = async (e: any) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post("/login/mailVerification", {
+        email: email,
+        code: confirmCode,
+      });
+      console.log(response);
+      if (response.data === true) {
+        setSignup(true);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const onClickPasswordShow = (e: React.MouseEvent) => {
     setIsSecretPassword(!isSecretPassword);
   };
@@ -292,7 +331,22 @@ const Join = () => {
             maxLength={30}
             required
           />
+          <button onClick={(e) => mailConfirm(e)}>인증번호 받기</button>
         </div>
+        {confirmEmail && (
+          <div className={style.wrapper_email}>
+            <input
+              name="confirmCode"
+              type="text"
+              placeholder="인증번호를 입력하세요."
+              value={confirmCode}
+              className={style.input}
+              onChange={(e: any) => setConfirmCode(e.target.value)}
+            ></input>
+            <button onClick={(e) => verificationCode(e)}>인증하기</button>
+            <Timer />
+          </div>
+        )}
         <div
           className={classnames(
             style.wrapper_password,

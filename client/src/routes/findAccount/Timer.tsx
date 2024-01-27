@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Style from "./FindAccount.module.scss";
 
 const Timer: React.FC = () => {
   const [seconds, setSeconds] = useState<number>(300);
@@ -28,7 +29,7 @@ const Timer: React.FC = () => {
 
   return (
     <div>
-      <div>남은 시간: {formatTime(seconds)}</div>
+      <div className={Style.timer}>{formatTime(seconds)}</div>
     </div>
   );
 };

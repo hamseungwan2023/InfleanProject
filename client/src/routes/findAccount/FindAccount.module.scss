@@ -29,6 +29,7 @@
 .confirm_wrap {
   margin-top: 60px;
   margin-left: 100px;
+  height: 10px;
 
   input {
     background: $main200;
@@ -36,11 +37,10 @@
     height: 50px;
   }
   button {
-    position: relative;
     margin-left: 10px;
     background: $main400;
     height: 50px;
-    width: 60px;
+    // width: 60px;
     border-radius: 4px;
     color: white;
   }
@@ -51,4 +51,10 @@
     margin-top: 10px;
     font-size: 13px;
   }
+}
+
+.timer {
+  position: absolute;
+  top: 15px;
+  left: 101%;
 }
