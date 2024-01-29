@@ -8,13 +8,22 @@
   flex-direction: column;
   margin-top: 50px;
   margin-bottom: 50px;
-  h1 {
-    margin-top: 10px;
-    margin-left: 40%;
+
+  .infoState_wrapper {
+    border-bottom: 1px solid $mainBorder;
+    margin-bottom: 10px;
+    align-items: center;
+    h1 {
+      color: $main600;
+      font-size: 20px;
+      margin-top: 10px;
+      margin-left: 45%;
+      margin-bottom: 10px;
+    }
   }
 
   img {
-    margin-left: 35%;
+    margin-left: 31%;
   }
 
   & > div {
@@ -41,6 +50,12 @@
     pointer-events: none;
     content: "";
   }
+  img {
+    width: 200px;
+    height: 150px;
+    border-radius: 100%;
+  }
+
   input {
     flex: 1 1 auto;
     font-size: 15px;

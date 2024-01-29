@@ -12,15 +12,6 @@ import { login } from "../../slices/reducers/auth";
 import { AppDispatch, RootState } from "../../slices/store";
 import Profile from "../profile/Profile";
 
-interface Ires {
-  data: {
-    accessToken: string;
-    refreshToken: string;
-    memberId: number;
-    nickname: string;
-  };
-}
-
 const Login = () => {
   const [isBtnClick, setIsBtnClick] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -136,7 +127,9 @@ const Login = () => {
             </div>
           </div>
         </div>
-      ): <Profile />}
+      ) : (
+        <Profile />
+      )}
     </div>
   );
 };

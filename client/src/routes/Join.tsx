@@ -94,6 +94,27 @@ const Join = () => {
           dispatch(login(username, password));
           navigate("/");
           console.log("success");
+        } else {
+          const jsonData = {
+            username: username,
+            nickname: nickname,
+            password: password,
+            email: email,
+            location: address,
+          };
+          formData.append(
+            "reqUserJoinFormDto",
+            new Blob([JSON.stringify(jsonData)], { type: "application/json" })
+          );
+          const response = await axios.post("/user/signup", formData, {
+            headers: {
+              "Content-Type": "application/json",
+              charset: "utf-8",
+            },
+          });
+          dispatch(login(username, password));
+          navigate("/");
+          console.log("success");
         }
       } catch (err: any) {
         console.log(err.response.data.message);
@@ -260,7 +281,7 @@ const Join = () => {
   const mailConfirm = async (e: any) => {
     e.preventDefault();
     try {
-      const response = await axios.post("/login/mailConfirm", {
+      const response = await axios.post("/email/mailConfirm", {
         email: email,
       });
       setConfirmEmail(true);
@@ -274,7 +295,7 @@ const Join = () => {
   const verificationCode = async (e: any) => {
     e.preventDefault();
     try {
-      const response = await axios.post("/login/mailVerification", {
+      const response = await axios.post("/email/mailVerification", {
         email: email,
         code: confirmCode,
       });
@@ -343,8 +364,9 @@ const Join = () => {
               className={style.input}
               onChange={(e: any) => setConfirmCode(e.target.value)}
             ></input>
-            <button onClick={(e) => verificationCode(e)}>인증하기</button>
             <Timer />
+
+            <button onClick={(e) => verificationCode(e)}>인증하기</button>
           </div>
         )}
         <div

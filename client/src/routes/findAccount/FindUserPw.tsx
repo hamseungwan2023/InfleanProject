@@ -96,10 +96,15 @@ const FindUserPw = () => {
                 <button onClick={(e) => compareNumber(e)}>인증</button>
 
                 {uPw.length > 1 ? (
-                  <h2>
-                    귀하의 임시 비밀번호는
-                    <span className={Style.userInfo}>{uPw}</span>입니다.
-                  </h2>
+                  <div>
+                    <h2>
+                      귀하의 임시 비밀번호는
+                      <span className={Style.userInfo}>{uPw}</span>입니다.
+                    </h2>
+                    <button onClick={(e) => navigate("/")}>
+                      로그인 하러가기
+                    </button>
+                  </div>
                 ) : null}
               </div>
             )}

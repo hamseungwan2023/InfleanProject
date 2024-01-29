@@ -125,9 +125,12 @@
   &::before {
     background-position: -64px -266px;
   }
+  input {
+    width: 468px;
+  }
   button {
-    position: relative;
-    left: 45px;
+    margin-left: 10px;
+    width: 100px;
   }
 }
 

@@ -3,8 +3,10 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import classnames from "classnames";
 import Style from "./Profile.module.scss";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { AppDispatch } from "../slices/store";
 import Modal from "../components/location/Modal";
+import { updateNickname, updateProfile } from "../slices/reducers/auth";
 
 export const srcUrl =
   "https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg";
@@ -16,6 +18,7 @@ const Profile = () => {
   const [isPwOpen, setIsPwOpen] = useState<boolean>(false);
 
   const [nickName, setNickName] = useState<string>("");
+  const [profileImg, setProfileImg] = useState("");
   const [currentPw, setCurrentPw] = useState<string>("");
   const [newPw, setNewPw] = useState<string>("");
   const [confirmPw, setConfirmPw] = useState<string>("");
@@ -23,6 +26,8 @@ const Profile = () => {
 
   const user = useSelector((state: any) => state.auth.user);
   const isLoggedIn = useSelector((state: any) => state.auth.isLoggedIn);
+
+  const dispatch: AppDispatch = useDispatch();
 
   const AllowedImageExtensions = [".jpg", ".jpeg", ".png", ".svg"]; // 허용할 이미지 확장자들
 
@@ -37,12 +42,19 @@ const Profile = () => {
 
   const getUserData = async () => {
     try {
-      const response = await axios.get(`/user/load-profile`, {
+      const response = await axios.get<Blob>(`/user/load-profile`, {
+        responseType: "blob",
         headers: {
-          Authorization: `${localStorage.getItem("accessToken")}`,
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
-      console.log(response);
+      const file = new File([response.data], "image");
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        const previewImage = String(ev.target?.result);
+        setProfileImg(previewImage);
+      };
+      reader.readAsDataURL(file);
     } catch (err: any) {
       console.log(err);
     }
@@ -66,76 +78,31 @@ const Profile = () => {
       }
     }
   };
+  console.log(nickName);
 
-  //백엔드 명세서 나오면 사용
-
-  const onSubmit = async (e: any) => {
+  const onSubmit = (e: any) => {
     e.preventDefault();
-    if (isPwOpen == false) {
-      try {
-        await axios.patch(
-          `/user/update`,
-          {
-            //추후에 백엔드 api명세서 나오면 수정
-            nickname: nickName,
-            // profileImg: image,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            },
-          }
-        );
-        setUserReTouch(true);
-      } catch (e) {
-        console.log(e);
-      }
+    if (!isPwOpen) {
+      dispatch(updateNickname(nickName));
     } else {
-      // const passwordRegExp =
-      //   /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
-      // if (!passwordRegExp.test(newPw)) {
-      //   alert(
-      //     "비밀번호: 숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요."
-      //   );
-      // }
-      if (newPw === confirmPw) {
-        try {
-          await axios.patch(
-            `/user/update`,
-
-            {
-              //추후에 백엔드 api명세서 나오면 수정
-              nickname: nickName,
-              password: currentPw,
-              newPassword: newPw,
-              // profileImg: image,
-            },
-            {
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-              },
-            }
-          );
-          setUserReTouch(true);
-        } catch (e) {
-          console.log(e);
-        }
-      } else {
-        alert("변경할 비밀번호가 일치하지 않습니다.");
-      }
+      dispatch(updateProfile(nickName, currentPw, newPw));
     }
   };
+
   return (
     <div className={Style.form}>
       {isLoggedIn === true ? (
         <div>
           {userReTouch === true ? (
             <div className={Style.profile_wrapper}>
-              <h1>프로필</h1>
-              {/* <img src={profileImg} style={{ width: "100px" }}></img> //db 활성화 되면 사용 */}
+              <div className={Style.infoState_wrapper}>
+                <h1>프로필</h1>
+              </div>
+
               <div className={Style.userInfo_wrapper}>
                 <div>
-                  <img src={srcUrl} style={{ width: "150px" }}></img>
+                  <img id="image" src={profileImg} />
+                  {/* <img src={srcUrl} style={{ width: "150px" }}></img> */}
                 </div>
                 <div className={Style.wrapper_nickname}>
                   <h5>{user.nickname}</h5>
@@ -146,20 +113,20 @@ const Profile = () => {
                 <div className={Style.wrapper_location}>
                   <h5>{user.loaction}</h5>
                 </div>
-                <div className={Style.wrapper_btn}>
-                  <button
-                    className={Style.retouchBtn}
-                    onClick={() => setUserReTouch(false)}
-                  >
-                    프로필 수정
-                  </button>
-                  <button
-                    className={Style.toDelete}
-                    onClick={() => navigate(`/deleteAccount/${user?.memberId}`)}
-                  >
-                    계정 삭제
-                  </button>
-                </div>
+              </div>
+              <div className={Style.wrapper_btn}>
+                <button
+                  className={Style.retouchBtn}
+                  onClick={() => setUserReTouch(false)}
+                >
+                  프로필 수정
+                </button>
+                <button
+                  className={Style.toDelete}
+                  onClick={() => navigate(`/deleteAccount/${user?.memberId}`)}
+                >
+                  계정 삭제
+                </button>
               </div>
             </div>
           ) : (
