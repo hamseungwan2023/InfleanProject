@@ -12,12 +12,11 @@
   .infoState_wrapper {
     border-bottom: 1px solid $mainBorder;
     margin-bottom: 10px;
-    align-items: center;
+    text-align: center;
     h1 {
       color: $main600;
       font-size: 20px;
       margin-top: 10px;
-      margin-left: 45%;
       margin-bottom: 10px;
     }
   }
@@ -34,7 +33,6 @@
 
 .profile_wrapper {
   border: $mainBorder 1px solid;
-  height: 400px;
   width: 500px;
   margin-bottom: 10px;
   border-radius: 6px;
@@ -165,10 +163,6 @@
     background-position: -310px 0;
   }
 }
-.imgInput {
-  cursor: pointer;
-  margin-left: 3%;
-}
 
 .retouchBtn {
   width: 500px;
@@ -176,6 +170,7 @@
   font-size: 15px;
   background-color: $main400;
 }
+
 .toDelete {
   margin-top: 5px;
   width: 500px;
@@ -183,6 +178,15 @@
   font-size: 15px;
   color: rgb(151, 66, 66);
   background-color: $main400;
+}
+
+.imgInput {
+  cursor: pointer;
+  img {
+    border-radius: 100%;
+    width: 200px;
+    height: 150px;
+  }
 }
 
 .mainBtn {

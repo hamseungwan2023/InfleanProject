@@ -23,7 +23,7 @@ const Join = () => {
   const [profileImg, setProfileImg] = useState<Blob | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [confirmEmail, setConfirmEmail] = useState<boolean>(false);
-  const [signUp, setSignup] = useState<boolean>(false);
+  const [authEmail, setAuthEmail] = useState<boolean>(false);
 
   // 오류메세지, 유효여부 상태 저장
   const [requiredMessage, setRequiredMessage] = useState("");
@@ -62,60 +62,40 @@ const Join = () => {
 
   const onSubmit = async (e: any, dispatch: AppDispatch): Promise<void> => {
     e.preventDefault();
-
     const address = location.substring(0, 2);
-    console.log(profileImg);
-    if (signUp) {
+
+    if (authEmail) {
       try {
         const formData = new FormData();
+        const jsonData = {
+          username,
+          nickname,
+          password,
+          email,
+          location: address,
+          //phone: phone,
+          //realname: realname,
+          //birthday: birthday,
+          //서버 업데이트 되면 주석풀기
+        };
+        formData.append(
+          "reqUserJoinFormDto",
+          new Blob([JSON.stringify(jsonData)], { type: "application/json" })
+        );
+
         if (profileImg) {
           formData.append("profileImg", profileImg);
-          const jsonData = {
-            username: username,
-            nickname: nickname,
-            password: password,
-            email: email,
-            location: address,
-            //phone: phone,
-            //realname: realname,
-            //birthday: birthday,
-            //서버 업데이트 되면 주석풀기
-          };
-          formData.append(
-            "reqUserJoinFormDto",
-            new Blob([JSON.stringify(jsonData)], { type: "application/json" })
-          );
-          const response = await axios.post("/user/signup", formData, {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              charset: "utf-8",
-            },
-          });
-          dispatch(login(username, password));
-          navigate("/");
-          console.log("success");
-        } else {
-          const jsonData = {
-            username: username,
-            nickname: nickname,
-            password: password,
-            email: email,
-            location: address,
-          };
-          formData.append(
-            "reqUserJoinFormDto",
-            new Blob([JSON.stringify(jsonData)], { type: "application/json" })
-          );
-          const response = await axios.post("/user/signup", formData, {
-            headers: {
-              "Content-Type": "application/json",
-              charset: "utf-8",
-            },
-          });
-          dispatch(login(username, password));
-          navigate("/");
-          console.log("success");
         }
+
+        const response = await axios.post("/user/signup", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
+        dispatch(login(username, password));
+        navigate("/");
+        console.log("success");
       } catch (err: any) {
         console.log(err.response.data.message);
         console.log(err);
@@ -301,7 +281,7 @@ const Join = () => {
       });
       console.log(response);
       if (response.data === true) {
-        setSignup(true);
+        setAuthEmail(true);
       }
     } catch (err) {
       console.error(err);

@@ -79,7 +79,7 @@ const FindUserPw = () => {
             ></input>
             <input
               name="email"
-              placeholder="비밆번호를 찾을 이메일을 입력하세요"
+              placeholder="비밀번호를 찾을 이메일을 입력하세요"
               onChange={onChange}
             ></input>
 

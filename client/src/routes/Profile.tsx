@@ -14,7 +14,10 @@ export const srcUrl =
 const Profile = () => {
   const [userReTouch, setUserReTouch] = useState<boolean>(true);
 
-  const [showPass, setShowPass] = useState<boolean>(false);
+  const [showCurrentPw, setShowCurrentPw] = useState<boolean>(false);
+  const [showNewPw, setShowNewPw] = useState<boolean>(false);
+  const [showNewConfirmPw, setShowNewConfirmPw] = useState<boolean>(false);
+
   const [isPwOpen, setIsPwOpen] = useState<boolean>(false);
 
   const [nickName, setNickName] = useState<string>("");
@@ -111,9 +114,10 @@ const Profile = () => {
                   <h5>{user.rank}레벨</h5>
                 </div>
                 <div className={Style.wrapper_location}>
-                  <h5>{user.loaction}</h5>
+                  <h5>지역 : {user.loaction}</h5>
                 </div>
               </div>
+
               <div className={Style.wrapper_btn}>
                 <button
                   className={Style.retouchBtn}
@@ -130,9 +134,11 @@ const Profile = () => {
               </div>
             </div>
           ) : (
-            <div>
-              <div className={Style.info_wrapper}>
-                <h1>프로필 수정</h1>
+            <div className={Style.profile_wrapper}>
+              <div className={Style.userInfo_wrapper}>
+                <div className={Style.infoState_wrapper}>
+                  <h1>프로필 수정</h1>
+                </div>
                 {/* <img src={profileImg} style={{ width: "100px" }}></img> //db 활성화 되면 사용 */}
                 <div>
                   <div>
@@ -143,7 +149,7 @@ const Profile = () => {
                         onChange={imageOnChange}
                         style={{ display: "none" }}
                       ></input>
-                      <img src={srcUrl} style={{ width: "100px" }}></img>
+                      <img src={profileImg}></img>
                     </label>
                   </div>
                   <div className={Style.wrapper_nickname}>
@@ -157,20 +163,35 @@ const Profile = () => {
 
                   {isPwOpen && (
                     <div>
-                      {showPass === false ? (
-                        <div>
-                          <div className={Style.wrapper_password}>
-                            <input
-                              name="currentPw"
-                              type="password"
-                              placeholder="기존 비밀번호"
-                              onChange={(e) => setCurrentPw(e.target.value)}
-                            />
-                            <button
-                              className={Style.btn_show}
-                              onClick={() => setShowPass(true)}
-                            ></button>
-                          </div>
+                      {showCurrentPw === false ? (
+                        <div className={Style.wrapper_password}>
+                          <input
+                            name="currentPw"
+                            type="password"
+                            placeholder="기존 비밀번호"
+                            onChange={(e) => setCurrentPw(e.target.value)}
+                          />
+                          <button
+                            className={Style.btn_show}
+                            onClick={() => setShowCurrentPw(true)}
+                          ></button>
+                        </div>
+                      ) : (
+                        <div className={Style.wrapper_password}>
+                          <input
+                            name="currentPw"
+                            type="text"
+                            placeholder="기존 비밀번호"
+                            onChange={(e) => setCurrentPw(e.target.value)}
+                          />
+                          <button
+                            className={Style.btn_noShow}
+                            onClick={() => setShowCurrentPw(false)}
+                          ></button>
+                        </div>
+                      )}
+                      <div>
+                        {showNewPw === false ? (
                           <div className={Style.wrapper_password}>
                             <input
                               name="password"
@@ -180,36 +201,10 @@ const Profile = () => {
                             />
                             <button
                               className={Style.btn_show}
-                              onClick={() => setShowPass(false)}
+                              onClick={() => setShowNewPw(true)}
                             ></button>
                           </div>
-                          <div className={Style.wrapper_password}>
-                            <input
-                              name="confirmPw"
-                              type="password"
-                              placeholder="비밀번호 확인"
-                              onChange={(e) => setConfirmPw(e.target.value)}
-                            />
-                            <button
-                              className={Style.btn_show}
-                              onClick={() => setShowPass(false)}
-                            ></button>
-                          </div>
-                        </div>
-                      ) : (
-                        <div>
-                          <div className={Style.wrapper_password}>
-                            <input
-                              name="currentPw"
-                              type="text"
-                              placeholder="기존 비밀번호"
-                              onChange={(e) => setCurrentPw(e.target.value)}
-                            />
-                            <button
-                              className={Style.btn_noShow}
-                              onClick={() => setShowPass(false)}
-                            ></button>
-                          </div>
+                        ) : (
                           <div className={Style.wrapper_password}>
                             <input
                               name="password"
@@ -219,10 +214,24 @@ const Profile = () => {
                             ></input>
                             <button
                               className={Style.btn_noShow}
-                              onClick={() => setShowPass(false)}
+                              onClick={() => setShowNewPw(false)}
                             ></button>
                           </div>
-
+                        )}
+                        {showNewConfirmPw === false ? (
+                          <div className={Style.wrapper_password}>
+                            <input
+                              name="confirmPw"
+                              type="password"
+                              placeholder="비밀번호 확인"
+                              onChange={(e) => setConfirmPw(e.target.value)}
+                            />
+                            <button
+                              className={Style.btn_show}
+                              onClick={() => setShowNewConfirmPw(false)}
+                            ></button>
+                          </div>
+                        ) : (
                           <div className={Style.wrapper_password}>
                             <input
                               name="confirmPw"
@@ -232,11 +241,11 @@ const Profile = () => {
                             />
                             <button
                               className={Style.btn_noShow}
-                              onClick={() => setShowPass(false)}
+                              onClick={() => setShowNewConfirmPw(false)}
                             ></button>
                           </div>
-                        </div>
-                      )}
+                        )}
+                      </div>
                     </div>
                   )}
                   {isPwOpen === false ? (
