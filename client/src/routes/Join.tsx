@@ -63,7 +63,6 @@ const Join = () => {
   const onSubmit = async (e: any, dispatch: AppDispatch): Promise<void> => {
     e.preventDefault();
     const address = location.substring(0, 2);
-
     if (authEmail) {
       try {
         const formData = new FormData();
@@ -86,7 +85,7 @@ const Join = () => {
         if (profileImg) {
           formData.append("profileImg", profileImg);
         }
-
+        console.log(1);
         const response = await axios.post("/user/signup", formData, {
           headers: {
             "Content-Type": "multipart/form-data",

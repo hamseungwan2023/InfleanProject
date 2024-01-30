@@ -20,6 +20,7 @@ const Profile = () => {
 
   const [isPwOpen, setIsPwOpen] = useState<boolean>(false);
 
+  const [userData, setUserData] = useState<any>({});
   const [nickName, setNickName] = useState<string>("");
   const [profileImg, setProfileImg] = useState("");
   const [currentPw, setCurrentPw] = useState<string>("");
@@ -41,7 +42,23 @@ const Profile = () => {
       navigate("/");
     }
     getUserData();
+    userDetail();
   }, [isLoggedIn]);
+
+  const userDetail = async () => {
+    try {
+      const response = await axios.get("/user/api/userDetail", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
+      setUserData(response.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  console.log("userData", userData);
 
   const getUserData = async () => {
     try {
@@ -81,7 +98,6 @@ const Profile = () => {
       }
     }
   };
-  console.log(nickName);
 
   const onSubmit = (e: any) => {
     e.preventDefault();
@@ -108,13 +124,13 @@ const Profile = () => {
                   {/* <img src={srcUrl} style={{ width: "150px" }}></img> */}
                 </div>
                 <div className={Style.wrapper_nickname}>
-                  <h5>{user.nickname}</h5>
+                  <h5>{userData.nickname}</h5>
                 </div>
                 <div className={Style.wrapper_rank}>
-                  <h5>{user.rank}레벨</h5>
+                  <h5>{userData.rank}레벨</h5>
                 </div>
                 <div className={Style.wrapper_location}>
-                  <h5>지역 : {user.loaction}</h5>
+                  <h5>지역 : {userData.location}</h5>
                 </div>
               </div>
 
