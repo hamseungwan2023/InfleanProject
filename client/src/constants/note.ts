@@ -5,10 +5,11 @@ export const noteTabList = [
   "스팸함"
 ]
 
-export type TNoteList = {
+export type TNote = {
   id: number, //쪽지 아이디
-  receiver: string, //수신자
-  sender: string, // 발신자
+  receiver: string, //수신자 
+  senderId: number, // 발신자 id
+  senderNickname: string, // 발신자 닉네임
   content: string,  //내용
   sendDate: string,  //보낸시각
   receiveDate: string,  //받은 시각
@@ -18,6 +19,12 @@ export type TNoteList = {
   isSpam: boolean, //스팸여부
   isDeclaration: boolean, // 신고여부
   isKeep: boolean //보관여부
+}
+
+export type TNoteList = {
+  content : TNote[],
+  page: number, //현재페이지
+  totalPage: number //전체 페이지
 }
 
 export enum ENoteTab {

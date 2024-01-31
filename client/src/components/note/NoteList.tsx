@@ -1,21 +1,25 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { ENoteTab, noteTabList, tempNoteList } from "../../constants/note";
+import { ENoteTab, noteTabList, TNote } from "../../constants/note";
 import { getUnreadNoteCount } from "../../utils/note";
 import style from "./Note.module.scss";
 import NoteItem from "./NoteItem";
 
 const NoteList = () => {
   const [tabNumber, setTabNumber] = useState<ENoteTab>(0); // 선택된 탭 번호
-  const [checkScope, setCheckScope] = useState<string[]>([]); // 선택된 쪽지 id 배열
+  const [checkScope, setCheckScope] = useState<number[]>([]); // 선택된 쪽지 id 배열
   const [unitOption, setUnitOption] = useState("15"); //페이지 당 노출 쪽지개수 select
   const [readOption, setReadOption] = useState("total"); // 전체, 읽음유무 select
+  const [page, setPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
+  const [noteList, setNoteList] = useState<TNote[]>();
 
   const onChangeCheck = (e:React.ChangeEvent<HTMLInputElement>) => {
     if(e.target.checked) {
-      setCheckScope([...checkScope , e.target.value]);
+      setCheckScope([...checkScope , Number(e.target.value)]);
     }else {
-      setCheckScope(checkScope.filter((item) => item!== e.target.value));
+      setCheckScope(checkScope.filter((item) => item!== Number(e.target.value)));
     }
   }
 
@@ -29,13 +33,62 @@ const NoteList = () => {
 
   const onChangeTotalCheck = (e:React.ChangeEvent<HTMLInputElement>) => {
     if(e.target.checked) {
-      const newArr: string[] = [];
-      tempNoteList.forEach((item) => newArr.push(String(item.id)));
+      const newArr: number[] = [];
+      if(noteList) noteList.forEach((item) => newArr.push(item.id));
       setCheckScope(newArr);
     } else {
       setCheckScope([]);
     }
   }
+
+  const onClickDelete = async () => {
+
+    if(checkScope.length === 0) {
+      window.confirm("삭제할 쪽지가 없습니다.")
+      return;
+    }
+
+    try {
+      const res = await axios.delete(`/api/receiveNoteDelete`, {
+        data: {
+          deleteNoteIds: checkScope
+        },
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+        }
+      })
+
+      if(res.status === 200) {
+        setCheckScope([]);
+        getNoteList();
+      }
+    } catch(e) {
+      console.log(e);
+    }
+  }
+
+  const getNoteList = async () => {
+    try {
+      const res = await axios.get(`/api/noteReadReceivedList?page=${page-1}&unit=${unitOption}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+        }
+      })
+      setNoteList(res.data.content);
+      setTotalPage(res.data.totalPages);
+
+    } catch(e) {
+      console.log(e);
+    }
+  }
+
+  const clickPagination = (pageIndex: number) => (e: React.MouseEvent<HTMLSpanElement>) => {
+    setPage(pageIndex);
+  }
+
+  useEffect(() => {
+    getNoteList();
+  }, [page, unitOption]);
 
   return <div className="noteList">
     <div className={style.tab_area}>
@@ -54,7 +107,7 @@ const NoteList = () => {
       <div className={style.top}>
         <h4 className={style.title}>
           <h4>{noteTabList[tabNumber]}</h4>
-          <p className={style.count}>{tabNumber !== ENoteTab.send && <><em>{getUnreadNoteCount(tempNoteList)}</em> / </>}<span>{tempNoteList.length}</span></p>
+          <p className={style.count}>{tabNumber !== ENoteTab.send && <><em>{noteList && getUnreadNoteCount(noteList)}</em> / </>}<span>{noteList?.length}</span></p>
         </h4>
         <div className={style.set_area}>
           {tabNumber !== ENoteTab.send && <Link to="" className={style.btn_edit}>수신거부설정</Link>}
@@ -70,7 +123,7 @@ const NoteList = () => {
             <Link to="">스팸신고</Link>
             </>
           }
-          <Link to=""><span className={style.btn_remove}>삭제</span></Link>
+          <Link to=""><span className={style.btn_remove} onClick={onClickDelete}>삭제</span></Link>
         </div>
         <div className={style.select_area}>
           <select className={style.select} value={unitOption} onChange={onChangeUnitOptionSelect}>
@@ -96,7 +149,7 @@ const NoteList = () => {
           </colgroup>
           <thead>
             <th className={style.check}>
-              <input type="checkbox" name="check_all" onChange={onChangeTotalCheck} checked={checkScope.length === tempNoteList.length}/>
+              <input type="checkbox" name="check_all" onChange={onChangeTotalCheck} checked={checkScope.length === noteList?.length}/>
             </th>
             <th className={style.sender}>보낸 사람</th>
             <th>쪽지 내용</th>
@@ -105,7 +158,7 @@ const NoteList = () => {
           </thead>
           <tbody>
             {
-              tempNoteList.length >= 1 ? tempNoteList.map((item, index) => <NoteItem note={item} tabNumber={tabNumber} onChangeCheck={onChangeCheck} checkScope={checkScope} key={index}/>) : <tr>
+              noteList && noteList.length >= 1 ? noteList.map((item, index) => <NoteItem note={item} tabNumber={tabNumber} onChangeCheck={onChangeCheck} checkScope={checkScope} key={index}/>) : <tr>
               <td className={style.none} colSpan={5}>받은 쪽지가 없습니다.</td>
             </tr>
             }
@@ -113,8 +166,21 @@ const NoteList = () => {
         </table>
       </form>
       <div className={style.paging}>
-        <em>1</em>
-        <Link to="">2</Link>
+        {
+          totalPage === 1 ? <em>1</em> : (
+            Array(totalPage).fill(0).map((v,i)=>(i)).map((item) => {
+              if(item + 1 === page) {
+                return (
+                  <em>{page}</em>
+                )
+              } else {
+                return (
+                  <span onClick={clickPagination(item+1)}>{item+1}</span>
+                )
+              }
+            })
+          )
+        }
       </div>
     </div>
   </div>
