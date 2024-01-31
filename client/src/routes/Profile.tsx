@@ -6,7 +6,6 @@ import Style from "./Profile.module.scss";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from "../slices/store";
 import Modal from "../components/location/Modal";
-import { updateNickname, updateProfile } from "../slices/reducers/auth";
 
 export const srcUrl =
   "https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg";
@@ -19,14 +18,16 @@ const Profile = () => {
   const [showNewConfirmPw, setShowNewConfirmPw] = useState<boolean>(false);
 
   const [isPwOpen, setIsPwOpen] = useState<boolean>(false);
+  const [isUpdateImg, setIsUpdateImg] = useState<boolean>(false);
 
   const [userData, setUserData] = useState<any>({});
   const [nickName, setNickName] = useState<string>("");
-  const [profileImg, setProfileImg] = useState("");
+  const [profileImg, setProfileImg] = useState<string>("");
+  const [updateImgSrc, setUpdateImgSrc] = useState<string>("");
+  const [updateImg, setUpdateImg] = useState<Blob | null>(null);
   const [currentPw, setCurrentPw] = useState<string>("");
   const [newPw, setNewPw] = useState<string>("");
   const [confirmPw, setConfirmPw] = useState<string>("");
-  const [image, setImage] = useState<string>("");
 
   const user = useSelector((state: any) => state.auth.user);
   const isLoggedIn = useSelector((state: any) => state.auth.isLoggedIn);
@@ -43,7 +44,7 @@ const Profile = () => {
     }
     getUserData();
     userDetail();
-  }, [isLoggedIn]);
+  }, []);
 
   const userDetail = async () => {
     try {
@@ -81,30 +82,61 @@ const Profile = () => {
   };
 
   //image 유형 걸러주는 함수
-  const isValidImageExtension = (filename: any) => {
-    const extension = filename.slice(
-      ((filename.lastIndexOf(".") - 1) >>> 0) + 2
-    );
-    return AllowedImageExtensions.includes(`.${extension.toLowerCase()}`);
-  };
+  // const isValidImageExtension = (filename: any) => {
+  //   const extension = filename.slice(
+  //     ((filename.lastIndexOf(".") - 1) >>> 0) + 2
+  //   );
+  //   return AllowedImageExtensions.includes(`.${extension.toLowerCase()}`);
+  // };
 
-  const imageOnChange = (e: any) => {
-    if (e.target.files !== null) {
-      const selectedFiles = e.target.files as FileList;
-      setImage(URL.createObjectURL(selectedFiles?.[0]));
-      if (!isValidImageExtension(image)) {
-        alert("jpg, jpeg, png, svg의 형태만 가능합니다.");
-        return null;
-      }
+  const onProfileImageChange = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const { files } = e.target;
+    if (files && files.length === 1) {
+      const reader = new FileReader();
+
+      const file = files[0];
+      setUpdateImg(file);
+      reader.onloadend = () => {
+        if (typeof reader.result === "string") {
+          const imageSrc: string = reader.result;
+          setUpdateImgSrc(imageSrc);
+          setIsUpdateImg(true);
+          console.log(imageSrc);
+        }
+      };
+      reader.readAsDataURL(file);
+    } else {
+      return;
     }
   };
-
-  const onSubmit = (e: any) => {
+  const onSubmit = async (e: any) => {
     e.preventDefault();
-    if (!isPwOpen) {
-      dispatch(updateNickname(nickName));
-    } else {
-      dispatch(updateProfile(nickName, currentPw, newPw));
+    try {
+      const accessToken = localStorage.getItem("accessToken");
+      const formData = new FormData();
+      const jsonData = {
+        nickname: nickName,
+        password: currentPw,
+        newPassword: newPw,
+      };
+      if (updateImg) {
+        formData.append("profileImg", updateImg);
+      }
+      formData.append(
+        "userUpdateDto",
+        new Blob([JSON.stringify(jsonData)], { type: "application/json" })
+      );
+      const response = await axios.patch(`/user/update`, formData, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      console.log("수정 성공:", response.data);
+    } catch (err) {
+      console.error("수정 실패:", err);
     }
   };
 
@@ -162,17 +194,22 @@ const Profile = () => {
                       <input
                         id="profileImg"
                         type="file"
-                        onChange={imageOnChange}
+                        onChange={onProfileImageChange}
                         style={{ display: "none" }}
                       ></input>
-                      <img src={profileImg}></img>
+
+                      {isUpdateImg === false ? (
+                        <img src={profileImg}></img>
+                      ) : (
+                        <img src={updateImgSrc}></img>
+                      )}
                     </label>
                   </div>
                   <div className={Style.wrapper_nickname}>
                     <input
                       name="nickname"
                       type="text"
-                      defaultValue={user.nickname}
+                      defaultValue={userData.nickname}
                       onChange={(e) => setNickName(e.target.value)}
                     ></input>
                   </div>
@@ -244,7 +281,7 @@ const Profile = () => {
                             />
                             <button
                               className={Style.btn_show}
-                              onClick={() => setShowNewConfirmPw(false)}
+                              onClick={() => setShowNewConfirmPw(true)}
                             ></button>
                           </div>
                         ) : (

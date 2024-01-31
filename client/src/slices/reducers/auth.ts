@@ -32,66 +32,6 @@ export const { loginSuccess, loginFailure, logout } = authSlice.actions;
 
 export const selectAuth = (state: RootState) => state.auth;
 
-export const updateProfile =
-  (nickname: string, password: string, newPassword: string) =>
-  async (dispatch: AppDispatch, getState: () => RootState): Promise<void> => {
-    try {
-      const { user } = getState().auth;
-
-      if (!user) {
-        return;
-      }
-      const accessToken = localStorage.getItem("accessToken");
-
-      const response = await axios.patch(
-        `/user/update`,
-        {
-          nickname,
-          password,
-          newPassword,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
-      dispatch(loginSuccess(response.data));
-      console.log("수정 성공:", response.data);
-    } catch (err) {
-      console.error("수정 실패:", err);
-    }
-  };
-
-export const updateNickname =
-  (nickname: string) =>
-  async (dispatch: AppDispatch, getState: () => RootState): Promise<void> => {
-    try {
-      const { user } = getState().auth;
-
-      if (!user) {
-        return;
-      }
-      const accessToken = localStorage.getItem("accessToken");
-
-      const response = await axios.patch(
-        `/user/update`,
-        {
-          nickname,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
-      dispatch(loginSuccess(response.data));
-      console.log("수정 성공:", response.data);
-    } catch (err) {
-      console.error("수정 실패:", err);
-    }
-  };
-
 export const login =
   (username: string, password: string) =>
   async (dispatch: AppDispatch): Promise<void> => {
