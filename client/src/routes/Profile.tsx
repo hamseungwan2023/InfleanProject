@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import classnames from "classnames";
 import Style from "./Profile.module.scss";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { AppDispatch } from "../slices/store";
 import Modal from "../components/location/Modal";
 
@@ -32,8 +32,6 @@ const Profile = () => {
   const user = useSelector((state: any) => state.auth.user);
   const isLoggedIn = useSelector((state: any) => state.auth.isLoggedIn);
 
-  const dispatch: AppDispatch = useDispatch();
-
   const AllowedImageExtensions = [".jpg", ".jpeg", ".png", ".svg"]; // 허용할 이미지 확장자들
 
   const navigate = useNavigate();
@@ -42,7 +40,7 @@ const Profile = () => {
     if (isLoggedIn === false) {
       navigate("/");
     }
-    getUserData();
+    getUserImg();
     userDetail();
   }, []);
 
@@ -53,15 +51,15 @@ const Profile = () => {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
+      setNickName(response.data.nickname);
       setUserData(response.data);
+      console.log(response);
     } catch (err) {
       console.error(err);
     }
   };
 
-  console.log("userData", userData);
-
-  const getUserData = async () => {
+  const getUserImg = async () => {
     try {
       const response = await axios.get<Blob>(`/user/load-profile`, {
         responseType: "blob",
@@ -134,6 +132,9 @@ const Profile = () => {
           "Content-Type": "multipart/form-data",
         },
       });
+      getUserImg();
+      userDetail();
+      setUserReTouch(true);
       console.log("수정 성공:", response.data);
     } catch (err) {
       console.error("수정 실패:", err);
@@ -147,7 +148,13 @@ const Profile = () => {
           {userReTouch === true ? (
             <div className={Style.profile_wrapper}>
               <div className={Style.infoState_wrapper}>
-                <h1>프로필</h1>
+                <h1>
+                  <button
+                    title="홈으로"
+                    onClick={(e) => navigate("/")}
+                  ></button>
+                  프로필
+                </h1>
               </div>
 
               <div className={Style.userInfo_wrapper}>

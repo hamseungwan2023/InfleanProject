@@ -7,7 +7,6 @@ import axios from "axios";
 
 const Profile = () => {
   const [userData, setUserData] = useState<any>({});
-
   const user = useSelector((state: any) => state.auth?.user);
   const isLoggedIn = useSelector((state: any) => state.auth?.isLoggedIn);
   console.log(user);

@@ -12,12 +12,31 @@
   .infoState_wrapper {
     border-bottom: 1px solid $mainBorder;
     margin-bottom: 10px;
+    height: 30px;
     text-align: center;
+
     h1 {
       color: $main600;
       font-size: 20px;
+      position: relative;
       margin-top: 10px;
       margin-bottom: 10px;
+      button {
+        position: relative;
+        left: -190px;
+        top: -8px;
+        &::before {
+          background-repeat: no-repeat;
+          background-image: url(https://s.pstatic.net/static/www/img/uit/2020/sp_main_1f05c0.png);
+          background-position: -130px -388px;
+          background-size: 440px 410px;
+          width: 30px;
+          height: 30px;
+          display: inline-block;
+          vertical-align: top;
+          content: "";
+        }
+      }
     }
   }
 
