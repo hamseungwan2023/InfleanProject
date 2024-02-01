@@ -148,13 +148,12 @@ const Profile = () => {
           {userReTouch === true ? (
             <div className={Style.profile_wrapper}>
               <div className={Style.infoState_wrapper}>
-                <h1>
-                  <button
-                    title="홈으로"
-                    onClick={(e) => navigate("/")}
-                  ></button>
-                  프로필
-                </h1>
+                <button
+                  className={Style.toHomeBtn}
+                  title="홈으로"
+                  onClick={(e) => navigate("/")}
+                ></button>
+                <h1>프로필</h1>
               </div>
 
               <div className={Style.userInfo_wrapper}>
@@ -192,6 +191,11 @@ const Profile = () => {
             <div className={Style.profile_wrapper}>
               <div className={Style.userInfo_wrapper}>
                 <div className={Style.infoState_wrapper}>
+                  <button
+                    className={Style.toHomeBtn}
+                    title="홈으로"
+                    onClick={(e) => navigate("/")}
+                  ></button>
                   <h1>프로필 수정</h1>
                 </div>
                 {/* <img src={profileImg} style={{ width: "100px" }}></img> //db 활성화 되면 사용 */}

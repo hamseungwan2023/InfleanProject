@@ -3,8 +3,6 @@ import { useEffect } from "react";
 
 const TokenRefresher = () => {
   useEffect(() => {
-    console.log(1);
-
     const intercept = axios.interceptors.response.use(
       (res) => res,
       async (error) => {
