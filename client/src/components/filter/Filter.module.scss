@@ -11,6 +11,18 @@
   align-items: center;
 }
 
+.area_wrap {
+  display: flex;
+}
+
+.location_area {
+  margin-right: 5px;
+
+  .em_location {
+    color: $main500;
+  }
+}
+
 .category_area {
   position: relative;
 }

@@ -48,8 +48,16 @@ const NoteList = () => {
       return;
     }
 
+    let api ="";
+
+    if(tabNumber === 1) {
+      api=`/api/sendNoteDelete`
+    }else {
+      api=`/api/receiveNoteDelete`
+    }
+
     try {
-      const res = await axios.delete(`/api/receiveNoteDelete`, {
+      const res = await axios.delete(api, {
         data: {
           deleteNoteIds: checkScope
         },
@@ -67,9 +75,114 @@ const NoteList = () => {
     }
   }
 
+  const onClickKeep = async () => {
+
+    if(checkScope.length === 0) {
+      window.confirm("보관할 쪽지가 없습니다.")
+      return;
+    }
+
+    try {
+      const res = await axios.post(`/api/keepNote`, {
+        noteKeeps: checkScope
+      }, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+        }
+      })
+
+      if(res.status === 200) {
+        setCheckScope([]);
+        getNoteList();
+        window.confirm(`${checkScope.length}개의 쪽지가 보관되었습니다.`);
+      }
+    } catch(e) {
+      console.log(e);
+    }
+  }
+
+  const onClickSpam = async () => {
+
+    if(checkScope.length === 0) {
+      window.confirm("스팸신고할 쪽지가 없습니다.")
+      return;
+    }
+    try {
+      const res = await axios.post(`/api/spamNote`, {
+        spamNotes: checkScope
+      }, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+        }
+      })
+
+      if(res.status === 200) {
+        setCheckScope([]);
+        getNoteList();
+        window.confirm(`${checkScope.length}개의 쪽지가 스팸신고 처리되었습니다.`);
+      }
+    } catch(e) {
+      console.log(e);
+    }
+  }
+
+  const onClickDeleteAll = async () => {
+    if(noteList?.length === 0) {
+      window.confirm("비울 쪽지가 없습니다.");
+      return;
+    }else {
+      if(window.confirm("이 페이지의 모든 쪽지를 삭제하시겠습니까?")) {
+        const deleteAllNoteIdList = noteList?.map((item) => item.id);
+        let api ="";
+
+      if(tabNumber === 1) {
+        api=`/api/sendNoteDelete`
+      }else {
+        api=`/api/receiveNoteDelete`
+      }
+
+      try {
+        const res = await axios.delete(api, {
+          data: {
+            deleteNoteIds: deleteAllNoteIdList
+          },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+          }
+        })
+
+        if(res.status === 200) {
+          setCheckScope([]);
+          getNoteList();
+        }
+      } catch(e) {
+        console.log(e);
+      }
+      } else {
+        return;
+      }
+    }
+  }
+
   const getNoteList = async () => {
     try {
-      const res = await axios.get(`/api/noteReadReceivedList?page=${page-1}&unit=${unitOption}`, {
+      let api = "";
+      switch(tabNumber) {
+        case 0: 
+          api = `/api/noteReadReceivedList?page=${page-1}&unit=${unitOption}`;
+          break;
+        case 1:
+          api = `/api/noteReadSendedList?page=${page-1}&unit=${unitOption}`;
+          break;
+        case 2:
+          api = `/api/noteReadReceivedList?isKeep=true&page=${page-1}&unit=${unitOption}`;
+          break;
+        case 3:
+          api = `/api/noteReadReceivedList?isSpam=true&page=${page-1}&unit=${unitOption}`;
+          break;
+      }
+
+      const res = await axios.get(api, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`
         }
@@ -87,8 +200,9 @@ const NoteList = () => {
   }
 
   useEffect(() => {
+    setCheckScope([]);
     getNoteList();
-  }, [page, unitOption]);
+  }, [page, unitOption, tabNumber]);
 
   return <div className="noteList">
     <div className={style.tab_area}>
@@ -111,16 +225,16 @@ const NoteList = () => {
         </h4>
         <div className={style.set_area}>
           {tabNumber !== ENoteTab.send && <Link to="" className={style.btn_edit}>수신거부설정</Link>}
-          <button type="button" className={style.btn_clear}>쪽지함비우기</button>
+          <button type="button" className={style.btn_clear} onClick={onClickDeleteAll}>쪽지함비우기</button>
         </div>
       </div>
       <div className={style.note_util}>
         <div className={style.btn_list}>
           {
             tabNumber !== ENoteTab.send && <>
-            <Link to="">보관</Link>
-            <Link to="">수신거부</Link>
-            <Link to="">스팸신고</Link>
+            <a role="button" onClick={onClickKeep} href="#">보관</a>
+            <a role="button" href="#">수신거부</a>
+            <a role="button" onClick={onClickSpam} href="#">스팸신고</a>
             </>
           }
           <Link to=""><span className={style.btn_remove} onClick={onClickDelete}>삭제</span></Link>
@@ -149,9 +263,9 @@ const NoteList = () => {
           </colgroup>
           <thead>
             <th className={style.check}>
-              <input type="checkbox" name="check_all" onChange={onChangeTotalCheck} checked={checkScope.length === noteList?.length}/>
+              <input type="checkbox" name="check_all" onChange={onChangeTotalCheck} checked={checkScope.length >0 && checkScope.length === noteList?.length}/>
             </th>
-            <th className={style.sender}>보낸 사람</th>
+            <th className={style.sender}>{tabNumber === 1 ? "받는 사람" : "보낸 사람"}</th>
             <th>쪽지 내용</th>
             <th>보낸 시각</th>
             <th>읽은 시각</th>
@@ -159,7 +273,7 @@ const NoteList = () => {
           <tbody>
             {
               noteList && noteList.length >= 1 ? noteList.map((item, index) => <NoteItem note={item} tabNumber={tabNumber} onChangeCheck={onChangeCheck} checkScope={checkScope} key={index}/>) : <tr>
-              <td className={style.none} colSpan={5}>받은 쪽지가 없습니다.</td>
+              <td className={style.none} colSpan={5}>{tabNumber ===1 ? "보낸" : "받은"} 쪽지가 없습니다.</td>
             </tr>
             }
           </tbody>

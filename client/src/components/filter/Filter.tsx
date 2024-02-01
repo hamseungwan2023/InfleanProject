@@ -99,15 +99,18 @@ const Filter = () => {
 
   return <div className={classNames("filter", {"is_fixed": isScrollOver})} ref={scrollRef}>
     <div className={style.main}>
-      <div className={style.category_area}>
-        <div>
-          <button type="button" className={style.category_wrap}>
-            <div className={style.title}>{category}</div>
-          </button>
+      <div className={style.area_wrap}>
+        <div className={style.location_area}><span className={style.em_location}>{reduxLocation}</span> 지역</div>
+        <div className={style.category_area}>
+          <div>
+            <button type="button" className={style.category_wrap}>
+              <div className={style.title}>{category}</div>
+            </button>
+          </div>
+          <select className={style.select} onChange={onChangeSelect} value={category}>
+            {CategoryList.map((item) => item.category.map((subItem) => <option key="subItem" value={subItem}>{subItem}</option>)) }
+          </select>
         </div>
-        <select className={style.select} onChange={onChangeSelect} value={category}>
-          {CategoryList.map((item) => item.category.map((subItem) => <option key="subItem" value={subItem}>{subItem}</option>)) }
-        </select>
       </div>
     </div>
     <div className={style.sub}>

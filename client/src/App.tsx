@@ -17,6 +17,7 @@ import NoteWrite from "./components/note/NoteWrite";
 import PostCorrectRoute from "./routes/PostCorrectRoute";
 import FindUserId from "./routes/findAccount/FindUserId";
 import FindUserPw from "./routes/findAccount/FindUserPw";
+import NoteDetail from "./components/note/NoteDetail";
 
 const router = createBrowserRouter([
   {
@@ -104,10 +105,10 @@ const router = createBrowserRouter([
       {
         path: "/noteList/:id",
         element: (
-          <>
+          <ProtectedRoute>
             <Aside />
             <NoteList />
-          </>
+          </ProtectedRoute>
         ),
       },
     ],
@@ -115,6 +116,10 @@ const router = createBrowserRouter([
   {
     path: "/noteWrite/:id",
     element: <NoteWrite />,
+  },
+  {
+    path: "/noteDetail/:id",
+    element: <NoteDetail />,
   },
 ]);
 

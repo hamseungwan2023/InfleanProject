@@ -63,6 +63,7 @@ const NoteWrite = () => {
 
       if(res.status===200) {
         window.confirm("쪽지가 성공적으로 발송되었습니다.");
+        window.close();
       }
     }catch (e) {
       console.log(e);
@@ -101,13 +102,16 @@ const NoteWrite = () => {
           )
         }
       </div>
-      <div className={style.content}>
+      <div className={style.toBox} style={{marginTop: "15px"}}>
+        <div className={style.detail_title}>내용</div>
+        <div className={style.content}>
         <textarea name="content" maxLength={5000} placeholder="최대 5,000자 까지 작성 가능합니다." onChange={(e:React.ChangeEvent<HTMLTextAreaElement>)=> {setContent(e.target.value)}} value={content}></textarea>
+      </div>
       </div>
     </div>
     <div className={style.bottom_btn_area}>
       <button type="button" onClick={onClickSendNote}>보내기</button>
-      <button type="button">취소</button>
+      <button type="button" onClick={() => window.close()}>취소</button>
     </div>
   </div>
 }

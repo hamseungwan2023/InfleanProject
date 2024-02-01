@@ -32,15 +32,14 @@ const Category = () => {
                 role="menuitem"
                 aria-current={click === subItem ? true : false}
               >
-                <button
-                  type="button"
+                <Link
+                  to="/"
                   className={style.link}
                   onClick={() => {
                     setClick(subItem);
                   }}
-                >
-                  {subItem}
-                </button>
+                >{subItem}
+                </Link>
               </strong>
             ) : (
               <div

@@ -41,7 +41,9 @@ const Header = () => {
                   className={style.link}
                   onClick={onClickLocation(item)}
                 >
-                  {item}
+                  <Link to="/">
+                    {item}
+                  </Link>
                 </button>
               </li>
             );

@@ -261,6 +261,7 @@
     font-weight: 400;
     font-size: 11px;
     line-height: 21px;
+    cursor: pointer;
   }
 }
 
@@ -313,6 +314,22 @@
       height: 32px;
       padding: 0 10px;
       cursor: text;
+    }
+
+    .detail_title {
+      line-height: 32px;
+      margin-right: 36px;
+      color: #222;
+      font-size: 13px;
+    }
+
+    .content {
+      height: 20px;
+      margin-top: 0;
+      padding: 10px;
+      flex: 1;
+      overflow-y: auto;
+      word-break: break-all;
     }
   }
 

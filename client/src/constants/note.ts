@@ -7,7 +7,7 @@ export const noteTabList = [
 
 export type TNote = {
   id: number, //쪽지 아이디
-  receiver: string, //수신자 
+  receiverNickname: string, //수신자 닉네임
   senderId: number, // 발신자 id
   senderNickname: string, // 발신자 닉네임
   content: string,  //내용
@@ -30,8 +30,8 @@ export type TNoteList = {
 export enum ENoteTab {
   receive = 0,
   send = 1,
-  spam = 2,
-  keep = 3,
+  keep = 2,
+  spam = 3,
 }
 
 export const tempNoteList = [
