@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { regionList } from "../../constants/regionList";
+import { ERegion, regionList } from "../../constants/regionList";
 import style from "./Header.module.scss";
 import { useSelector } from "react-redux";
 import Logout from "../../routes/Logout";
@@ -17,7 +17,7 @@ const Header = () => {
   }
 
   useEffect(()=> {
-    dispatch(clickedLocation(location));
+    dispatch(clickedLocation(ERegion[location]));
   },[location]);
 
   return (

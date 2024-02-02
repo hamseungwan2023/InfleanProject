@@ -19,3 +19,13 @@ export const CategoryList:TCategory[] = [
     category: ["게임","LOL","배그","오버워치"]
   }
 ]
+
+export interface IECategory {
+  [key: string]: string;
+}
+
+export const ECategory:IECategory = {
+  전체: "TOTAL",
+  IT: "IT",
+  영화: "MOVIE",
+}

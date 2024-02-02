@@ -13,6 +13,8 @@ const NoteList = () => {
   const [readOption, setReadOption] = useState("total"); // 전체, 읽음유무 select
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
+  const [totalNotes, setTotalNotes] = useState(0);
+  const [notReadNoteCount, setNotReadNoteCount] = useState(0);
   const [noteList, setNoteList] = useState<TNote[]>();
 
   const onChangeCheck = (e:React.ChangeEvent<HTMLInputElement>) => {
@@ -103,26 +105,51 @@ const NoteList = () => {
 
   const onClickSpam = async () => {
 
-    if(checkScope.length === 0) {
-      window.confirm("스팸신고할 쪽지가 없습니다.")
-      return;
-    }
-    try {
-      const res = await axios.post(`/api/spamNote`, {
-        spamNotes: checkScope
-      }, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-        }
-      })
-
-      if(res.status === 200) {
-        setCheckScope([]);
-        getNoteList();
-        window.confirm(`${checkScope.length}개의 쪽지가 스팸신고 처리되었습니다.`);
+    if(tabNumber===3) {
+      if(checkScope.length === 0) {
+        window.confirm("스팸취소할 쪽지가 없습니다.")
+        return;
       }
-    } catch(e) {
-      console.log(e);
+      try {
+        const res = await axios.delete(`/api/spamUser`, {
+          data: {
+            deleteSpamIds: checkScope
+          },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+          }
+        })
+  
+        if(res.status === 200) {
+          setCheckScope([]);
+          getNoteList();
+          window.confirm(`${checkScope.length}개의 쪽지가 스팸취소 처리되었습니다.`);
+        }
+      } catch(e) {
+        console.log(e);
+      }
+    }else {
+      if(checkScope.length === 0) {
+        window.confirm("스팸신고할 쪽지가 없습니다.")
+        return;
+      }
+      try {
+        const res = await axios.post(`/api/spamNote`, {
+          spamNotes: checkScope
+        }, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+          }
+        })
+  
+        if(res.status === 200) {
+          setCheckScope([]);
+          getNoteList();
+          window.confirm(`${checkScope.length}개의 쪽지가 스팸신고 처리되었습니다.`);
+        }
+      } catch(e) {
+        console.log(e);
+      }
     }
   }
 
@@ -142,7 +169,7 @@ const NoteList = () => {
       }
 
       try {
-        const res = await axios.delete(api, {
+        let res = await axios.delete(api, {
           data: {
             deleteNoteIds: deleteAllNoteIdList
           },
@@ -155,11 +182,31 @@ const NoteList = () => {
           setCheckScope([]);
           getNoteList();
         }
+
+        api="";
+        if(tabNumber === 2) {
+          api=`/api/noteNotReadReceivedList?isKeep=true`;
+        }else if(tabNumber === 3) {
+          api=`/api/noteNotReadReceivedList?isSpam=true`;
+        }else if(tabNumber === 0) {
+          api=`/api/noteNotReadReceivedList`;
+        } else {
+          return;
+        }
+
+        res = await axios.get(api,{
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+          }
+        }
+        );
+
+        if(res.status === 200) {
+          setNotReadNoteCount(res.data.response);
+        }
       } catch(e) {
         console.log(e);
       }
-      } else {
-        return;
       }
     }
   }
@@ -189,6 +236,7 @@ const NoteList = () => {
       })
       setNoteList(res.data.content);
       setTotalPage(res.data.totalPages);
+      setTotalNotes(res.data.totalElements);
 
     } catch(e) {
       console.log(e);
@@ -221,7 +269,7 @@ const NoteList = () => {
       <div className={style.top}>
         <h4 className={style.title}>
           <h4>{noteTabList[tabNumber]}</h4>
-          <p className={style.count}>{tabNumber !== ENoteTab.send && <><em>{noteList && getUnreadNoteCount(noteList)}</em> / </>}<span>{noteList?.length}</span></p>
+          <p className={style.count}>{tabNumber !== ENoteTab.send && <><em>{noteList && notReadNoteCount}</em> / </>}<span>{totalNotes}</span></p>
         </h4>
         <div className={style.set_area}>
           {tabNumber !== ENoteTab.send && <Link to="" className={style.btn_edit}>수신거부설정</Link>}
@@ -234,7 +282,7 @@ const NoteList = () => {
             tabNumber !== ENoteTab.send && <>
             <a role="button" onClick={onClickKeep} href="#">보관</a>
             <a role="button" href="#">수신거부</a>
-            <a role="button" onClick={onClickSpam} href="#">스팸신고</a>
+            <a role="button" onClick={onClickSpam} href="#">{tabNumber === 3 ? "스팸 취소" : "스팸 신고"}</a>
             </>
           }
           <Link to=""><span className={style.btn_remove} onClick={onClickDelete}>삭제</span></Link>
@@ -281,7 +329,7 @@ const NoteList = () => {
       </form>
       <div className={style.paging}>
         {
-          totalPage === 1 ? <em>1</em> : (
+          totalPage >= 0 ? <em>1</em> : (
             Array(totalPage).fill(0).map((v,i)=>(i)).map((item) => {
               if(item + 1 === page) {
                 return (

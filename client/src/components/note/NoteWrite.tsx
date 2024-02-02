@@ -104,9 +104,7 @@ const NoteWrite = () => {
       </div>
       <div className={style.toBox} style={{marginTop: "15px"}}>
         <div className={style.detail_title}>내용</div>
-        <div className={style.content}>
-        <textarea name="content" maxLength={5000} placeholder="최대 5,000자 까지 작성 가능합니다." onChange={(e:React.ChangeEvent<HTMLTextAreaElement>)=> {setContent(e.target.value)}} value={content}></textarea>
-      </div>
+        <textarea name="content" maxLength={5000} className={style.content}placeholder="최대 5,000자 까지 작성 가능합니다." onChange={(e:React.ChangeEvent<HTMLTextAreaElement>)=> {setContent(e.target.value)}} value={content}></textarea>
       </div>
     </div>
     <div className={style.bottom_btn_area}>

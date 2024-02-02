@@ -3,11 +3,13 @@ import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { bottomFilterList } from "../../constants/bottomFilterList";
-import { CategoryList } from "../../constants/categoryList";
+import { CategoryList, ECategory } from "../../constants/categoryList";
+import { ERegion } from "../../constants/regionList";
 import { clickedCategory } from "../../slices/reducers/category";
 import { clickOrderBy } from "../../slices/reducers/orderBy";
 import { clickSearch } from "../../slices/reducers/search";
 import { AppDispatch } from "../../slices/store";
+import { getKeyByValue } from "../../utils/getKeyByValue";
 import style from "./Filter.module.scss";
 
 const Filter = () => {
@@ -24,14 +26,23 @@ const Filter = () => {
 
   const dispatch:AppDispatch = useDispatch();
 
-  useEffect(()=>{dispatch(clickedCategory(category))},[category]); // 셀렉트 변경시 리덕스 카테고리 값 같이변경
+  const isMounted = useRef(false);
+
+  useEffect(()=>{
+    dispatch(clickedCategory(ECategory[category]));
+},[category]); // 셀렉트 변경시 리덕스 카테고리 값 같이변경
 
   const reduxCategory = useSelector((state:any) => state.category.category); //리덕스 카테고리값
   const reduxLocation = useSelector((state:any) => state.location.location); //리덕스 지역값
   const reduxSearch = useSelector((state:any) => state.location.search); //리덕스 검색어
 
   useEffect(()=> {
-    setCategory(reduxCategory);
+    if (isMounted.current) {
+      setCategory(getKeyByValue(ECategory, reduxCategory));
+    }
+    else {
+      isMounted.current = true;
+    }
   },[reduxCategory]);
 
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -87,7 +98,6 @@ const Filter = () => {
       dispatch(clickOrderBy("createdDate"));
     } else if(bottomFilterClick===2) {
       dispatch(clickOrderBy("finalLike"));
-      console.log("ASdasd");
     }
 
     /* [TODO] 추후 공지기능 생기면 추가
@@ -100,7 +110,7 @@ const Filter = () => {
   return <div className={classNames("filter", {"is_fixed": isScrollOver})} ref={scrollRef}>
     <div className={style.main}>
       <div className={style.area_wrap}>
-        <div className={style.location_area}><span className={style.em_location}>{reduxLocation}</span> 지역</div>
+        <div className={style.location_area}><span className={style.em_location}>{getKeyByValue(ERegion, reduxLocation)}</span> 지역</div>
         <div className={style.category_area}>
           <div>
             <button type="button" className={style.category_wrap}>

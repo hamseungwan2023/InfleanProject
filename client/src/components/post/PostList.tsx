@@ -1,6 +1,6 @@
 import axios from "axios";
 import moment from "moment";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { TPostList } from "../../constants/postList";
 import useInfiniteScroll, { IntersectionHandler } from "../../hooks/useInfiniteScroll";
 import PostItem from "./PostItem";
@@ -51,9 +51,10 @@ const PostList = ({isPostCorrect}:TProps) => {
     setIsLoading(true);
 
     let api="";
+    if(!category) return;
 
     if(search==="") {
-      if(category==="전체") api=`/api/postList?location=${location}&page=${pageInfo.currentPage}&orderBy=${orderBy}`;
+      if(category==="TOTAL") api=`/api/postList?location=${location}&page=${pageInfo.currentPage}&orderBy=${orderBy}`;
       else {
         api=`/api/postList?category=${category}&location=${location}&page=${pageInfo.currentPage}&orderBy=${orderBy}`;
       }
@@ -66,7 +67,7 @@ const PostList = ({isPostCorrect}:TProps) => {
         default: dropDownOption="titleContent";
       }
 
-      if(category==="전체") api=`/api/postList?location=${location}&page=${pageInfo.currentPage}&${dropDownOption}=${search}&orderBy=createdDate`;
+      if(category==="TOTAL") api=`/api/postList?location=${location}&page=${pageInfo.currentPage}&${dropDownOption}=${search}&orderBy=createdDate`;
       else {
         api=`/api/postList?category=${category}&location=${location}&page=${pageInfo.currentPage}&${dropDownOption}=${search}&orderBy=createdDate`;
       }
@@ -101,6 +102,8 @@ const PostList = ({isPostCorrect}:TProps) => {
     }
   }
 
+  let isMounted = useRef(false);
+
   useEffect(()=> {
     setPageInfo({currentPage: 0, totalPage: 1});
     setPostList({
@@ -109,6 +112,11 @@ const PostList = ({isPostCorrect}:TProps) => {
       totalPage: 1
     });
 
+    if(isMounted.current) {
+      getPostList();
+    }else {
+      isMounted.current = true;
+    }
     getPostList();
   },[category, location, search, orderBy, pageInfo.currentPage]);
 
