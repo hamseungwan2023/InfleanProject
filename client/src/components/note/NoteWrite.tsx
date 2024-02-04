@@ -52,7 +52,7 @@ const NoteWrite = () => {
     try {
       const res = await axios.post("/api/noteWrite",{
         sender: user.nickname,
-        receiverNicknames: sendUserList,
+        receiverNicknames: ["nickname2"],
         content
       }
       ,{

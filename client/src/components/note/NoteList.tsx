@@ -182,28 +182,6 @@ const NoteList = () => {
           setCheckScope([]);
           getNoteList();
         }
-
-        api="";
-        if(tabNumber === 2) {
-          api=`/api/noteNotReadReceivedList?isKeep=true`;
-        }else if(tabNumber === 3) {
-          api=`/api/noteNotReadReceivedList?isSpam=true`;
-        }else if(tabNumber === 0) {
-          api=`/api/noteNotReadReceivedList`;
-        } else {
-          return;
-        }
-
-        res = await axios.get(api,{
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-          }
-        }
-        );
-
-        if(res.status === 200) {
-          setNotReadNoteCount(res.data.response);
-        }
       } catch(e) {
         console.log(e);
       }
@@ -237,6 +215,28 @@ const NoteList = () => {
       setNoteList(res.data.content);
       setTotalPage(res.data.totalPages);
       setTotalNotes(res.data.totalElements);
+
+      api="";
+      if(tabNumber === 2) {
+        api=`/api/noteNotReadReceivedList?isKeep=true`;
+      }else if(tabNumber === 3) {
+        api=`/api/noteNotReadReceivedList?isSpam=true`;
+      }else if(tabNumber === 0) {
+        api=`/api/noteNotReadReceivedList`;
+      } else {
+        return;
+      }
+
+      const res2 = await axios.get(api,{
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+        }
+      }
+      );
+
+      if(res2.status === 200) {
+        setNotReadNoteCount(res2.data);
+      }
 
     } catch(e) {
       console.log(e);

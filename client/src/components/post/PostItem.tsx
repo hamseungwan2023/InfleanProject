@@ -1,8 +1,11 @@
 import classNames from "classnames";
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { ECategory } from "../../constants/categoryList";
 import { TPostItem } from "../../constants/postList";
+import { ERegion } from "../../constants/regionList";
 import { getDayMinuteCounter } from "../../utils/getDayMinuteCounter";
+import { getKeyByValue } from "../../utils/getKeyByValue";
 import style from "./PostItem.module.scss";
 
 type Tprops = {
@@ -32,8 +35,8 @@ const PostItem = React.forwardRef<HTMLLIElement, Tprops>(({ postItem :{id, title
         {isPostCorrect && <Link to="/postCorrect/23" className={style.btn_correct}>수정하기</Link>}
       </div>
       <div className={style.info}>
-        <span className={style.category}>{location}</span>
-        <span className={style.category}>{category}</span>
+        <span className={style.category}>{getKeyByValue(ERegion, location)}</span>
+        <span className={style.category}>{getKeyByValue(ECategory, category)}</span>
         <span className={style.last_update}>
           {getDayMinuteCounter(createdAt)}
         </span>

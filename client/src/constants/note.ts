@@ -13,7 +13,7 @@ export type TNote = {
   content: string,  //내용
   sendDate: string,  //보낸시각
   receiveDate: string,  //받은 시각
-  isReceiverRead: boolean, // 수신 여부
+  receiverRead: boolean, // 수신 여부
   isSenderDelete: boolean, // 삭제여부 (발신자)
   isReceiverDelete: boolean, //삭제 여부 (수신자)
   isSpam: boolean, //스팸여부
