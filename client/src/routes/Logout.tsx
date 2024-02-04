@@ -4,6 +4,7 @@ import { logout } from "../slices/reducers/auth";
 import style from "../components/layout/Header.module.scss";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 // import { persistor } from "../slices/store";
 
 function Logout() {
@@ -11,7 +12,7 @@ function Logout() {
   const isLoggedIn = useSelector((state: any) => state.auth.isLoggedIn);
 
   const accessToken = localStorage.getItem("accessToken");
-
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const onClick = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -23,6 +24,7 @@ function Logout() {
       });
       localStorage.clear();
       dispatch(logout());
+      navigate("/");
     } catch (err) {
       console.error(err);
     }

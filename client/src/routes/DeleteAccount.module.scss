@@ -30,15 +30,46 @@
   }
   .checkInput_wrapper {
     margin-top: 5%;
-    margin-left: 20px;
+    margin-left: 26%;
     margin-bottom: 20px;
+
     .input_wrapper {
+      width: 500px;
+      border: $main100 1px solid;
+
       input {
         cursor: default;
-        width: 500px;
+        width: 450px;
         height: 50px;
-        border: $main100 1px solid;
         text-align: center;
+      }
+    }
+    .btn_show {
+      &::before {
+        background-position: -256px -296px;
+        background-repeat: no-repeat;
+        background-image: url(https://ssl.pstatic.net/static/nid/join/m_sp_06_realname_48b1e603.png);
+        background-size: 372px 326px;
+        width: 30px;
+        height: 30px;
+        display: inline-block;
+        vertical-align: top;
+        content: "";
+      }
+    }
+    .btn_noShow {
+      margin-left: 4px;
+
+      &::before {
+        background-position: -256px -296px;
+        background-repeat: no-repeat;
+        background-image: url(https://ssl.pstatic.net/static/nid/join/m_sp_06_realname_48b1e603.png);
+        background-size: 372px 363px;
+        width: 30px;
+        height: 30px;
+        display: inline-block;
+        vertical-align: top;
+        content: "";
       }
     }
   }

@@ -121,6 +121,19 @@
   }
 }
 
+.wrapper_confirmEmail {
+  &::before {
+    background-position: -64px -266px;
+  }
+  input {
+    width: 468px;
+  }
+  button {
+    margin-left: 10px;
+    width: 100px;
+  }
+}
+
 .wrapper_roadAd {
   button {
     width: 405px;

@@ -2,111 +2,176 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Style from "./Profile.module.scss";
-import { useSelector } from "react-redux";
-
-export const srcUrl =
-  "https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg";
+import { useSelector, useDispatch } from "react-redux";
+import { AppDispatch } from "../slices/store";
+import { tokenRefresh } from "../slices/reducers/auth";
 
 const Profile = () => {
   const [userReTouch, setUserReTouch] = useState<boolean>(true);
 
-  const [showPass, setShowPass] = useState<boolean>(false);
+  const [showCurrentPw, setShowCurrentPw] = useState<boolean>(false);
+  const [showNewPw, setShowNewPw] = useState<boolean>(false);
+  const [showNewConfirmPw, setShowNewConfirmPw] = useState<boolean>(false);
+
+  const [isPwOpen, setIsPwOpen] = useState<boolean>(false);
+  const [isUpdateImg, setIsUpdateImg] = useState<boolean>(false);
+
+  const [userData, setUserData] = useState<any>({});
   const [nickName, setNickName] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [image, setImage] = useState<string>("");
+  const [profileImg, setProfileImg] = useState<string>("");
+  const [updateImgSrc, setUpdateImgSrc] = useState<string>("");
+  const [updateImg, setUpdateImg] = useState<Blob | null>(null);
+  const [currentPw, setCurrentPw] = useState<string>("");
+  const [newPw, setNewPw] = useState<string>("");
+  const [confirmPw, setConfirmPw] = useState<string>("");
 
   const user = useSelector((state: any) => state.auth.user);
   const isLoggedIn = useSelector((state: any) => state.auth.isLoggedIn);
 
   const AllowedImageExtensions = [".jpg", ".jpeg", ".png", ".svg"]; // 허용할 이미지 확장자들
 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
-    getUserData();
+    if (isLoggedIn === false) {
+      navigate("/");
+    }
+    getUserImg();
+    getUserData(dispatch);
   }, []);
-  const getUserData = async () => {
+
+  const getUserData = async (dispatch: AppDispatch) => {
+    const refreshToken = localStorage.getItem("refreshToken");
+
     try {
-      const response = await axios.get(`/user/load-profile/${user?.memberId}`, {
+      const response = await axios.get("/user/api/userDetail", {
         headers: {
-          Authorization: `${localStorage.getItem("accessToken")}`,
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
-      console.log(response.data);
-    } catch (err) {
-      console.error(err);
+      setUserData(response.data);
+    } catch (err: any) {
+      if (err.response.data.message === "기간이 만료된 토큰") {
+        dispatch(tokenRefresh(String(refreshToken))); // 토큰을 갱신한 후에
+        // await getUserData(); // 다시 데이터를 가져옴
+      }
+      console.error(err.response.data.message);
+    }
+  };
+  const getUserImg = async () => {
+    try {
+      const response = await axios.get<Blob>(`/user/load-profile`, {
+        responseType: "blob",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
+      const file = new File([response.data], "image");
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        const previewImage = String(ev.target?.result);
+        setProfileImg(previewImage);
+      };
+      reader.readAsDataURL(file);
+    } catch (err: any) {
+      console.log(err);
     }
   };
 
   //image 유형 걸러주는 함수
-  const isValidImageExtension = (filename: any) => {
-    const extension = filename.slice(
-      ((filename.lastIndexOf(".") - 1) >>> 0) + 2
-    );
-    return AllowedImageExtensions.includes(`.${extension.toLowerCase()}`);
-  };
+  // const isValidImageExtension = (filename: any) => {
+  //   const extension = filename.slice(
+  //     ((filename.lastIndexOf(".") - 1) >>> 0) + 2
+  //   );
+  //   return AllowedImageExtensions.includes(`.${extension.toLowerCase()}`);
+  // };
 
-  const imageOnChange = (e: any) => {
-    if (e.target.files !== null) {
-      const selectedFiles = e.target.files as FileList;
-      setImage(URL.createObjectURL(selectedFiles?.[0]));
-      if (!isValidImageExtension(image)) {
-        alert("jpg, jpeg, png, svg의 형태만 가능합니다.");
-        return null;
-      }
-    }
-  };
+  const onProfileImageChange = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const { files } = e.target;
+    if (files && files.length === 1) {
+      const reader = new FileReader();
 
-  const onChange = (e: any) => {
-    if (e.target.nickName) {
-      setNickName(e.target.value);
+      const file = files[0];
+      setUpdateImg(file);
+      reader.onloadend = () => {
+        if (typeof reader.result === "string") {
+          const imageSrc: string = reader.result;
+          setUpdateImgSrc(imageSrc);
+          setIsUpdateImg(true);
+          console.log(imageSrc);
+        }
+      };
+      reader.readAsDataURL(file);
     } else {
-      setPassword(e.target.value);
+      return;
     }
   };
-
-  //백엔드 명세서 나오면 사용
   const onSubmit = async (e: any) => {
-    const passwordRegExp =
-      /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
-    if (!passwordRegExp.test(password)) {
-      alert("비밀번호: 숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요.");
-    }
     e.preventDefault();
     try {
-      await axios.patch(`/profile/update`, {
-        //추후에 백엔드 api명세서 나오면 수정
+      const accessToken = localStorage.getItem("accessToken");
+      const formData = new FormData();
+      const jsonData = {
         nickname: nickName,
-        password: password,
-        profileImg: image,
+        password: currentPw,
+        newPassword: newPw,
+      };
+      if (updateImg) {
+        formData.append("profileImg", updateImg);
+      }
+      formData.append(
+        "userUpdateDto",
+        new Blob([JSON.stringify(jsonData)], { type: "application/json" })
+      );
+      const response = await axios.patch(`/user/update`, formData, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "multipart/form-data",
+        },
       });
-      setUserReTouch(false);
-    } catch (e) {
-      console.log(e);
+      getUserImg();
+      getUserData(dispatch);
+      setUserReTouch(true);
+      console.log("수정 성공:", response.data);
+    } catch (err) {
+      console.error("수정 실패:", err);
     }
   };
 
   return (
-    <div>
+    <div className={Style.form}>
       {isLoggedIn === true ? (
         <div>
           {userReTouch === true ? (
             <div className={Style.profile_wrapper}>
-              <h1>프로필</h1>
-              {/* <img src={profileImg} style={{ width: "100px" }}></img> //db 활성화 되면 사용 */}
+              <div className={Style.infoState_wrapper}>
+                <button
+                  className={Style.toHomeBtn}
+                  title="홈으로"
+                  onClick={(e) => navigate("/")}
+                ></button>
+                <h1>프로필</h1>
+              </div>
+
               <div className={Style.userInfo_wrapper}>
-                <div>
-                  <img src={srcUrl} style={{ width: "100px" }}></img>
+                <div className={Style.wrapper_img}>
+                  <img id="image" src={profileImg} />
+                  {/* <img src={srcUrl} style={{ width: "150px" }}></img> */}
                 </div>
-                <div className={Style.nickname_wrapper}>
-                  <h5>{user.nickname}</h5>
+                <div className={Style.wrapper_nickname}>
+                  <h5>{userData.nickname}</h5>
                 </div>
-                <div className={Style.email_wrapper}>
-                  <h5>랭크 들어갈 곳</h5>
+                <div className={Style.wrapper_rank}>
+                  <h5>{userData.rank}레벨</h5>
                 </div>
-                <div className={Style.password_wrapper}>
-                  <h5>도로명 주소 들어갈 곳</h5>
+                <div className={Style.wrapper_location}>
+                  <h5>지역 : {userData.location}</h5>
                 </div>
+              </div>
+              <div className={Style.wrapper_btn}>
                 <button
                   className={Style.retouchBtn}
                   onClick={() => setUserReTouch(false)}
@@ -114,7 +179,7 @@ const Profile = () => {
                   프로필 수정
                 </button>
                 <button
-                  className={Style.retouchBtn}
+                  className={Style.toDelete}
                   onClick={() => navigate(`/deleteAccount/${user?.memberId}`)}
                 >
                   계정 삭제
@@ -123,103 +188,180 @@ const Profile = () => {
             </div>
           ) : (
             <div>
-              <div className={Style.retouch_wrapper}>
-                <h1>프로필 수정</h1>
+              <div className={Style.userInfo_wrapper}>
+                <div className={Style.infoState_wrapper}>
+                  <button
+                    className={Style.toHomeBtn}
+                    title="홈으로"
+                    onClick={(e) => navigate("/")}
+                  ></button>
+                  <h1>프로필 수정</h1>
+                </div>
                 {/* <img src={profileImg} style={{ width: "100px" }}></img> //db 활성화 되면 사용 */}
-                <div className={Style.userInfo_wrapper}>
-                  <div className={Style.imageUpload_wrapper}>
-                    <label className={Style.file_input}>
-                      <input
-                        id="profileImg"
-                        type="file"
-                        onChange={imageOnChange}
-                        style={{ display: "none" }}
-                      ></input>
-                      <img src={srcUrl} style={{ width: "100px" }}></img>
-                    </label>
-                  </div>
-                  <div className={Style.nickname_wrapper}>
-                    <img
-                      src="https://icons.veryicon.com/png/o/internet--web/prejudice/user-128.png"
-                      width={"21px"}
-                    ></img>
+                <div>
+                  <label className={Style.wrapper_imgInput}>
                     <input
-                      name="nickname"
-                      type="text"
-                      defaultValue={user.nickname}
-                      onChange={onChange}
+                      id="profileImg"
+                      type="file"
+                      onChange={onProfileImageChange}
+                      style={{ display: "none" }}
                     ></input>
-                  </div>
-                  <div className={Style.email_wrapper}>
-                    <h5>
-                      <img
-                        src="https://t4.ftcdn.net/jpg/05/25/22/63/360_F_525226337_x7lLRcnU08vDLkijRwgcbaIs8zCfDktC.jpg"
-                        width={"21px"}
-                      ></img>
-                      {user.username}
-                    </h5>
-                  </div>
 
-                  {showPass === false ? (
-                    <div className={Style.password_wrapper}>
-                      <img
-                        src="https://png.pngtree.com/png-clipart/20191120/original/pngtree-circle-password-icon-vectors-png-image_5053796.jpg"
-                        width={"21px"}
-                      ></img>
+                    {isUpdateImg === false ? (
+                      <img src={profileImg}></img>
+                    ) : (
+                      <img src={updateImgSrc}></img>
+                    )}
+                  </label>
+                </div>
+                <div className={Style.profile_wrapper}>
+                  {isPwOpen === false ? (
+                    <div className={Style.wrapper_nickname}>
                       <input
-                        name="password"
-                        type="password"
-                        defaultValue={user.password}
-                        onChange={onChange}
+                        name="nickname"
+                        type="text"
+                        defaultValue={userData.nickname}
+                        onChange={(e) => setNickName(e.target.value)}
                       ></input>
-                      <button onClick={() => setShowPass(true)}>
-                        <img
-                          src="https://static.thenounproject.com/png/777497-200.png"
-                          width={"21px"}
-                        ></img>
-                      </button>
                     </div>
                   ) : (
-                    <div className={Style.password_wrapper}>
-                      <img
-                        src="https://png.pngtree.com/png-clipart/20191120/original/pngtree-circle-password-icon-vectors-png-image_5053796.jpg"
-                        width={"21px"}
-                      ></img>
-                      <input
-                        name="password"
-                        type="text"
-                        defaultValue={user.password}
-                        onChange={onChange}
-                      ></input>
-                      <button onClick={() => setShowPass(false)}>
-                        <img
-                          src="https://www.svgrepo.com/show/390427/eye-password-see-view.svg"
-                          width={"21px"}
-                        ></img>
-                      </button>
+                    <div>
+                      {showCurrentPw === false ? (
+                        <div>
+                          <div className={Style.wrapper_nickname}>
+                            <input
+                              name="nickname"
+                              type="text"
+                              defaultValue={userData.nickname}
+                              onChange={(e) => setNickName(e.target.value)}
+                            ></input>
+                          </div>
+                          <div className={Style.wrapper_password}>
+                            <input
+                              name="currentPw"
+                              type="password"
+                              placeholder="기존 비밀번호"
+                              onChange={(e) => setCurrentPw(e.target.value)}
+                            />
+                            <button
+                              className={Style.btn_show}
+                              onClick={() => setShowCurrentPw(true)}
+                            ></button>
+                          </div>
+                        </div>
+                      ) : (
+                        <div>
+                          <div className={Style.wrapper_nickname}>
+                            <input
+                              name="nickname"
+                              type="text"
+                              defaultValue={userData.nickname}
+                              onChange={(e) => setNickName(e.target.value)}
+                            ></input>
+                          </div>
+                          <div className={Style.wrapper_password}>
+                            <input
+                              name="currentPw"
+                              type="password"
+                              placeholder="기존 비밀번호"
+                              onChange={(e) => setCurrentPw(e.target.value)}
+                            />
+                            <button
+                              className={Style.btn_show}
+                              onClick={() => setShowCurrentPw(false)}
+                            ></button>
+                          </div>
+                        </div>
+                      )}
+                      {showNewPw === false ? (
+                        <div className={Style.wrapper_password}>
+                          <input
+                            name="password"
+                            type="password"
+                            onChange={(e) => setNewPw(e.target.value)}
+                            placeholder="변경할 비밀번호"
+                          />
+                          <button
+                            className={Style.btn_show}
+                            onClick={() => setShowNewPw(true)}
+                          ></button>
+                        </div>
+                      ) : (
+                        <div className={Style.wrapper_password}>
+                          <input
+                            name="password"
+                            type="text"
+                            placeholder="변경할 비밀번호"
+                            onChange={(e) => setNewPw(e.target.value)}
+                          ></input>
+                          <button
+                            className={Style.btn_noShow}
+                            onClick={() => setShowNewPw(false)}
+                          ></button>
+                        </div>
+                      )}
+                      {showNewConfirmPw === false ? (
+                        <div className={Style.wrapper_password}>
+                          <input
+                            name="confirmPw"
+                            type="password"
+                            placeholder="비밀번호 확인"
+                            onChange={(e) => setConfirmPw(e.target.value)}
+                          />
+                          <button
+                            className={Style.btn_show}
+                            onClick={() => setShowNewConfirmPw(true)}
+                          ></button>
+                        </div>
+                      ) : (
+                        <div className={Style.wrapper_password}>
+                          <input
+                            name="confirmPw"
+                            type="text"
+                            placeholder="비밀번호 확인"
+                            onChange={(e) => setConfirmPw(e.target.value)}
+                          />
+                          <button
+                            className={Style.btn_noShow}
+                            onClick={() => setShowNewConfirmPw(false)}
+                          ></button>
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
-                <button
-                  className={Style.retouchBtn}
-                  onClick={() => setUserReTouch(true)}
-                >
-                  수정 취소
-                </button>
-                <button
-                  className={Style.retouchBtn}
-                  onClick={(e) => onSubmit(e)}
-                >
-                  수정 완료
-                </button>
+
                 {/* api 명세 나오면 buttom onClick에  onSubmit함수 넣을 예정 */}
               </div>
+              {isPwOpen === false ? (
+                <button
+                  className={Style.mainBtn}
+                  onClick={() => setIsPwOpen(true)}
+                >
+                  비밀번호 변경
+                </button>
+              ) : (
+                <button
+                  className={Style.mainBtn}
+                  onClick={() => setIsPwOpen(false)}
+                >
+                  비밀번호 변경 취소
+                </button>
+              )}
+              <button
+                className={Style.subBtn}
+                onClick={() => setUserReTouch(true)}
+              >
+                수정 취소
+              </button>
+
+              <button className={Style.subBtn} onClick={(e) => onSubmit(e)}>
+                수정 완료
+              </button>
             </div>
           )}
         </div>
-      ) : (
-        <div>로그인이 안되면 못 보는 페이지</div>
-      )}
+      ) : null}
     </div>
   );
 };

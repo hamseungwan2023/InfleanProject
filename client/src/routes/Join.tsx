@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { login } from "../slices/reducers/auth";
 import { useNavigate } from "react-router-dom";
 import { AppDispatch } from "../slices/store";
+import Timer from "./findAccount/Timer";
 
 const Join = () => {
   const [username, setUsername] = useState<string>("");
@@ -15,12 +16,14 @@ const Join = () => {
   const [birthday, setBirthday] = useState("");
   const [phone, setPhone] = useState("");
   const [nickname, setNickname] = useState<string>("");
-  const [roadAddress, setRoadAddress] = useState<string>("");
+  const [location, setLocation] = useState<string>("");
   const [email, setEmail] = useState<string>("");
+  const [confirmCode, setConfirmCode] = useState<string>("");
 
   const [profileImg, setProfileImg] = useState<Blob | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [findUser, setFindUser] = useState(false);
+  const [confirmEmail, setConfirmEmail] = useState<boolean>(false);
+  const [authEmail, setAuthEmail] = useState<boolean>(false);
 
   // 오류메세지, 유효여부 상태 저장
   const [requiredMessage, setRequiredMessage] = useState("");
@@ -34,18 +37,17 @@ const Join = () => {
   const [isNicknameValid, setIsNicknameValid] = useState(true);
   const [isPhoneValid, setIsPhoneValid] = useState(true);
   const [isProfileImgValid, setIsProfileImgValid] = useState(true);
-  const [isRoadAddressValid, setisRoadAddressValid] = useState();
+  const [isLocationValid, setIsLocationValid] = useState(true);
 
   const [isUsernameFocus, setIsUsernameFocus] = useState(false);
   const [isPasswordFocus, setIsPasswordFocus] = useState(false);
   const [isRealnameFocus, setIsRealnameFocus] = useState(false);
   const [isEmailFocus, setIsEmailFocus] = useState(false);
-
   const [isBirthdayFocus, setIsBirthdayFocus] = useState(false);
   const [isNicknameFocus, setIsNicknameFocus] = useState(false);
   const [isPhoneFocus, setIsPhoneFocus] = useState(false);
   const [isProfileImgFocus, setIsProfileImgFocus] = useState(false);
-  const [isRoadAddressFocus, setIsRoadAddressFocus] = useState(false);
+  const [isLocationFocus, setIsLocationFocus] = useState(false);
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -56,24 +58,20 @@ const Join = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const location = roadAddress.substring(0, 2);
-  console.log("location", location);
+  // console.log("location", location);
 
   const onSubmit = async (e: any, dispatch: AppDispatch): Promise<void> => {
     e.preventDefault();
-
-    try {
-      const formData = new FormData();
-
-      //프로필 이미지 결정나면 느낌표 지울 예정
-      if (!profileImg) {
-        // formData.append("profileImg", profileImg);
+    const address = location.substring(0, 2);
+    if (authEmail) {
+      try {
+        const formData = new FormData();
         const jsonData = {
-          username: username,
-          nickname: nickname,
-          password: password,
-          email: email,
-          location: location,
+          username,
+          nickname,
+          password,
+          email,
+          location: "SEOUL",
           //phone: phone,
           //realname: realname,
           //birthday: birthday,
@@ -83,20 +81,28 @@ const Join = () => {
           "reqUserJoinFormDto",
           new Blob([JSON.stringify(jsonData)], { type: "application/json" })
         );
+
+        if (profileImg) {
+          formData.append("profileImg", profileImg);
+        }
         const response = await axios.post("/user/signup", formData, {
-          headers: { "Content-Type": "multipart/form-data", charset: "utf-8" },
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         });
+
         dispatch(login(username, password));
         navigate("/");
         console.log("success");
+      } catch (err: any) {
+        console.log(err.response.data.message);
+        console.log(err);
       }
-    } catch (e) {
-      console.log(e);
     }
   };
 
   const getAddress = (e: string) => {
-    setRoadAddress(e);
+    setLocation(e);
   };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -201,7 +207,7 @@ const Join = () => {
       setIsPhoneFocus(false);
       setIsProfileImgFocus(false);
     } else if (e.target.name === "roadAddress") {
-      setIsRoadAddressFocus(true);
+      setIsLocationFocus(true);
       setIsNicknameFocus(false);
       setIsUsernameFocus(false);
       setIsPasswordFocus(false);
@@ -249,6 +255,37 @@ const Join = () => {
     }
   };
 
+  //이메일 인증
+  const mailConfirm = async (e: any) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post("/email/mailConfirm", {
+        email: email,
+      });
+      setConfirmEmail(true);
+      console.log(response.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  //인증번호
+  const verificationCode = async (e: any) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post("/email/mailVerification", {
+        email: email,
+        code: confirmCode,
+      });
+      console.log(response);
+      if (response.data === true) {
+        setAuthEmail(true);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const onClickPasswordShow = (e: React.MouseEvent) => {
     setIsSecretPassword(!isSecretPassword);
   };
@@ -293,7 +330,23 @@ const Join = () => {
             maxLength={30}
             required
           />
+          <button onClick={(e) => mailConfirm(e)}>인증번호 받기</button>
         </div>
+        {confirmEmail && (
+          <div className={style.wrapper_confirmEmail}>
+            <input
+              name="confirmCode"
+              type="text"
+              placeholder="인증번호를 입력하세요."
+              value={confirmCode}
+              className={style.input}
+              onChange={(e: any) => setConfirmCode(e.target.value)}
+            ></input>
+            <Timer />
+
+            <button onClick={(e) => verificationCode(e)}>인증하기</button>
+          </div>
+        )}
         <div
           className={classnames(
             style.wrapper_password,
@@ -326,11 +379,11 @@ const Join = () => {
         </div>
         <div
           className={classnames(style.wrapper_roadAd, {
-            [style.is_focus]: isRoadAddressFocus,
+            [style.is_focus]: isLocationFocus,
           })}
         >
           <button onClick={(e) => setIsOpen(true)}>
-            {roadAddress.length > 0 ? roadAddress : "주소를 입력하세요"}
+            {location.length > 0 ? location : "주소를 입력하세요"}
           </button>
         </div>
         {isOpen && <Modal setIsOpen={setIsOpen} getAddress={getAddress} />}

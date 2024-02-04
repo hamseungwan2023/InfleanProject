@@ -6,20 +6,11 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 import classnames from "classnames";
-
+import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { login } from "../../slices/reducers/auth";
 import { AppDispatch, RootState } from "../../slices/store";
 import Profile from "../profile/Profile";
-
-interface Ires {
-  data: {
-    accessToken: string;
-    refreshToken: string;
-    memberId: number;
-    nickname: string;
-  };
-}
 
 const Login = () => {
   const [isBtnClick, setIsBtnClick] = useState(false);
@@ -136,7 +127,9 @@ const Login = () => {
             </div>
           </div>
         </div>
-      ): <Profile />}
+      ) : (
+        <Profile />
+      )}
     </div>
   );
 };

@@ -49,7 +49,35 @@ export const login =
       localStorage.setItem("accessToken", response.data.accessToken);
       localStorage.setItem("refreshToken", response.data.refreshToken);
     } catch (error) {
+      console.error(error);
       dispatch(loginFailure("로그인에 실패했습니다."));
+    }
+  };
+
+export const tokenRefresh =
+  (refreshToken: string) =>
+  async (dispatch: AppDispatch): Promise<void> => {
+    // const refreshToken = localStorage.getItem("refreshToken");
+    // console.log(1);
+    try {
+      const response = await axios.post(
+        "/user/refreshToken",
+        {},
+        {
+          headers: {
+            Authorization: String(refreshToken),
+          },
+        }
+      );
+      dispatch(loginSuccess(response.data));
+      console.log("성공");
+      console.log(response.data);
+      localStorage.clear();
+      localStorage.setItem("accessToken", response.data.accessToken);
+      localStorage.setItem("refreshToken", response.data.refreshToken);
+    } catch (err: any) {
+      console.error(err);
+      dispatch(loginFailure("갱신에 실패하였습니다."));
     }
   };
 
