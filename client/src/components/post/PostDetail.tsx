@@ -1,8 +1,11 @@
 import axios, { Axios, AxiosError } from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { ECategory } from "../../constants/categoryList";
 import { TPost } from "../../constants/post";
+import { ERegion } from "../../constants/regionList";
 import { getDayMinuteCounter } from "../../utils/getDayMinuteCounter";
+import { getKeyByValue } from "../../utils/getKeyByValue";
 import style from "./PostDetail.module.scss";
 
 type TProps = {
@@ -55,11 +58,7 @@ const PostDetail = ({commentCount}:TProps) => {
   }
 
   const getPostDetail = async () => {
-    const res = await axios.get(`/api/postDetail/${postId}`,{
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-      }
-    });
+    const res = await axios.get(`/api/postDetail/${postId}`);
   
     try {
       if(res.status===200) {
@@ -80,7 +79,8 @@ const PostDetail = ({commentCount}:TProps) => {
         <h1 className={style.title}>{postDetail?.title}</h1>
         <div className={style.title_info}>
           <div className={style.info_wrap}>
-            <span className={style.category}>{postDetail?.category}</span>
+            <span className={style.category}>{getKeyByValue(ERegion, postDetail? postDetail.location : "지역없음")}</span>
+            <span className={style.category}>{getKeyByValue(ECategory, postDetail? postDetail.category : "카테고리없음")}</span>
             <span className={style.last_update}>
               {postDetail && getDayMinuteCounter(postDetail.createdAt)}
             </span>

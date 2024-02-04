@@ -1,8 +1,11 @@
 import classNames from "classnames";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { ECategory } from "../../constants/categoryList";
 import { TPostItem } from "../../constants/postList";
+import { ERegion } from "../../constants/regionList";
 import { getDayMinuteCounter } from "../../utils/getDayMinuteCounter";
+import { getKeyByValue } from "../../utils/getKeyByValue";
 import style from "./PostItem.module.scss";
 
 type Tprops = {
@@ -10,7 +13,9 @@ type Tprops = {
   isPostCorrect: boolean
 };
 
-const PostItem = React.forwardRef<HTMLLIElement, Tprops>(({ postItem :{id, title, category, writer, rank, finalLike, thumbnailUrl, contentCount, createdAt, isNotification}, isPostCorrect }, ref) => {
+const PostItem = React.forwardRef<HTMLLIElement, Tprops>(({ postItem :{id, title, category, writer, rank, finalLike, thumbnailUrl, contentCount, createdAt, isNotification, location}, isPostCorrect }, ref) => {
+  const navigate = useNavigate();
+
   return <li className={classNames(style.item, {[style.is_notification] : isNotification})} ref={ref}>
     <Link to={`/postDetail/${id}`} className={style.link} />
     { isNotification ?     <div className={style.notice_icon}><img src="https://talk.op.gg/images/icon-notice@2x.png" alt="공지" width="24" /></div> :     
@@ -30,7 +35,8 @@ const PostItem = React.forwardRef<HTMLLIElement, Tprops>(({ postItem :{id, title
         {isPostCorrect && <Link to="/postCorrect/23" className={style.btn_correct}>수정하기</Link>}
       </div>
       <div className={style.info}>
-        <span className={style.category}>{category}</span>
+        <span className={style.category}>{getKeyByValue(ERegion, location)}</span>
+        <span className={style.category}>{getKeyByValue(ECategory, category)}</span>
         <span className={style.last_update}>
           {getDayMinuteCounter(createdAt)}
         </span>

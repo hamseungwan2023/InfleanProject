@@ -80,7 +80,7 @@ const Login = () => {
                   placeholder="비밀번호"
                   value={password}
                   maxLength={20}
-                  className={style.input}
+                  className={Style.input}
                   required
                 />
                 <div className={Style.password_info}>

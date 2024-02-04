@@ -23,8 +23,6 @@ const getDateFormat = (datetime: string) => {
 
   res.concat(res);
 
-  console.log(res);
-
   return res;
 }
 

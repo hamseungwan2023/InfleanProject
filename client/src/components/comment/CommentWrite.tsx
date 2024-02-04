@@ -87,6 +87,8 @@ const CommentWrite = ({ isReplyComment, setCommentList, parentCommentId, isEditC
         if(postId) {
           dispatch(loadReduxCommentList(postId));
         }
+      } else if(res.status===401) {
+        window.confirm("댓글을 작성하시려면 로그인이 필요합니다.");
       }
     } catch(e) {
       console.log(e);

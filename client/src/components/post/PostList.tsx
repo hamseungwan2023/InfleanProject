@@ -1,26 +1,23 @@
 import axios from "axios";
 import moment from "moment";
-import React, { useCallback, useEffect, useState } from "react";
-import {
-  postListData,
-  realPostListData,
-  TPostItem,
-  TPostList,
-} from "../../constants/postList";
-import useInfiniteScroll, {
-  IntersectionHandler,
-} from "../../hooks/useInfiniteScroll";
-import { sortArrByDate } from "../../utils/filter";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { TPostList } from "../../constants/postList";
+import useInfiniteScroll, { IntersectionHandler } from "../../hooks/useInfiniteScroll";
 import PostItem from "./PostItem";
 import LoadingSvg from "../../svg/Loading.svg";
 import { useSelector } from "react-redux";
+import PostListNoResult from "./PostListNoResult";
 
 type TProps = {
   isPostCorrect: boolean;
 };
 
-const PostList = ({ isPostCorrect }: TProps) => {
-  const category = useSelector((state: any) => state.category.category);
+const PostList = ({isPostCorrect}:TProps) => {
+  const category = useSelector((state:any) => state.category.category);
+  const location = useSelector((state:any) => state.location.location);
+  const search = useSelector((state:any) => state.search.search);
+  const searchCategory = useSelector((state:any) => state.search.searchCategory);
+  const orderBy = useSelector((state:any) => state.orderBy.orderBy);
 
   const [pageInfo, setPageInfo] = useState({
     currentPage: 0,
@@ -53,17 +50,33 @@ const PostList = ({ isPostCorrect }: TProps) => {
   const getPostList = async () => {
     setIsLoading(true);
 
-    let api=`/api/postList/${category}?page=${pageInfo.currentPage}`;
+    let api="";
+    if(!category) return;
 
-    if (category === "전체") {
-      api = `/api/postList?page=${pageInfo.currentPage}`;
+    if(search==="") {
+      if(category==="TOTAL") api=`/api/postList?location=${location}&page=${pageInfo.currentPage}&orderBy=${orderBy}`;
+      else {
+        api=`/api/postList?category=${category}&location=${location}&page=${pageInfo.currentPage}&orderBy=${orderBy}`;
+      }
+    }else {
+      let dropDownOption = "";
+
+      switch(searchCategory) {
+        case 0: dropDownOption="title"; break;
+        case 1: dropDownOption="content"; break;
+        default: dropDownOption="titleContent";
+      }
+
+      if(category==="TOTAL") api=`/api/postList?location=${location}&page=${pageInfo.currentPage}&${dropDownOption}=${search}&orderBy=createdDate`;
+      else {
+        api=`/api/postList?category=${category}&location=${location}&page=${pageInfo.currentPage}&${dropDownOption}=${search}&orderBy=createdDate`;
+      }
     }
 
-    const res = await axios.get(api, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    });
+    
+
+    const res = await axios.get(
+    api);
 
     try {
       if (res.status === 200) {
@@ -88,28 +101,7 @@ const PostList = ({ isPostCorrect }: TProps) => {
     }
   };
 
-  useEffect(() => {
-    /*
-    if(pageInfo.page <= realPostListData.length) {
-       const res = realPostListData[pageInfo.page-1];
-      
-      setPostList((prev) => {
-        if(prev && prev.data.length > 0) {
-          return {
-            ...res,
-            data: [...prev.data, ...res.data]
-          }
-        }
-        return res;
-      })
-
-      setPageInfo((prev) => ({
-        ...prev,
-        totalPage: res.totalPage
-      }))
-    }*/
-    getPostList();
-  }, [pageInfo.currentPage]);
+  let isMounted = useRef(false);
 
   useEffect(() => {
     setPageInfo({ currentPage: 0, totalPage: 1 });
@@ -119,30 +111,32 @@ const PostList = ({ isPostCorrect }: TProps) => {
       totalPage: 1,
     });
 
+    if(isMounted.current) {
+      getPostList();
+    }else {
+      isMounted.current = true;
+    }
     getPostList();
-  }, [category]);
+  },[category, location, search, orderBy, pageInfo.currentPage]);
 
-  return (
-    <div className="postlist" role="tabpanel">
+  return <div className="postlist" role="tabpanel">
+    {
+      postList && postList.dtos.length > 0 ? 
       <ul>
-        {postList?.dtos.map((item, index) => {
+      {
+        postList.dtos.map((item,index) => {
           return (
-            <PostItem
-              postItem={item}
-              isPostCorrect={isPostCorrect}
-              key={index}
-              ref={postList.dtos.length - 1 === index ? setTarget : null}
-            />
-          );
-        })}
-        {pageInfo.currentPage < pageInfo.totalPage - 1 && isLoading && (
-          <div className="loading_wrap">
-            <img src={LoadingSvg} alt="로딩중" />
-          </div>
-        )}
-      </ul>
-    </div>
-  );
-};
+            <PostItem postItem={item} isPostCorrect={isPostCorrect} key={index} ref={postList.dtos.length - 1 === index ? setTarget : null}/>
+          )
+        })
+      }
+      {
+        pageInfo.currentPage < pageInfo.totalPage-1 && isLoading && <div className="loading_wrap"><img src={LoadingSvg} alt="로딩중" /></div>
+      }
+    </ul> :
+    <PostListNoResult />
+    }
+  </div>
+}
 
 export default PostList;
