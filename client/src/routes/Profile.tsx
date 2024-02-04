@@ -2,11 +2,9 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Style from "./Profile.module.scss";
-import { useSelector } from "react-redux";
-import { tokenRefresh } from "../hooks/tokenRefresh";
-
-export const srcUrl =
-  "https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg";
+import { useSelector, useDispatch } from "react-redux";
+import { AppDispatch } from "../slices/store";
+import { tokenRefresh } from "../slices/reducers/auth";
 
 const Profile = () => {
   const [userReTouch, setUserReTouch] = useState<boolean>(true);
@@ -32,6 +30,7 @@ const Profile = () => {
 
   const AllowedImageExtensions = [".jpg", ".jpeg", ".png", ".svg"]; // 허용할 이미지 확장자들
 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -39,28 +38,27 @@ const Profile = () => {
       navigate("/");
     }
     getUserImg();
-    userDetail();
+    getUserData(dispatch);
   }, []);
 
-  const userDetail = async () => {
+  const getUserData = async (dispatch: AppDispatch) => {
+    const refreshToken = localStorage.getItem("refreshToken");
+
     try {
       const response = await axios.get("/user/api/userDetail", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
-      setNickName(response.data.nickname);
       setUserData(response.data);
-      console.log(response);
     } catch (err: any) {
       if (err.response.data.message === "기간이 만료된 토큰") {
-        await tokenRefresh(); // 토큰을 갱신한 후에
+        dispatch(tokenRefresh(String(refreshToken))); // 토큰을 갱신한 후에
         // await getUserData(); // 다시 데이터를 가져옴
       }
       console.error(err.response.data.message);
     }
   };
-
   const getUserImg = async () => {
     try {
       const response = await axios.get<Blob>(`/user/load-profile`, {
@@ -135,7 +133,7 @@ const Profile = () => {
         },
       });
       getUserImg();
-      userDetail();
+      getUserData(dispatch);
       setUserReTouch(true);
       console.log("수정 성공:", response.data);
     } catch (err) {

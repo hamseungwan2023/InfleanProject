@@ -4,16 +4,18 @@ import style from "./Profile.module.scss";
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { tokenRefresh } from "../../hooks/tokenRefresh";
+import { tokenRefresh } from "../../slices/reducers/auth";
+import { AppDispatch } from "../../slices/store";
 
 const Profile = () => {
   const [userData, setUserData] = useState<any>({});
   const [noRead, setNoRead] = useState<any>("");
 
+  const dispatch = useDispatch();
   const user = useSelector((state: any) => state.auth?.user);
   // console.log(user);
   useEffect(() => {
-    getUserData();
+    getUserData(dispatch);
     notRead();
   }, []);
 
@@ -30,7 +32,9 @@ const Profile = () => {
     }
   };
 
-  const getUserData = async () => {
+  const refreshToken = localStorage.getItem("refreshToken");
+
+  const getUserData = async (dispatch: AppDispatch) => {
     try {
       const response = await axios.get("/user/api/userDetail", {
         headers: {
@@ -40,7 +44,7 @@ const Profile = () => {
       setUserData(response.data);
     } catch (err: any) {
       if (err.response.data.message === "기간이 만료된 토큰") {
-        await tokenRefresh(); // 토큰을 갱신한 후에
+        dispatch(tokenRefresh(String(refreshToken))); // 토큰을 갱신한 후에
         // await getUserData(); // 다시 데이터를 가져옴
       }
       console.error(err.response.data.message);
