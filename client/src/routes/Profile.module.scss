@@ -8,12 +8,9 @@
   flex-direction: column;
   margin-top: 50px;
   margin-bottom: 50px;
-  width: 800px;
-  border: $mainBorder 1px solid;
-  border-radius: 6px;
 
   .infoState_wrapper {
-    border-bottom: 1px solid $mainBorder;
+    border: 1px solid $mainBorder;
     margin-bottom: 10px;
     height: 30px;
     text-align: center;
@@ -34,16 +31,15 @@
     }
 
     h1 {
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 22px;
       color: $main700;
       font-size: 20px;
       position: relative;
       top: -25px;
       margin-bottom: 10px;
     }
-  }
-
-  img {
-    margin-left: 31%;
   }
 
   & > div {
@@ -55,10 +51,8 @@
 .profile_wrapper {
   margin-top: 30px;
   margin-bottom: 30px;
-  border: $mainBorder 1px solid;
-  width: 500px;
+
   img {
-    border: $mainBorder 1px solid;
     width: 200px;
     height: 170px;
     border-radius: 100%;
@@ -155,10 +149,15 @@
 
 .info_wrapper {
   position: relative;
-  width: 500px;
-  border: 1px $mainBorder solid;
   input {
     width: 500px;
+  }
+}
+
+.wrapper_img {
+  img {
+    margin-top: 10px;
+    margin-left: 20%;
   }
 }
 
@@ -186,43 +185,66 @@
   }
 }
 
-.retouchBtn {
-  width: 500px;
-  height: 50px;
-  font-size: 15px;
-  background-color: $main300;
-}
-
-.toDelete {
-  margin-top: 5px;
-  width: 500px;
-  height: 50px;
-  font-size: 15px;
-  color: rgb(254, 27, 27);
-  background-color: $main300;
-}
-
-.imgInput {
+.wrapper_imgInput {
   cursor: pointer;
+  height: 200px;
   img {
+    margin-left: 20%;
     border-radius: 100%;
     width: 200px;
     height: 150px;
   }
 }
 
+.retouchBtn {
+  margin-top: 10px;
+  width: 100%;
+  padding: 14px 0;
+  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  background: #81acff;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 22px;
+  color: #fff;
+}
+
+.toDelete {
+  margin-top: 10px;
+  width: 100%;
+  padding: 14px 0;
+  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  background: #81acff;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 22px;
+  color: rgb(203, 58, 58);
+}
+
 .mainBtn {
-  margin-left: 1px;
-  background-color: $main300;
-  width: 499px;
-  height: 40px;
+  margin-top: 10px;
+  width: 100%;
+  padding: 14px 0;
+  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  background: #81acff;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 22px;
+  color: #fff;
 }
 .subBtn {
-  margin-top: 5px;
-  margin-left: 1px;
-  background-color: $main300;
-  width: 499px;
-  height: 40px;
+  margin-top: 10px;
+  width: 100%;
+  padding: 14px 0;
+  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  background: #81acff;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 22px;
+  color: #fff;
 }
 .btn_show {
   margin-left: 4px;

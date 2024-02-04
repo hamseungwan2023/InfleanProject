@@ -8,7 +8,7 @@ import categoryReducer from "./reducers/category";
 const reducers = combineReducers({
   auth: loginReducer,
   commentList: commentListReducer,
-  category: categoryReducer
+  category: categoryReducer,
 });
 
 const persistConfig = {

@@ -1,17 +1,34 @@
 import classNames from "classnames";
 import { Link } from "react-router-dom";
 import style from "./Profile.module.scss";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { tokenRefresh } from "../../hooks/tokenRefresh";
 
 const Profile = () => {
   const [userData, setUserData] = useState<any>({});
+  const [noRead, setNoRead] = useState<any>("");
+
   const user = useSelector((state: any) => state.auth?.user);
   // console.log(user);
   useEffect(() => {
     getUserData();
+    notRead();
   }, []);
+
+  const notRead = async () => {
+    try {
+      const response = await axios.get("/api/noteNotReadReceivedList", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
+      setNoRead(response.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const getUserData = async () => {
     try {
@@ -21,10 +38,15 @@ const Profile = () => {
         },
       });
       setUserData(response.data);
-    } catch (err) {
-      console.error(err);
+    } catch (err: any) {
+      if (err.response.data.message === "기간이 만료된 토큰") {
+        await tokenRefresh(); // 토큰을 갱신한 후에
+        // await getUserData(); // 다시 데이터를 가져옴
+      }
+      console.error(err.response.data.message);
     }
   };
+
   return (
     <section className={style.profile_wrap}>
       <div className={style.profile_area}>
@@ -33,7 +55,8 @@ const Profile = () => {
           <div className={style.top_area}>
             <strong className={style.nickname}>{userData?.nickname}</strong>
             <Link to="/noteList/23" className={style.send_note}>
-              쪽지<span className={style.unread_note_count}>23</span>
+              쪽지
+              <span className={style.unread_note_count}>{noRead}</span>
             </Link>
           </div>
           <span className={style.level}>{userData?.rank}레벨</span>

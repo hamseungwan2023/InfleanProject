@@ -1,11 +1,9 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import classnames from "classnames";
 import Style from "./Profile.module.scss";
 import { useSelector } from "react-redux";
-import { AppDispatch } from "../slices/store";
-import Modal from "../components/location/Modal";
+import { tokenRefresh } from "../hooks/tokenRefresh";
 
 export const srcUrl =
   "https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg";
@@ -54,8 +52,12 @@ const Profile = () => {
       setNickName(response.data.nickname);
       setUserData(response.data);
       console.log(response);
-    } catch (err) {
-      console.error(err);
+    } catch (err: any) {
+      if (err.response.data.message === "기간이 만료된 토큰") {
+        await tokenRefresh(); // 토큰을 갱신한 후에
+        // await getUserData(); // 다시 데이터를 가져옴
+      }
+      console.error(err.response.data.message);
     }
   };
 
@@ -157,7 +159,7 @@ const Profile = () => {
               </div>
 
               <div className={Style.userInfo_wrapper}>
-                <div>
+                <div className={Style.wrapper_img}>
                   <img id="image" src={profileImg} />
                   {/* <img src={srcUrl} style={{ width: "150px" }}></img> */}
                 </div>
@@ -171,7 +173,6 @@ const Profile = () => {
                   <h5>지역 : {userData.location}</h5>
                 </div>
               </div>
-
               <div className={Style.wrapper_btn}>
                 <button
                   className={Style.retouchBtn}
@@ -188,7 +189,7 @@ const Profile = () => {
               </div>
             </div>
           ) : (
-            <div className={Style.profile_wrapper}>
+            <div>
               <div className={Style.userInfo_wrapper}>
                 <div className={Style.infoState_wrapper}>
                   <button
@@ -200,148 +201,165 @@ const Profile = () => {
                 </div>
                 {/* <img src={profileImg} style={{ width: "100px" }}></img> //db 활성화 되면 사용 */}
                 <div>
-                  <div>
-                    <label className={Style.imgInput}>
-                      <input
-                        id="profileImg"
-                        type="file"
-                        onChange={onProfileImageChange}
-                        style={{ display: "none" }}
-                      ></input>
-
-                      {isUpdateImg === false ? (
-                        <img src={profileImg}></img>
-                      ) : (
-                        <img src={updateImgSrc}></img>
-                      )}
-                    </label>
-                  </div>
-                  <div className={Style.wrapper_nickname}>
+                  <label className={Style.wrapper_imgInput}>
                     <input
-                      name="nickname"
-                      type="text"
-                      defaultValue={userData.nickname}
-                      onChange={(e) => setNickName(e.target.value)}
+                      id="profileImg"
+                      type="file"
+                      onChange={onProfileImageChange}
+                      style={{ display: "none" }}
                     ></input>
-                  </div>
 
-                  {isPwOpen && (
+                    {isUpdateImg === false ? (
+                      <img src={profileImg}></img>
+                    ) : (
+                      <img src={updateImgSrc}></img>
+                    )}
+                  </label>
+                </div>
+                <div className={Style.profile_wrapper}>
+                  {isPwOpen === false ? (
+                    <div className={Style.wrapper_nickname}>
+                      <input
+                        name="nickname"
+                        type="text"
+                        defaultValue={userData.nickname}
+                        onChange={(e) => setNickName(e.target.value)}
+                      ></input>
+                    </div>
+                  ) : (
                     <div>
                       {showCurrentPw === false ? (
+                        <div>
+                          <div className={Style.wrapper_nickname}>
+                            <input
+                              name="nickname"
+                              type="text"
+                              defaultValue={userData.nickname}
+                              onChange={(e) => setNickName(e.target.value)}
+                            ></input>
+                          </div>
+                          <div className={Style.wrapper_password}>
+                            <input
+                              name="currentPw"
+                              type="password"
+                              placeholder="기존 비밀번호"
+                              onChange={(e) => setCurrentPw(e.target.value)}
+                            />
+                            <button
+                              className={Style.btn_show}
+                              onClick={() => setShowCurrentPw(true)}
+                            ></button>
+                          </div>
+                        </div>
+                      ) : (
+                        <div>
+                          <div className={Style.wrapper_nickname}>
+                            <input
+                              name="nickname"
+                              type="text"
+                              defaultValue={userData.nickname}
+                              onChange={(e) => setNickName(e.target.value)}
+                            ></input>
+                          </div>
+                          <div className={Style.wrapper_password}>
+                            <input
+                              name="currentPw"
+                              type="password"
+                              placeholder="기존 비밀번호"
+                              onChange={(e) => setCurrentPw(e.target.value)}
+                            />
+                            <button
+                              className={Style.btn_show}
+                              onClick={() => setShowCurrentPw(false)}
+                            ></button>
+                          </div>
+                        </div>
+                      )}
+                      {showNewPw === false ? (
                         <div className={Style.wrapper_password}>
                           <input
-                            name="currentPw"
+                            name="password"
                             type="password"
-                            placeholder="기존 비밀번호"
-                            onChange={(e) => setCurrentPw(e.target.value)}
+                            onChange={(e) => setNewPw(e.target.value)}
+                            placeholder="변경할 비밀번호"
                           />
                           <button
                             className={Style.btn_show}
-                            onClick={() => setShowCurrentPw(true)}
+                            onClick={() => setShowNewPw(true)}
                           ></button>
                         </div>
                       ) : (
                         <div className={Style.wrapper_password}>
                           <input
-                            name="currentPw"
+                            name="password"
                             type="text"
-                            placeholder="기존 비밀번호"
-                            onChange={(e) => setCurrentPw(e.target.value)}
-                          />
+                            placeholder="변경할 비밀번호"
+                            onChange={(e) => setNewPw(e.target.value)}
+                          ></input>
                           <button
                             className={Style.btn_noShow}
-                            onClick={() => setShowCurrentPw(false)}
+                            onClick={() => setShowNewPw(false)}
                           ></button>
                         </div>
                       )}
-                      <div>
-                        {showNewPw === false ? (
-                          <div className={Style.wrapper_password}>
-                            <input
-                              name="password"
-                              type="password"
-                              onChange={(e) => setNewPw(e.target.value)}
-                              placeholder="변경할 비밀번호"
-                            />
-                            <button
-                              className={Style.btn_show}
-                              onClick={() => setShowNewPw(true)}
-                            ></button>
-                          </div>
-                        ) : (
-                          <div className={Style.wrapper_password}>
-                            <input
-                              name="password"
-                              type="text"
-                              placeholder="변경할 비밀번호"
-                              onChange={(e) => setNewPw(e.target.value)}
-                            ></input>
-                            <button
-                              className={Style.btn_noShow}
-                              onClick={() => setShowNewPw(false)}
-                            ></button>
-                          </div>
-                        )}
-                        {showNewConfirmPw === false ? (
-                          <div className={Style.wrapper_password}>
-                            <input
-                              name="confirmPw"
-                              type="password"
-                              placeholder="비밀번호 확인"
-                              onChange={(e) => setConfirmPw(e.target.value)}
-                            />
-                            <button
-                              className={Style.btn_show}
-                              onClick={() => setShowNewConfirmPw(true)}
-                            ></button>
-                          </div>
-                        ) : (
-                          <div className={Style.wrapper_password}>
-                            <input
-                              name="confirmPw"
-                              type="text"
-                              placeholder="비밀번호 확인"
-                              onChange={(e) => setConfirmPw(e.target.value)}
-                            />
-                            <button
-                              className={Style.btn_noShow}
-                              onClick={() => setShowNewConfirmPw(false)}
-                            ></button>
-                          </div>
-                        )}
-                      </div>
+                      {showNewConfirmPw === false ? (
+                        <div className={Style.wrapper_password}>
+                          <input
+                            name="confirmPw"
+                            type="password"
+                            placeholder="비밀번호 확인"
+                            onChange={(e) => setConfirmPw(e.target.value)}
+                          />
+                          <button
+                            className={Style.btn_show}
+                            onClick={() => setShowNewConfirmPw(true)}
+                          ></button>
+                        </div>
+                      ) : (
+                        <div className={Style.wrapper_password}>
+                          <input
+                            name="confirmPw"
+                            type="text"
+                            placeholder="비밀번호 확인"
+                            onChange={(e) => setConfirmPw(e.target.value)}
+                          />
+                          <button
+                            className={Style.btn_noShow}
+                            onClick={() => setShowNewConfirmPw(false)}
+                          ></button>
+                        </div>
+                      )}
                     </div>
                   )}
-                  {isPwOpen === false ? (
-                    <button
-                      className={Style.mainBtn}
-                      onClick={() => setIsPwOpen(true)}
-                    >
-                      비밀번호 변경
-                    </button>
-                  ) : (
-                    <button
-                      className={Style.mainBtn}
-                      onClick={() => setIsPwOpen(false)}
-                    >
-                      비밀번호 변경 취소
-                    </button>
-                  )}
-
-                  <button
-                    className={Style.subBtn}
-                    onClick={() => setUserReTouch(true)}
-                  >
-                    수정 취소
-                  </button>
-
-                  <button className={Style.subBtn} onClick={(e) => onSubmit(e)}>
-                    수정 완료
-                  </button>
                 </div>
 
                 {/* api 명세 나오면 buttom onClick에  onSubmit함수 넣을 예정 */}
               </div>
+              {isPwOpen === false ? (
+                <button
+                  className={Style.mainBtn}
+                  onClick={() => setIsPwOpen(true)}
+                >
+                  비밀번호 변경
+                </button>
+              ) : (
+                <button
+                  className={Style.mainBtn}
+                  onClick={() => setIsPwOpen(false)}
+                >
+                  비밀번호 변경 취소
+                </button>
+              )}
+              <button
+                className={Style.subBtn}
+                onClick={() => setUserReTouch(true)}
+              >
+                수정 취소
+              </button>
+
+              <button className={Style.subBtn} onClick={(e) => onSubmit(e)}>
+                수정 완료
+              </button>
             </div>
           )}
         </div>

@@ -71,7 +71,7 @@ const Join = () => {
           nickname,
           password,
           email,
-          location: address,
+          location: "SEOUL",
           //phone: phone,
           //realname: realname,
           //birthday: birthday,
@@ -85,7 +85,6 @@ const Join = () => {
         if (profileImg) {
           formData.append("profileImg", profileImg);
         }
-        console.log(1);
         const response = await axios.post("/user/signup", formData, {
           headers: {
             "Content-Type": "multipart/form-data",

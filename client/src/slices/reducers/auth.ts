@@ -49,6 +49,7 @@ export const login =
       localStorage.setItem("accessToken", response.data.accessToken);
       localStorage.setItem("refreshToken", response.data.refreshToken);
     } catch (error) {
+      console.error(error);
       dispatch(loginFailure("로그인에 실패했습니다."));
     }
   };
