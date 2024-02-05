@@ -12,6 +12,7 @@ const NoteWrite = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [content, setContent] = useState("");
+  const [cursorIndex, setCursorIndex] = useState(1);
 
   const user = useSelector((state:any) => state.auth?.user); //리덕스 유저정보
 
@@ -42,11 +43,27 @@ const NoteWrite = () => {
     setSendUserList(temp);
   }
 
-  const onKeyPressSpace = (e:React.KeyboardEvent<HTMLInputElement>) => {
-    if(e.key==="Spacebar") {
-      //미구현
+  const onKeyPress = (e:React.KeyboardEvent<HTMLInputElement>) => {
+    if(e.keyCode===32 || e.keyCode===13) {
+      if(userList.length>=1) {
+        setIsSearchOpen(false); 
+        setSearch("");
+        if(sendUserList.includes(userList[(cursorIndex - 1)%userList.length])) {
+          window.confirm("이미 선택된 유저입니다.");
+          return;
+        }
+        setSendUserList([...sendUserList, userList[(cursorIndex - 1)%userList.length]]);
+      }
+    } else if(e.key === "ArrowDown") {
+      setCursorIndex((prev) => prev+1);
+    } else if(e.key === "ArrowUp") {
+      setCursorIndex((prev) => prev-1);
     }
   }
+  
+  useEffect (()=> {
+    setCursorIndex(1);
+  }, [userList]);
 
   const onClickSendNote = async (e:React.MouseEvent) => {
     try {
@@ -78,7 +95,6 @@ const NoteWrite = () => {
       <div className={style.toBox}>
         <label htmlFor="sender">받는 사람</label>
         <div className={style.input_side} onClick={onClickInputSide}>
-          <input type="text" id="sender" value={search} placeholder="다중 전송은 스페이스 바로 구분해 주세요." onChange={onChangeSender} onKeyPress={onKeyPressSpace} className={style.main_search}/>
           <div className={style.tags_input}>
             <>
               {sendUserList.map((item) => 
@@ -87,20 +103,26 @@ const NoteWrite = () => {
               }
             </>
           </div>
+          <input type="text" id="sender" value={search} placeholder="다중 전송은 스페이스 바로 구분해 주세요." onChange={onChangeSender} onKeyDown={onKeyPress} className={style.main_search}/>
+          <div className={style.user_search} style={{display: isSearchOpen ? "block" : "none"}}>
+            {
+              isLoading ? <ListLoading /> : (
+                <ul>
+                  {
+                    userList.map((item, index) => 
+                      <li className={style.item} aria-selected={index === (cursorIndex - 1)%userList.length} onClick={() => {setIsSearchOpen(false);setSearch(""); if(sendUserList.includes(item)) {
+                        window.confirm("이미 선택된 유저입니다.");
+                        return;
+                      }
+                      setSendUserList([...sendUserList, item]);
+                    }}>{item}</li>
+                    )
+                  }
+                </ul>
+              )
+            }
+          </div>
         </div>
-      </div>
-      <div className={style.user_search} style={{display: isSearchOpen ? "block" : "none"}}>
-        {
-          isLoading ? <ListLoading /> : (
-            <ul>
-              {
-                userList.map((item) => 
-                  <li className={style.item} onClick={() => {setIsSearchOpen(false); setSendUserList([...sendUserList, item]);}}>{item}</li>
-                )
-              }
-            </ul>
-          )
-        }
       </div>
       <div className={style.toBox} style={{marginTop: "15px"}}>
         <div className={style.detail_title}>내용</div>

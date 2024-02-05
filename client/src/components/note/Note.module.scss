@@ -365,7 +365,6 @@
 
 .user_search {
   position: absolute;
-  top: 44px;
   left: 72px;
   right: 13px;
   background: #fff;
@@ -378,7 +377,7 @@
     font-size: 13px;
     cursor: pointer;
 
-    &:hover {
+    &:hover, &[aria-selected=true] {
       background-color: $main100;
     }
   }

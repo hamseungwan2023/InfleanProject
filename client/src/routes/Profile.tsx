@@ -5,6 +5,8 @@ import Style from "./Profile.module.scss";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from "../slices/store";
 import { tokenRefresh } from "../slices/reducers/auth";
+import { getKeyByValue } from "../utils/getKeyByValue";
+import { ERegion } from "../constants/regionList";
 
 const Profile = () => {
   const [userReTouch, setUserReTouch] = useState<boolean>(true);
@@ -168,7 +170,7 @@ const Profile = () => {
                   <h5>{userData.rank}레벨</h5>
                 </div>
                 <div className={Style.wrapper_location}>
-                  <h5>지역 : {userData.location}</h5>
+                  <h5>지역 : {getKeyByValue(ERegion, userData.location)}</h5>
                 </div>
               </div>
               <div className={Style.wrapper_btn}>
