@@ -134,6 +134,14 @@ const Join = () => {
         setIsPasswordValid(true);
       }
     } else if (e.target.name === "email") {
+      const testEamil = email.includes("@");
+      if (!testEamil) {
+        setRequiredMessage("이메일: 올바른 이메일 형식이 아닙니다.");
+        setIsEmailValid(false);
+      } else {
+        setRequiredMessage("");
+        setIsEmailValid(true);
+      }
       setEmail(value);
     } else if (e.target.name === "realname") {
       setRealname(value);
@@ -142,6 +150,15 @@ const Join = () => {
     } else if (e.target.name === "phone") {
       setPhone(value);
     } else if (e.target.name === "nickname") {
+      if (nickname.length < 2) {
+        setRequiredMessage(
+          "닉네임: 닉네임은 한글, 대소문자, 숫자만 적어주세요."
+        );
+        setIsNicknameValid(false);
+      } else {
+        setRequiredMessage("");
+        setIsNicknameValid(true);
+      }
       setNickname(value);
     } else {
       return;
@@ -388,7 +405,7 @@ const Join = () => {
           className={classnames(
             style.wrapper_roadAd,
             { [style.is_focus]: isLocationFocus },
-            { [style.is_error]: !isPasswordValid }
+            { [style.is_error]: !isLocationValid }
           )}
         >
           <button onClick={(e) => setIsOpen(true)}>
