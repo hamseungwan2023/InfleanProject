@@ -18,6 +18,7 @@ import PostCorrectRoute from "./routes/PostCorrectRoute";
 import FindUserId from "./routes/findAccount/FindUserId";
 import FindUserPw from "./routes/findAccount/FindUserPw";
 import NoteDetail from "./components/note/NoteDetail";
+import TokenRefresher from "./TokenRefresher";
 
 const router = createBrowserRouter([
   {
@@ -124,7 +125,10 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return <>
+    <RouterProvider router={router} />
+    <TokenRefresher />
+  </>;
 }
 
 export default App;

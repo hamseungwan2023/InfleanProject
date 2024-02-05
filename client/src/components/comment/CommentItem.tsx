@@ -118,7 +118,7 @@ const CommentItem = ({ comment, clickReplyBtnParentId, setClickReplyBtnParentId,
         </div>
         <div className={style.main_wrap}>
           <div className={style.info_wrap}>
-            <span className={style.rank}><span className="blind">레벨1</span></span>
+            <span className={classNames(style.rank, `img_level_${(comment.rank+1)*10}`)}><span className="blind">레벨${comment.rank}</span></span>
             <Link to={`/postWrote/${comment.writerId}`} className={style.writer}>{comment.writerNickname}</Link>
             <span className={style.last_update}>{getDayMinuteCounter(comment.createdAt)}</span>
           </div>
@@ -156,7 +156,7 @@ const CommentItem = ({ comment, clickReplyBtnParentId, setClickReplyBtnParentId,
               </div>
               <div className={style.main_wrap}>
                 <div className={style.info_wrap}>
-                  <span className={style.rank}><span className="blind">레벨1</span></span>
+                  <span className={classNames(style.rank, `img_level_${(comment.rank+1)*10}`)}><span className="blind">레벨{comment.rank}</span></span>
                   <Link to={`/postWrote/${replyComment.writerId}`} className={style.writer}>{replyComment.writerNickname}</Link>
                   <span className={style.last_update}>{getDayMinuteCounter(replyComment.createdAt)}</span>
                 </div>

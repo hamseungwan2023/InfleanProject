@@ -1,4 +1,5 @@
 import axios, { Axios, AxiosError } from "axios";
+import classNames from "classnames";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { ECategory } from "../../constants/categoryList";
@@ -28,7 +29,6 @@ const PostDetail = ({commentCount}:TProps) => {
         getPostDetail();
       }
     } catch (e: any) {
-      console.log(e.response.data.message);
       if(e.response.data.message === "이미 좋아요/싫어요한 게시글에 좋아요/싫어요를 할 수 없습니다.") {
         window.confirm("이미 추천/비추천한 게시글에 추천을 할 수 없습니다.")
       }else if(e.response.data.message === "자신이 작성한 게시글에는 싫어요를 할 수 없습니다.") {
@@ -48,7 +48,6 @@ const PostDetail = ({commentCount}:TProps) => {
         getPostDetail();
       }
     } catch (e: any) {
-      console.log(e.response.data.message);
       if(e.response.data.message === "이미 좋아요/싫어요한 게시글에 좋아요/싫어요를 할 수 없습니다.") {
         window.confirm("이미 추천/비추천한 게시글에 비추천을 할 수 없습니다.")
       }else if(e.response.data.message === "자신이 작성한 게시글에는 싫어요를 할 수 없습니다.") {
@@ -88,7 +87,7 @@ const PostDetail = ({commentCount}:TProps) => {
               to={`/postWrote/${postDetail?.writerId}`}
               className={style.writer}
             >
-              <i className={style.rank} />
+              <i className={classNames(style.rank, `img_level_${postDetail && (postDetail.rank + 1)*10}`)} />
               <span>{postDetail?.writerNickname}</span>
             </Link>
           </div>

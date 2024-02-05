@@ -167,7 +167,7 @@ const Profile = () => {
                   <h5>{userData.nickname}</h5>
                 </div>
                 <div className={Style.wrapper_rank}>
-                  <h5>{userData.rank}레벨</h5>
+                  <h5>레벨 {userData.rank}</h5>
                 </div>
                 <div className={Style.wrapper_location}>
                   <h5>지역 : {getKeyByValue(ERegion, userData.location)}</h5>

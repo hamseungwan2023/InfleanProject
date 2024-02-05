@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { tokenRefresh } from "../../slices/reducers/auth";
 import { AppDispatch } from "../../slices/store";
+import { getExpPercent } from "../../utils/getExpPercent";
 
 const Profile = () => {
   const [userData, setUserData] = useState<any>({});
@@ -54,7 +55,7 @@ const Profile = () => {
   return (
     <section className={style.profile_wrap}>
       <div className={style.profile_area}>
-        <span className={style.rank} />
+        <span className={classNames(style.rank, `img_level_${userData && (userData.rank + 1)*10}`)} />
         <div className={style.info}>
           <div className={style.top_area}>
             <strong className={style.nickname}>{userData?.nickname}</strong>
@@ -66,10 +67,10 @@ const Profile = () => {
           <span className={style.level}>{userData?.rank}레벨</span>
           <div className={style.bar}>
             <span className={style.gage}>
-              <span className="blind">0%</span>
+              <span className="blind">{getExpPercent(userData?.rank, userData?.postCount)/10*(userData?.rank) * 100}%</span>
             </span>
           </div>
-          <span className={style.level_info}>다음 레벨까지 11 남음</span>
+          <span className={style.level_info}>다음 레벨까지 {getExpPercent(userData?.rank, userData?.postCount)} 남음</span>
         </div>
       </div>
       <nav className={style.nav}>

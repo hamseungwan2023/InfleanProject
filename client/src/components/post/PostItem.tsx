@@ -41,7 +41,7 @@ const PostItem = React.forwardRef<HTMLLIElement, Tprops>(({ postItem :{id, title
           {getDayMinuteCounter(createdAt)}
         </span>
         <span className={style.writer}>
-          <i className={style.rank}>
+          <i className={classNames(style.rank, `img_level_${(rank + 1)*10}`)}>
             <span className="blind">레벨{rank}</span>
           </i>
           <span>{writer}</span>

@@ -65,7 +65,7 @@ export const tokenRefresh =
         {},
         {
           headers: {
-            Authorization: String(refreshToken),
+            Authorization: refreshToken,
           },
         }
       );
