@@ -9,42 +9,39 @@
   margin-top: 50px;
   margin-bottom: 50px;
 
-  .infoState_wrapper {
-    border: 1px solid $mainBorder;
-    margin-bottom: 10px;
-    height: 30px;
-    text-align: center;
-
-    .toHomeBtn {
-      display: flex;
-      &::before {
-        background-repeat: no-repeat;
-        background-image: url(https://s.pstatic.net/static/www/img/uit/2020/sp_main_1f05c0.png);
-        background-position: -130px -385px;
-        background-size: 440px 410px;
-        width: 30px;
-        height: 30px;
-        display: inline-block;
-        vertical-align: top;
-        content: "";
-      }
-    }
-
-    h1 {
-      font-size: 18px;
-      font-weight: 700;
-      line-height: 22px;
-      color: $main700;
-      font-size: 20px;
-      position: relative;
-      top: -25px;
-      margin-bottom: 10px;
-    }
-  }
-
   & > div {
     box-sizing: border-box;
     width: 460px;
+  }
+}
+
+.infoState_wrapper {
+  border: 1px solid $mainBorder;
+  margin-bottom: 10px;
+  height: 30px;
+  text-align: center;
+  h1 {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 22px;
+    color: $main700;
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+
+  .toHomeBtn {
+    position: absolute;
+    display: flex;
+    &::before {
+      cursor: pointer;
+      background-repeat: no-repeat;
+      background-image: url(https://s.pstatic.net/static/www/img/uit/2020/sp_main_1f05c0.png);
+      background-position: -130px -385px;
+      background-size: 440px 410px;
+      width: 30px;
+      height: 30px;
+      content: "";
+    }
   }
 }
 

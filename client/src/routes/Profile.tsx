@@ -5,6 +5,8 @@ import Style from "./Profile.module.scss";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from "../slices/store";
 import { tokenRefresh } from "../slices/reducers/auth";
+import { ERegion } from "../constants/regionList";
+import { getKeyByValue } from "../utils/getKeyByValue";
 
 const Profile = () => {
   const [userReTouch, setUserReTouch] = useState<boolean>(true);
@@ -32,7 +34,7 @@ const Profile = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  console.log(nickName);
   useEffect(() => {
     if (isLoggedIn === false) {
       navigate("/");
@@ -51,6 +53,7 @@ const Profile = () => {
         },
       });
       setUserData(response.data);
+      setNickName(response.data.nickname);
     } catch (err: any) {
       if (err.response.data.message === "기간이 만료된 토큰") {
         dispatch(tokenRefresh(String(refreshToken))); // 토큰을 갱신한 후에
@@ -59,6 +62,7 @@ const Profile = () => {
       console.error(err.response.data.message);
     }
   };
+
   const getUserImg = async () => {
     try {
       const response = await axios.get<Blob>(`/user/load-profile`, {
@@ -135,7 +139,7 @@ const Profile = () => {
       getUserImg();
       getUserData(dispatch);
       setUserReTouch(true);
-      console.log("수정 성공:", response.data);
+      alert("프로필 수정이 완료되었습니다.");
     } catch (err) {
       console.error("수정 실패:", err);
     }
@@ -150,6 +154,7 @@ const Profile = () => {
               <div className={Style.infoState_wrapper}>
                 <button
                   className={Style.toHomeBtn}
+                  type="button"
                   title="홈으로"
                   onClick={(e) => navigate("/")}
                 ></button>
@@ -168,7 +173,7 @@ const Profile = () => {
                   <h5>{userData.rank}레벨</h5>
                 </div>
                 <div className={Style.wrapper_location}>
-                  <h5>지역 : {userData.location}</h5>
+                  <h5>지역 : {getKeyByValue(ERegion, userData.location)}</h5>
                 </div>
               </div>
               <div className={Style.wrapper_btn}>
@@ -220,7 +225,7 @@ const Profile = () => {
                       <input
                         name="nickname"
                         type="text"
-                        defaultValue={userData.nickname}
+                        defaultValue={nickName}
                         onChange={(e) => setNickName(e.target.value)}
                       ></input>
                     </div>
@@ -232,7 +237,7 @@ const Profile = () => {
                             <input
                               name="nickname"
                               type="text"
-                              defaultValue={userData.nickname}
+                              defaultValue={nickName}
                               onChange={(e) => setNickName(e.target.value)}
                             ></input>
                           </div>
@@ -255,7 +260,7 @@ const Profile = () => {
                             <input
                               name="nickname"
                               type="text"
-                              defaultValue={userData.nickname}
+                              defaultValue={nickName}
                               onChange={(e) => setNickName(e.target.value)}
                             ></input>
                           </div>

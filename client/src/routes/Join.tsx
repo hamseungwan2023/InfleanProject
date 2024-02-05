@@ -152,13 +152,14 @@ const Join = () => {
     if (e.target.name === "username") {
       setIsUsernameFocus(true);
       setIsPasswordFocus(false);
+      setIsEmailFocus(false);
       setIsRealnameFocus(false);
       setIsBirthdayFocus(false);
       setIsPhoneFocus(false);
       setIsNicknameFocus(false);
       setIsProfileImgFocus(false);
     } else if (e.target.name === "email") {
-      setIsEmailFocus(false);
+      setIsEmailFocus(true);
       setIsRealnameFocus(false);
       setIsUsernameFocus(false);
       setIsPasswordFocus(false);
@@ -169,6 +170,7 @@ const Join = () => {
     } else if (e.target.name === "password") {
       setIsPasswordFocus(true);
       setIsUsernameFocus(false);
+      setIsEmailFocus(false);
       setIsRealnameFocus(false);
       setIsBirthdayFocus(false);
       setIsPhoneFocus(false);
@@ -178,6 +180,7 @@ const Join = () => {
       setIsRealnameFocus(true);
       setIsUsernameFocus(false);
       setIsPasswordFocus(false);
+      setIsEmailFocus(false);
       setIsBirthdayFocus(false);
       setIsPhoneFocus(false);
       setIsNicknameFocus(false);
@@ -186,6 +189,7 @@ const Join = () => {
       setIsBirthdayFocus(true);
       setIsUsernameFocus(false);
       setIsPasswordFocus(false);
+      setIsEmailFocus(false);
       setIsRealnameFocus(false);
       setIsPhoneFocus(false);
       setIsNicknameFocus(false);
@@ -194,6 +198,7 @@ const Join = () => {
       setIsPhoneFocus(true);
       setIsUsernameFocus(false);
       setIsPasswordFocus(false);
+      setIsEmailFocus(false);
       setIsRealnameFocus(false);
       setIsBirthdayFocus(false);
       setIsNicknameFocus(false);
@@ -201,6 +206,7 @@ const Join = () => {
     } else if (e.target.name === "nickname") {
       setIsNicknameFocus(true);
       setIsUsernameFocus(false);
+      setIsEmailFocus(false);
       setIsPasswordFocus(false);
       setIsRealnameFocus(false);
       setIsBirthdayFocus(false);
@@ -210,6 +216,7 @@ const Join = () => {
       setIsLocationFocus(true);
       setIsNicknameFocus(false);
       setIsUsernameFocus(false);
+      setIsEmailFocus(false);
       setIsPasswordFocus(false);
       setIsRealnameFocus(false);
       setIsBirthdayFocus(false);
@@ -378,9 +385,11 @@ const Join = () => {
           </div>
         </div>
         <div
-          className={classnames(style.wrapper_roadAd, {
-            [style.is_focus]: isLocationFocus,
-          })}
+          className={classnames(
+            style.wrapper_roadAd,
+            { [style.is_focus]: isLocationFocus },
+            { [style.is_error]: !isPasswordValid }
+          )}
         >
           <button onClick={(e) => setIsOpen(true)}>
             {location.length > 0 ? location : "주소를 입력하세요"}
@@ -425,9 +434,11 @@ const Join = () => {
           />
         </div>
         <div
-          className={classnames(style.wrapper_nickname, {
-            [style.is_focus]: isNicknameFocus,
-          })}
+          className={classnames(
+            style.wrapper_nickname,
+            { [style.is_focus]: isNicknameFocus },
+            { [style.is_error]: !isNicknameValid }
+          )}
         >
           <input
             onChange={onChange}
@@ -441,9 +452,11 @@ const Join = () => {
           />
         </div>
         <div
-          className={classnames(style.wrapper_phone, {
-            [style.is_focus]: isPhoneFocus,
-          })}
+          className={classnames(
+            style.wrapper_phone,
+            { [style.is_focus]: isPhoneFocus },
+            { [style.is_error]: !isPhoneValid }
+          )}
         >
           <input
             onChange={onChange}
