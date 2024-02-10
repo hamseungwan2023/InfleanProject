@@ -1,9 +1,14 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Style from "./FindAccount.module.scss";
 
-const Timer: React.FC = () => {
-  const [seconds, setSeconds] = useState<number>(300);
-  const [isActive, setIsActive] = useState<boolean>(true);
+interface TimerProps {
+  initialTime: number;
+  active: boolean;
+}
+
+const Timer: React.FC<TimerProps> = ({ initialTime, active }) => {
+  const [seconds, setSeconds] = useState<number>(initialTime);
+  const [isActive, setIsActive] = useState<boolean>(active);
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -18,6 +23,11 @@ const Timer: React.FC = () => {
       clearInterval(interval);
     };
   }, [isActive, seconds]);
+
+  useEffect(() => {
+    setSeconds(initialTime);
+    setIsActive(active);
+  }, [initialTime, active]);
 
   const formatTime = (time: number): string => {
     const minutes = Math.floor(time / 60);

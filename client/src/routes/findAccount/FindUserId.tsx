@@ -10,6 +10,9 @@ const FindUserId = () => {
   const [uAccessCode, setUAccessCode] = useState<string>("");
   const [uId, setUId] = useState<string>("");
 
+  const [initialTime, setInitialTime] = useState<number>(300);
+  const [isActive, setIsActive] = useState<boolean>(true);
+
   const navigate = useNavigate();
 
   const user = localStorage.getItem("user");
@@ -22,6 +25,11 @@ const FindUserId = () => {
       navigate("/");
     }
   });
+
+  const handleResetTimer = () => {
+    setInitialTime(300); // 초기 시간을 다시 300으로 설정
+    setIsActive(true); // 타이머를 다시 활성화
+  };
 
   const onChange = (e: any) => {
     if (e.target.name === "email") {
@@ -88,7 +96,9 @@ const FindUserId = () => {
                   onChange={onChange}
                 ></input>
                 <button onClick={(e) => compareNumber(e)}>인증하기</button>
-                {uId.length === 0 && <Timer />}
+                {uId.length === 0 && (
+                  <Timer initialTime={initialTime} active={isActive} />
+                )}
                 {uId.length > 1 && (
                   <h2>
                     귀하의 아이디는

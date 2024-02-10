@@ -24,6 +24,8 @@ const Join = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [confirmEmail, setConfirmEmail] = useState<boolean>(false);
   const [authEmail, setAuthEmail] = useState<boolean>(false);
+  const [initialTime, setInitialTime] = useState<number>(300);
+  const [isActive, setIsActive] = useState<boolean>(true);
 
   // 오류메세지, 유효여부 상태 저장
   const [requiredMessage, setRequiredMessage] = useState("");
@@ -310,8 +312,32 @@ const Join = () => {
     }
   };
 
+  //인증번호 재발급
+
+  const reVerificationCode = async (e: any) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post("/email/mailVerification", {
+        email: email,
+        code: confirmCode,
+      });
+      console.log(response);
+      if (response.data === true) {
+        setAuthEmail(true);
+      }
+      handleResetTimer();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const onClickPasswordShow = (e: React.MouseEvent) => {
     setIsSecretPassword(!isSecretPassword);
+  };
+
+  const handleResetTimer = () => {
+    setInitialTime(300); // 초기 시간을 다시 300으로 설정
+    setIsActive(true); // 타이머를 다시 활성화
   };
 
   return (
@@ -357,18 +383,27 @@ const Join = () => {
           <button onClick={(e) => mailConfirm(e)}>인증번호 받기</button>
         </div>
         {confirmEmail && (
-          <div className={style.wrapper_confirmEmail}>
-            <input
-              name="confirmCode"
-              type="text"
-              placeholder="인증번호를 입력하세요."
-              value={confirmCode}
-              className={style.input}
-              onChange={(e: any) => setConfirmCode(e.target.value)}
-            ></input>
-            <Timer />
+          <div>
+            <div className={style.wrapper_confirmEmail}>
+              <input
+                name="confirmCode"
+                type="text"
+                placeholder="인증번호를 입력하세요."
+                value={confirmCode}
+                className={style.input}
+                onChange={(e: any) => setConfirmCode(e.target.value)}
+              ></input>
+              <Timer initialTime={initialTime} active={isActive} />
 
-            <button onClick={(e) => verificationCode(e)}>인증하기</button>
+              <button onClick={(e) => verificationCode(e)}>인증하기</button>
+            </div>
+
+            <p className={style.wrapper_reloadCode}>
+              인증번호가 오지 않았나요?
+              <button onClick={(e) => reVerificationCode(e)}>
+                인증번호 다시 받기
+              </button>
+            </p>
           </div>
         )}
         <div

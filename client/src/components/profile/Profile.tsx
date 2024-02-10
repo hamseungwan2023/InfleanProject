@@ -32,15 +32,16 @@ const Profile = () => {
     }
   };
 
-  const refreshToken = localStorage.getItem("refreshToken");
-
   const getUserData = async (dispatch: AppDispatch) => {
+    const refreshToken = localStorage.getItem("refreshToken");
+
     try {
       const response = await axios.get("/user/api/userDetail", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
+      console.log(response.data);
       setUserData(response.data);
     } catch (err: any) {
       if (err.response.data.message === "기간이 만료된 토큰") {

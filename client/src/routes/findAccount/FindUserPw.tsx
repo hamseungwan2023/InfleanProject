@@ -12,6 +12,9 @@ const FindUserPw = () => {
   const [uAccessCode, setUAccessCode] = useState<string>("");
   const [uPw, setUPw] = useState<string>("");
 
+  const [initialTime, setInitialTime] = useState<number>(300);
+  const [isActive, setIsActive] = useState<boolean>(true);
+
   const navigate = useNavigate();
   const user = localStorage.getItem("user");
   //로컬스토리지로 로그인여부 확인
@@ -60,6 +63,11 @@ const FindUserPw = () => {
     }
   };
 
+  const handleResetTimer = () => {
+    setInitialTime(300); // 초기 시간을 다시 300으로 설정
+    setIsActive(true); // 타이머를 다시 활성화
+  };
+
   return (
     <div className={Style.form}>
       <div>
@@ -92,7 +100,9 @@ const FindUserPw = () => {
                   name="uAccessCode"
                   onChange={onChange}
                 ></input>
-                {uPw.length === 0 && <Timer />}
+                {uPw.length === 0 && (
+                  <Timer initialTime={initialTime} active={isActive} />
+                )}
                 <button onClick={(e) => compareNumber(e)}>인증</button>
 
                 {uPw.length > 1 ? (
