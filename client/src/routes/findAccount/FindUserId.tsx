@@ -77,34 +77,54 @@ const FindUserId = () => {
           비밀번호 찾기
         </button>
         <div>
-          <div className={Style.confirm_wrap}>
-            <div className={Style.box}>
+          <div className={Style.find_wrapper}>
+            <div className={Style.wrapper_email}>
               <input
                 name="email"
                 placeholder="인증번호 받으실 이메일을 입력하세요"
                 onChange={onChange}
               ></input>
-              {!secondClick && (
-                <button onClick={(e) => postEmail(e)}>인증번호 받기</button>
-              )}
             </div>
+            {!secondClick && (
+              <button onClick={(e) => postEmail(e)} className={Style.findBtn}>
+                인증번호 받기
+              </button>
+            )}
             {secondClick === true ? (
-              <div className={Style.box}>
-                <input
-                  placeholder="인증번호를 입력하세요"
-                  name="uAccessCode"
-                  onChange={onChange}
-                ></input>
-                <button onClick={(e) => compareNumber(e)}>인증하기</button>
+              <div>
+                <div className={Style.wrapper_userCode}>
+                  <input
+                    placeholder="인증번호를 입력하세요"
+                    name="uAccessCode"
+                    onChange={onChange}
+                  ></input>
+                </div>
                 {uId.length === 0 && (
                   <Timer initialTime={initialTime} active={isActive} />
                 )}
+                <button
+                  onClick={(e) => compareNumber(e)}
+                  className={Style.findBtn}
+                >
+                  인증하기
+                </button>
+
                 {uId.length > 1 && (
-                  <h2>
-                    귀하의 아이디는
-                    <span className={Style.userInfo}>{uId}</span>
-                    입니다.
-                  </h2>
+                  <div>
+                    <div className={Style.wrapper_userInfo}>
+                      <h2>
+                        귀하의 아이디는
+                        <span className={Style.userInfo}>{uId}</span>
+                        입니다.
+                      </h2>
+                    </div>
+                    <button
+                      onClick={(e) => navigate("/")}
+                      className={Style.findBtn}
+                    >
+                      로그인 하러가기
+                    </button>
+                  </div>
                 )}
               </div>
             ) : null}
